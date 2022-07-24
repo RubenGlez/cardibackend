@@ -1,6 +1,6 @@
 import { User, UserRepository } from '../../../domain'
 
-export default class ExistUserByEmail {
+export default class ExistUserByEmailService {
   private readonly _userRepository: UserRepository
 
   constructor (userRepository: UserRepository) {

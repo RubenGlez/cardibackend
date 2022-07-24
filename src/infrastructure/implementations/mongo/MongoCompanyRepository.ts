@@ -17,7 +17,7 @@ export default class MongoCompanyRepository implements CompanyRepository {
   async getAll (): Promise<Company[]> {
     const allCompanys = await this._model.find()
     if (allCompanys.length === 0) return [] as Company[]
-    const allCompanysMapped = allCompanys.map((Company) => this.map(Company))
+    const allCompanysMapped = allCompanys.map((company) => this.map(company))
     return allCompanysMapped
   }
 
@@ -29,27 +29,27 @@ export default class MongoCompanyRepository implements CompanyRepository {
   }
 
   async getById (id: Company['id']): Promise<Company | null> {
-    const CompanyFound = await this._model.findById(id)
-    if (CompanyFound === null) return null
-    const CompanyMapped = this.map(CompanyFound)
-    return CompanyMapped
+    const companyFound = await this._model.findById(id)
+    if (companyFound === null) return null
+    const companyMapped = this.map(companyFound)
+    return companyMapped
   }
 
   async save (inputData: Company): Promise<Company> {
-    const CompanyToCreate = new this._model(inputData)
-    const CompanyCreated = await CompanyToCreate.save()
-    const CompanyMapped = this.map(CompanyCreated)
-    return CompanyMapped
+    const companyToCreate = new this._model(inputData)
+    const companyCreated = await companyToCreate.save()
+    const companyMapped = this.map(companyCreated)
+    return companyMapped
   }
 
   async update (inputData: Company): Promise<Company> {
-    const CompanyUpdated = await this._model.findByIdAndUpdate(
+    const companyUpdated = await this._model.findByIdAndUpdate(
       inputData.id,
       inputData,
       { new: true }
     )
-    const CompanyMapped = this.map(CompanyUpdated)
-    return CompanyMapped
+    const companyMapped = this.map(companyUpdated)
+    return companyMapped
   }
 
   async delete (id: Company['id']): Promise<void> {
