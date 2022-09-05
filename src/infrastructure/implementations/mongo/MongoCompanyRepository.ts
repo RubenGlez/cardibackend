@@ -1,22 +1,31 @@
 import {
   Company,
-  CompanyRepository
+  CompanyRepository,
+  User
 } from '../../../domain'
 import { CompanyModel } from '../..'
 
 export default class MongoCompanyRepository implements CompanyRepository {
   private readonly _model = CompanyModel
 
-  private map (CompanyToMap: any): Company {
-    const Company = CompanyToMap.toObject({ versionKey: false })
-    Company.id = Company._id
-    delete Company._id
-    return Company as Company
+  private map (companyToMap: any): Company {
+    const company = companyToMap.toObject({ versionKey: false })
+    company.id = company._id.toString()
+    delete company._id
+    company.owner = company.owner.toString()
+    return company as Company
   }
 
   async getAll (): Promise<Company[]> {
     const allCompanys = await this._model.find()
-    if (allCompanys.length === 0) return [] as Company[]
+    if (allCompanys.length === 0) return allCompanys
+    const allCompanysMapped = allCompanys.map((company) => this.map(company))
+    return allCompanysMapped
+  }
+
+  async getAllByOwner (owner: User['id']): Promise<Company[]> {
+    const allCompanys = await this._model.find({ owner })
+    if (allCompanys.length === 0) return allCompanys
     const allCompanysMapped = allCompanys.map((company) => this.map(company))
     return allCompanysMapped
   }
@@ -46,7 +55,7 @@ export default class MongoCompanyRepository implements CompanyRepository {
     const companyUpdated = await this._model.findByIdAndUpdate(
       inputData.id,
       inputData,
-      { new: true }
+      { returnDocument: 'after' }
     )
     const companyMapped = this.map(companyUpdated)
     return companyMapped

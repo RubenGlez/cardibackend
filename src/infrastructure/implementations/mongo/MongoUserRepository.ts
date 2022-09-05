@@ -9,7 +9,7 @@ export default class MongoUserRepository implements UserRepository {
 
   private map (userToMap: any): User {
     const user = userToMap.toObject({ versionKey: false })
-    user.id = user._id
+    user.id = user._id.toString()
     delete user._id
     return user as User
   }

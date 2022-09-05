@@ -23,7 +23,7 @@ export default class UpdateCompanyUseCase {
     if (currentCompany?.owner !== tenantId) throw new ResourceNotOwnedException()
 
     const companyToUpdate: Company = {
-      owner: currentCompany.owner,
+      ...currentCompany,
       name: inputData.name ?? currentCompany.name,
       description: inputData.description ?? currentCompany.description,
       contact: {

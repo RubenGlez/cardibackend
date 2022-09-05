@@ -11,8 +11,10 @@ export default async function getCompaniesController (
   const getCompaniesUseCase = new GetCompaniesUseCase(mongoCompanyRepository)
 
   try {
-    const companys = await getCompaniesUseCase.run()
-    res.json(companys)
+    const { tenantId } = req
+    const companies = await getCompaniesUseCase.run(tenantId)
+    res.json(companies)
+
   } catch (e) {
     next(e)
   }
