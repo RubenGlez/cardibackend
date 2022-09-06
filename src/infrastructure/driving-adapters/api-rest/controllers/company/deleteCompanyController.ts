@@ -13,7 +13,7 @@ export default async function deleteCompanyController (
   try {
     const { params, tenantId } = req
     const { companyId } = params
-    const company = await deleteCompanyUseCase.run({ ...req.body, id: companyId }, tenantId)
+    const company = await deleteCompanyUseCase.run(companyId, tenantId)
     res.json(company)
   } catch (e) {
     next(e)

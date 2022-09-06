@@ -1,18 +1,18 @@
 import express, { Router } from 'express'
 import {
   createCardController,
-  // getCardsController,
-  // deleteCardController,
-  // getCardController,
-  // updateCardController,
+  getCardsController,
+  deleteCardController,
+  getCardController,
+  updateCardController,
 } from '../controllers'
 
 const router: Router = express.Router()
 
-// router.get('/', getCardsController)
+router.get('/', getCardsController)
 router.post('/', createCardController)
-// router.put('/:companyId', updateCardController)
-// router.get('/:companyId', getCardController)
-// router.delete('/:companyId', deleteCardController)
+router.put('/:cardId', updateCardController)
+router.get('/:cardId', getCardController)
+router.delete('/:cardId', deleteCardController)
 
 export default router
