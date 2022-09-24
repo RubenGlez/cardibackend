@@ -1,0 +1,5 @@
+export { default as CreatePromotionUseCase } from './CreatePromotionUseCase'
+export { default as DeletePromotionUseCase } from './DeletePromotionUseCase'
+export { default as GetPromotionsUseCase } from './GetPromotionsUseCase'
+export { default as GetPromotionUseCase } from './GetPromotionUseCase'
+export { default as UpdatePromotionUseCase } from './UpdatePromotionUseCase'

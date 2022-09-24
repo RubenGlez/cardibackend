@@ -1,4 +1,5 @@
 export * from './Auth'
 export * from './Card'
 export * from './Company'
+export * from './Promotion'
 export * from './User'
