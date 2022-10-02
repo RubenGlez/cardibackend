@@ -2,7 +2,8 @@ import {
   GetCardByIdService,
   Card,
   CardRepository,
-  ResourceNotOwnedException
+  CardiError,
+  CardiErrorTypes
 } from '../../../domain'
 
 export default class DeleteCardUseCase {
@@ -20,7 +21,7 @@ export default class DeleteCardUseCase {
   ): Promise<void> {
     
     const cardToDelete = await this._getCardByIdService.run(cardId)
-    if (cardToDelete.owner !== tenantId) throw new ResourceNotOwnedException()
+    if (cardToDelete.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
   
     await this._cardRepository.delete(cardToDelete.id)
   }

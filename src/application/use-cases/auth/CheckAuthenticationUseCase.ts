@@ -3,8 +3,8 @@ import {
   AuthRepository,
   UserRepository,
   User,
-  MissingAccessTokenException,
-  InvalidAccessTokenException
+  CardiError,
+  CardiErrorTypes,
 } from '../../../domain'
 
 export default class CheckAuthenticationUseCase {
@@ -17,11 +17,11 @@ export default class CheckAuthenticationUseCase {
   }
 
   async run (accessToken?: Auth['accessToken']): Promise<User['id']> {
-    if (accessToken === undefined) throw new MissingAccessTokenException()
+    if (accessToken === undefined) throw new CardiError(CardiErrorTypes.MissingAccessToken)
 
     const userIdFromAccessToken = this._authRepository.verifyToken(accessToken)
     const user = await this._userRepository.getById(userIdFromAccessToken)
-    if (user === null) throw new InvalidAccessTokenException()
+    if (user === null) throw new CardiError(CardiErrorTypes.InvalidAccessToken)
 
     return user.id
   }

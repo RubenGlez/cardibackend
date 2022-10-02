@@ -1,4 +1,4 @@
-import { User, UserNotFoundException, UserRepository, UserRole } from '../..'
+import { CardiError, CardiErrorTypes, User, UserRepository, UserRole } from '../..'
 
 export default class UserHasBusinessRoleService {
   private readonly _userRepository: UserRepository
@@ -9,7 +9,7 @@ export default class UserHasBusinessRoleService {
 
   async run (id: User['id']): Promise<boolean> {
     const user = await this._userRepository.getById(id)
-    if (user === null) throw new UserNotFoundException()
+    if (user === null) throw new CardiError(CardiErrorTypes.UserNotFound)
     return user.role === UserRole.Business
   }
 }

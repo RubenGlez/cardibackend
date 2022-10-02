@@ -1,8 +1,9 @@
 import {
+  CardiError,
+  CardiErrorTypes,
   GetPromotionByIdService,
   Promotion,
   PromotionRepository,
-  ResourceNotOwnedException
 } from '../../../domain'
 
 export default class DeletePromotionUseCase {
@@ -20,7 +21,7 @@ export default class DeletePromotionUseCase {
   ): Promise<void> {
     
     const cromotionToDelete = await this._getPromotionByIdService.run(cromotionId)
-    if (cromotionToDelete.owner !== tenantId) throw new ResourceNotOwnedException()
+    if (cromotionToDelete.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
   
     await this._cromotionRepository.delete(cromotionToDelete.id)
   }

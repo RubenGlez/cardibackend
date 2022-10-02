@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import {
   MongoUserRepository,
-  MongoAuthRepository
+  MongoAuthRepository,
+  MongoPreferencesRepository
 } from '../../../../../infrastructure'
 import { SignUpUseCase } from '../../../../../application'
 
@@ -12,7 +13,8 @@ export default async function signUpController (
 ): Promise<void> {
   const mongoUserRepository = new MongoUserRepository()
   const mongoAuthRepository = new MongoAuthRepository()
-  const signUpUseCase = new SignUpUseCase(mongoAuthRepository, mongoUserRepository)
+  const mongoPreferencesRepository = new MongoPreferencesRepository()
+  const signUpUseCase = new SignUpUseCase(mongoAuthRepository, mongoUserRepository, mongoPreferencesRepository)
 
   try {
     const authData = await signUpUseCase.run(req.body)

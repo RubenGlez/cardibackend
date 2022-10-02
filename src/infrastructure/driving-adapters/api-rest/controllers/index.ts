@@ -1,6 +1,7 @@
 export * from './auth'
 export * from './card'
 export * from './company'
+export * from './preferences'
 export * from './promotion'
 export * from './user'
 export { default as errorController } from './errorController'

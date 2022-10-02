@@ -2,7 +2,8 @@ import {
   User,
   UserRepository,
   GetUserByIdService,
-  ForbiddenException
+  CardiError,
+  CardiErrorTypes,
 } from '../../../domain'
 
 type InputData = Pick<User, 'id' | 'password' | 'username'>
@@ -20,7 +21,7 @@ export default class UpdateUserUseCase {
     inputData: InputData,
     tenantId: User['id']
   ): Promise<User> {
-    if (inputData.id !== tenantId) throw new ForbiddenException()
+    if (inputData.id !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
 
     const currentUser = await this._getUserByIdService.run(inputData.id)
 

@@ -1,4 +1,4 @@
-import { Promotion, PromotionNotFoundException, PromotionRepository } from '../..'
+import { CardiError, CardiErrorTypes, Promotion, PromotionRepository } from '../..'
 
 export default class GetPromotionByIdService {
   private readonly _promotionRepository: PromotionRepository
@@ -9,7 +9,7 @@ export default class GetPromotionByIdService {
 
   async run (id: Promotion['id']): Promise<Promotion> {
     const promotion = await this._promotionRepository.getById(id)
-    if (promotion === null) throw new PromotionNotFoundException()
+    if (promotion === null) throw new CardiError(CardiErrorTypes.PromotionNotFound)
     return promotion
   }
 }

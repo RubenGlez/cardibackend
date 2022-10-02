@@ -3,8 +3,8 @@ import { GetPromotionByIdService, Promotion, PromotionRepository } from '../../.
 export default class GetPromotionUseCase {
   private readonly _getPromotionByIdService: GetPromotionByIdService
 
-  constructor (cromotionRepository: PromotionRepository) {
-    this._getPromotionByIdService = new GetPromotionByIdService(cromotionRepository)
+  constructor (promotionRepository: PromotionRepository) {
+    this._getPromotionByIdService = new GetPromotionByIdService(promotionRepository)
   }
 
   async run (id: Promotion['id']): Promise<Promotion> {

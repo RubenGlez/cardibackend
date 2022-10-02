@@ -1,0 +1,16 @@
+export enum CardiErrorTypes {
+  InvalidAccessToken = 'InvalidAccessToken',
+  InvalidCredentials = 'InvalidCredentials',
+  MissingAccessToken = 'MissingAccessToken',
+  CardNotFound = 'CardNotFound',
+  CompanyAlreadyExist = 'CompanyAlreadyExist',
+  CompanyNotFound = 'CompanyNotFound',
+  PreferencesAlreadyExist = 'PreferencesAlreadyExist',
+  PreferencesNotFound = 'PreferencesNotFound',
+  PromotionNotFound = 'PromotionNotFound',
+  UserAlreadyExist = 'UserAlreadyExist',
+  UserNotFound = 'UserNotFound',
+  InvalidUserRole = 'InvalidUserRole',
+  NotOwned = 'NotOwned',
+  Unknown = 'Unknown',
+}

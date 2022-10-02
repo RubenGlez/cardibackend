@@ -3,7 +3,8 @@ import {
   Company,
   CompanyRepository,
   User,
-  ResourceNotOwnedException,
+  CardiError,
+  CardiErrorTypes,
 } from '../../../domain'
 
 type InputData = Pick<Company, 'id' | 'name' | 'description' | 'contact'>
@@ -20,7 +21,7 @@ export default class UpdateCompanyUseCase {
 
   async run (inputData: InputData, tenantId: User['id']): Promise<Company> {
     const currentCompany = await this._getCompanyByIdService.run(inputData.id)
-    if (currentCompany?.owner !== tenantId) throw new ResourceNotOwnedException()
+    if (currentCompany?.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
 
     const companyToUpdate: Company = {
       ...currentCompany,

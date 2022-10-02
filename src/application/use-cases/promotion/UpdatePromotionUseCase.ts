@@ -1,9 +1,10 @@
 import {
+  CardiError,
+  CardiErrorTypes,
   GetPromotionByIdService,
   Promotion,
   PromotionRepository,
   User,
-  ResourceNotOwnedException,
 } from '../../../domain'
 
 type InputData = Pick<Promotion, 'id' | 'name' | 'description' | 'validFrom' | 'validTo'>
@@ -20,7 +21,7 @@ export default class UpdatePromotionUseCase {
 
   async run (inputData: InputData, tenantId: User['id']): Promise<Promotion> {
     const currentPromotion = await this._getPromotionByIdService.run(inputData.id)
-    if (currentPromotion?.owner !== tenantId) throw new ResourceNotOwnedException()
+    if (currentPromotion?.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
 
     const promotionToUpdate: Promotion = {
       ...currentPromotion,

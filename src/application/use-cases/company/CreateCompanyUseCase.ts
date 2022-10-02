@@ -1,12 +1,12 @@
 import {
   ExistCompanyByNameService,
   Company,
-  CompanyAlreadyExistException,
   CompanyRepository,
   User,
   UserRepository,
   UserHasBusinessRoleService,
-  UserRoleException
+  CardiError,
+  CardiErrorTypes,
 } from '../../../domain'
 
 type InputData = Pick<Company, 'name' | 'description' | 'contact'>
@@ -24,10 +24,10 @@ export default class CreateCompanyUseCase {
 
   async run (inputData: InputData, tenantId: User['id']): Promise<Company> {
     const userHasBusinessRole = await this._userHasBusinessRoleService.run(tenantId)
-    if (!userHasBusinessRole) throw new UserRoleException()
+    if (!userHasBusinessRole) throw new CardiError(CardiErrorTypes.InvalidUserRole)
 
     const existCompany = await this._existCompanyByNameService.run(inputData.name)
-    if (existCompany) throw new CompanyAlreadyExistException()
+    if (existCompany) throw new CardiError(CardiErrorTypes.CompanyAlreadyExist)
 
     const companyToCreate: Company = {
       owner: tenantId,

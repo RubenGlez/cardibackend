@@ -3,7 +3,8 @@ import {
   Card,
   CardRepository,
   User,
-  ResourceNotOwnedException,
+  CardiError,
+  CardiErrorTypes,
 } from '../../../domain'
 
 type InputData = Omit<Card, 'owner' | 'company'>
@@ -20,7 +21,7 @@ export default class UpdateCardUseCase {
 
   async run (inputData: InputData, tenantId: User['id']): Promise<Card> {
     const currentCard = await this._getCardByIdService.run(inputData.id)
-    if (currentCard?.owner !== tenantId) throw new ResourceNotOwnedException()
+    if (currentCard?.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
 
     const cardToUpdate: Card = {
       ...currentCard,

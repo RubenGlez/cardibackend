@@ -1,5 +1,6 @@
 import {
-  ForbiddenException,
+  CardiError,
+  CardiErrorTypes,
   GetUserByIdService,
   User,
   UserRepository
@@ -18,7 +19,7 @@ export default class DeleteUserUseCase {
     userId: User['id'],
     tenantId: User['id']
   ): Promise<void> {
-    if (userId !== tenantId) throw new ForbiddenException()
+    if (userId !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
 
     const userToDelete = await this._getUserByIdService.run(userId)
     await this._userRepository.delete(userToDelete.id)

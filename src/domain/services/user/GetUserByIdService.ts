@@ -1,4 +1,4 @@
-import { User, UserNotFoundException, UserRepository } from '../../../domain'
+import { CardiError, CardiErrorTypes, User, UserRepository } from '../../../domain'
 
 export default class GetUserByIdService {
   private readonly _userRepository: UserRepository
@@ -9,7 +9,7 @@ export default class GetUserByIdService {
 
   async run (id: User['id']): Promise<User> {
     const user = await this._userRepository.getById(id)
-    if (user === null) throw new UserNotFoundException()
+    if (user === null) throw new CardiError(CardiErrorTypes.UserNotFound)
     return user
   }
 }

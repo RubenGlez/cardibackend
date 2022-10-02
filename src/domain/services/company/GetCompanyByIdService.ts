@@ -1,4 +1,4 @@
-import { Company, CompanyNotFoundException, CompanyRepository } from '../../../domain'
+import { CardiError, CardiErrorTypes, Company, CompanyRepository } from '../../../domain'
 
 export default class GetCompanyByIdService {
   private readonly _companyRepository: CompanyRepository
@@ -9,7 +9,7 @@ export default class GetCompanyByIdService {
 
   async run (id: Company['id']): Promise<Company> {
     const company = await this._companyRepository.getById(id)
-    if (company === null) throw new CompanyNotFoundException()
+    if (company === null) throw new CardiError(CardiErrorTypes.CompanyNotFound)
     return company
   }
 }

@@ -2,7 +2,8 @@ import {
   GetCompanyByIdService,
   Company,
   CompanyRepository,
-  ResourceNotOwnedException
+  CardiError,
+  CardiErrorTypes,
 } from '../../../domain'
 
 export default class DeleteCompanyUseCase {
@@ -20,7 +21,7 @@ export default class DeleteCompanyUseCase {
   ): Promise<void> {
     
     const companyToDelete = await this._getCompanyByIdService.run(companyId)
-    if (companyToDelete.owner !== tenantId) throw new ResourceNotOwnedException()
+    if (companyToDelete.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
   
     await this._companyRepository.delete(companyToDelete.id)
   }

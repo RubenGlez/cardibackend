@@ -2,9 +2,10 @@ import {
   User,
   UserRepository,
   UserHasBusinessRoleService,
-  UserRoleException,
   Card,
-  CardRepository
+  CardRepository,
+  CardiError,
+  CardiErrorTypes
 } from '../../../domain'
 
 type InputData = Card
@@ -20,7 +21,7 @@ export default class CreateCardUseCase {
 
   async run (inputData: InputData, tenantId: User['id']): Promise<Card> {
     const userHasBusinessRole = await this._userHasBusinessRoleService.run(tenantId)
-    if (!userHasBusinessRole) throw new UserRoleException()
+    if (!userHasBusinessRole) throw new CardiError(CardiErrorTypes.InvalidUserRole)
 
     const cardToCreate: Card = {
       owner: tenantId,

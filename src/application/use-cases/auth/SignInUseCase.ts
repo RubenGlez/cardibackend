@@ -1,11 +1,11 @@
 import {
   Auth,
   AuthRepository,
-  InvalidCredentialsException,
   SignInInputData,
-  UserNotFoundException,
   UserRepository,
-  GetUserByEmailService
+  GetUserByEmailService,
+  CardiErrorTypes,
+  CardiError
 } from '../../../domain'
 
 export default class SignInUseCase {
@@ -21,14 +21,14 @@ export default class SignInUseCase {
 
   async run (inputData: SignInInputData): Promise<Auth> {
     const foundUser = await this._getUserByEmailService.run(inputData.email)
-    if (foundUser === null) throw new UserNotFoundException()
+    if (foundUser === null) throw new CardiError(CardiErrorTypes.UserNotFound)
 
     const isPasswordCorrect = await this._authRepository.comparePassword(
       inputData.password,
       foundUser.password
     )
 
-    if (!isPasswordCorrect) throw new InvalidCredentialsException()
+    if (!isPasswordCorrect) throw new CardiError(CardiErrorTypes.InvalidCredentials)
 
     const userUpdated = await this._userRepository.update(foundUser)
 

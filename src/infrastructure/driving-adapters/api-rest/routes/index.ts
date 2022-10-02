@@ -4,6 +4,7 @@ import { authenticationMiddleware } from '../middlewares'
 import authRouter from './authRouter'
 import cardRouter from './cardRouter'
 import companyRouter from './companyRouter'
+import preferencesRouter from './preferencesRouter'
 import promotionRouter from './promotionRouter'
 import userRouter from './userRouter'
 
@@ -14,6 +15,7 @@ router.use('/cards', authenticationMiddleware, cardRouter)
 router.use('/companies', authenticationMiddleware, companyRouter)
 router.use('/promotions', authenticationMiddleware, promotionRouter)
 router.use('/users', authenticationMiddleware, userRouter)
+router.use('/preferences', authenticationMiddleware, preferencesRouter)
 
 router.use(notFoundController)
 router.use(errorController)
