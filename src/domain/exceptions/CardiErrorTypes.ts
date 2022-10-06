@@ -1,4 +1,5 @@
 export enum CardiErrorTypes {
+  ExpiredAccessToken = 'ExpiredAccessToken',
   InvalidAccessToken = 'InvalidAccessToken',
   InvalidCredentials = 'InvalidCredentials',
   MissingAccessToken = 'MissingAccessToken',

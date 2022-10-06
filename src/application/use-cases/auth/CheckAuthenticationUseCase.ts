@@ -19,7 +19,13 @@ export default class CheckAuthenticationUseCase {
   async run (accessToken?: Auth['accessToken']): Promise<User['id']> {
     if (accessToken === undefined) throw new CardiError(CardiErrorTypes.MissingAccessToken)
 
-    const userIdFromAccessToken = this._authRepository.verifyToken(accessToken)
+    let userIdFromAccessToken;
+    try {
+      userIdFromAccessToken = this._authRepository.verifyToken(accessToken)
+    } catch (error) {
+      throw new CardiError(CardiErrorTypes.ExpiredAccessToken)
+    }
+
     const user = await this._userRepository.getById(userIdFromAccessToken)
     if (user === null) throw new CardiError(CardiErrorTypes.InvalidAccessToken)
 

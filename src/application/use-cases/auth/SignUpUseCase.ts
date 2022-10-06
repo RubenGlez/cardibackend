@@ -43,7 +43,7 @@ export default class SignUpUseCase {
     const preferencesToCreate: Preferences= {
       user: userCreated.id
     }
-    const preferencesCreated = await this._preferencesRepository.save(preferencesToCreate)
+    await this._preferencesRepository.save(preferencesToCreate)
 
     return { userId: userCreated.id, accessToken }
   }

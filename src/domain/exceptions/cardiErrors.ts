@@ -80,4 +80,9 @@ export const cardiErrors: CardiErrors = {
     message: 'Unknown error',
     status: 500,
   },
+  [CardiErrorTypes.ExpiredAccessToken]: {
+    name: CardiErrorTypes.ExpiredAccessToken,
+    message: 'Expired access token',
+    status: 500,
+  },
 }
