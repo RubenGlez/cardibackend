@@ -23,6 +23,10 @@ export default class DeletePromotionUseCase {
     const cromotionToDelete = await this._getPromotionByIdService.run(cromotionId)
     if (cromotionToDelete.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
   
+    // has suscriptions?
+    // -> no : delete
+    // -> yes : trow error "must delete suscriptions firstly"
+
     await this._cromotionRepository.delete(cromotionToDelete.id)
   }
 }

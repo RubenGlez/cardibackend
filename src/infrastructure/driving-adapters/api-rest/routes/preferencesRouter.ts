@@ -8,6 +8,5 @@ const router: Router = express.Router()
 
 router.put('/:preferencesId', updatePreferencesController)
 router.get('/', getPreferencesController)
-// router.delete('/:preferencesId', deletePreferencesController)
 
 export default router

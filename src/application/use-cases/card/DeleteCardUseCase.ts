@@ -22,6 +22,10 @@ export default class DeleteCardUseCase {
     
     const cardToDelete = await this._getCardByIdService.run(cardId)
     if (cardToDelete.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
+
+    // has promos?
+    // -> no : delete
+    // -> yes : trow error "must delete promos firstly"
   
     await this._cardRepository.delete(cardToDelete.id)
   }

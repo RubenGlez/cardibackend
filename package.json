@@ -20,7 +20,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.4.0",
     "morgan": "^1.10.0",
-    "ndb": "^1.1.5"
+    "ndb": "^1.1.5",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",

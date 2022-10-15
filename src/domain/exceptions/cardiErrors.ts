@@ -70,6 +70,11 @@ export const cardiErrors: CardiErrors = {
     message: 'Invalid user role',
     status: 500,
   },
+  [CardiErrorTypes.PromotionOutdated]: {
+    name: CardiErrorTypes.PromotionOutdated,
+    message: 'Promotion outdated',
+    status: 500,
+  },
   [CardiErrorTypes.NotOwned]: {
     name: CardiErrorTypes.NotOwned,
     message: 'Resource not owned',
@@ -83,6 +88,26 @@ export const cardiErrors: CardiErrors = {
   [CardiErrorTypes.ExpiredAccessToken]: {
     name: CardiErrorTypes.ExpiredAccessToken,
     message: 'Expired access token',
+    status: 500,
+  },
+  [CardiErrorTypes.SubscriptionAlreadyExist]: {
+    name: CardiErrorTypes.SubscriptionAlreadyExist,
+    message: 'Subscription already exists',
+    status: 500,
+  },
+  [CardiErrorTypes.InvalidPromotionType]: {
+    name: CardiErrorTypes.InvalidPromotionType,
+    message: 'Invalid promotion type',
+    status: 500,
+  },
+  [CardiErrorTypes.SubscriptionAlreadyCompleted]: {
+    name: CardiErrorTypes.SubscriptionAlreadyCompleted,
+    message: 'Subscription already completed',
+    status: 500,
+  },
+  [CardiErrorTypes.SubscriptionNotFound]: {
+    name: CardiErrorTypes.SubscriptionNotFound,
+    message: 'Subscription not found',
     status: 500,
   },
 }

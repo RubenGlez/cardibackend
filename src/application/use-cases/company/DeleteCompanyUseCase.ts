@@ -22,6 +22,10 @@ export default class DeleteCompanyUseCase {
     
     const companyToDelete = await this._getCompanyByIdService.run(companyId)
     if (companyToDelete.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
+
+    // has cards?
+    // -> no : delete
+    // -> yes : trow error "must delete cards firstly"
   
     await this._companyRepository.delete(companyToDelete.id)
   }
