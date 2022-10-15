@@ -17,6 +17,7 @@ export enum CardiErrorTypes {
   SubscriptionAlreadyCompleted = 'SubscriptionAlreadyCompleted',
   SubscriptionNotFound = 'SubscriptionNotFound',
   InvalidPromotionType = 'InvalidPromotionType',
+  InvalidSusbcriptorRole = 'InvalidSusbcriptorRole',
   NotOwned = 'NotOwned',
   Unknown = 'Unknown',
 }

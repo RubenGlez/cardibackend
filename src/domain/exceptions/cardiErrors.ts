@@ -110,4 +110,9 @@ export const cardiErrors: CardiErrors = {
     message: 'Subscription not found',
     status: 500,
   },
+  [CardiErrorTypes.InvalidSusbcriptorRole]: {
+    name: CardiErrorTypes.InvalidSusbcriptorRole,
+    message: 'Invalid susbcriptor role',
+    status: 500,
+  },
 }

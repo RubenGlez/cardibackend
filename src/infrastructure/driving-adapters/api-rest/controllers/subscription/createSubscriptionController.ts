@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { MongoPromotionRepository, MongoSubscriptionRepository } from '../../../..'
+import { MongoPromotionRepository, MongoSubscriptionRepository, MongoUserRepository } from '../../../..'
 import { CreateSubscriptionUseCase } from '../../../../../application'
 
 export default async function createSubscriptionController (
@@ -9,9 +9,11 @@ export default async function createSubscriptionController (
 ): Promise<void> {
   const mongoSubscriptionRepository = new MongoSubscriptionRepository()
   const mongoPromotionRepository = new MongoPromotionRepository()
+  const mongoUserRepository = new MongoUserRepository()
   const createSubscriptionUseCase = new CreateSubscriptionUseCase(
     mongoSubscriptionRepository,
-    mongoPromotionRepository
+    mongoPromotionRepository,
+    mongoUserRepository
   )
 
   try {
