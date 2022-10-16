@@ -4,28 +4,31 @@ import {
   SubscriptionRepository,
   User,
 } from "../../../domain";
-import { SubscriptionModel, UuidAdapter } from "../..";
+import { SubscriptionModel } from "../..";
+import { Document, Types } from 'mongoose'
+
+type SubscriptionToMap = Document<unknown, any, Subscription> & Subscription & {
+  _id: Types.ObjectId;
+}
 
 export default class MongoSubscriptionRepository
   implements SubscriptionRepository
 {
   private readonly _model = SubscriptionModel;
-  private readonly _uuidAdapter: UuidAdapter;
 
-  constructor() {
-    this._uuidAdapter = new UuidAdapter();
-  }
-
-  private map(subscriptionToMap: any): Subscription {
-    const subscription = subscriptionToMap.toObject({ versionKey: false });
-    subscription.id = subscription._id.toString();
-    delete subscription._id;
-    subscription.subscriptor = subscription.subscriptor.toString();
-    subscription.owner = subscription.owner.toString();
-    subscription.subscription = subscription.subscription.toString();
-    subscription.card = subscription.card.toString();
-    subscription.company = subscription.company.toString();
-    return subscription as Subscription;
+  private map(subscriptionToMap: SubscriptionToMap): Subscription {
+    return {
+      id: subscriptionToMap._id.toString(),
+      subscriptor: subscriptionToMap.subscriptor?.toString(),
+      owner: subscriptionToMap.owner?.toString(),
+      promotion: subscriptionToMap.promotion?.toString(),
+      card: subscriptionToMap.card?.toString(),
+      company: subscriptionToMap.company?.toString(),
+      steps: subscriptionToMap.steps.map(step => ({ id: step.id?.toString(), date: step.date })),
+      status: subscriptionToMap.status,
+      createdAt: subscriptionToMap.createdAt,
+      updatedAt: subscriptionToMap.updatedAt,
+    }
   }
 
   async getAll(): Promise<Subscription[]> {
@@ -37,8 +40,8 @@ export default class MongoSubscriptionRepository
     return allSubscriptionsMapped;
   }
 
-  async getAllByPromotion(subscription: Promotion["id"]): Promise<Subscription[]> {
-    const subscriptionsByPromotion = await this._model.find({ subscription });
+  async getAllByPromotion(promotion: Subscription["promotion"]): Promise<Subscription[]> {
+    const subscriptionsByPromotion = await this._model.find({ promotion });
     if (subscriptionsByPromotion.length === 0) return subscriptionsByPromotion;
     const subscriptionsByPromotionMapped = subscriptionsByPromotion.map(
       (subscription) => this.map(subscription)
@@ -46,20 +49,16 @@ export default class MongoSubscriptionRepository
     return subscriptionsByPromotionMapped;
   }
 
-  async getAllBySubscriptorAndPromotion(
+  async getBySubscriptorAndPromotion(
     subscriptor: Subscription["subscriptor"],
     promotion: Subscription["promotion"]
-  ): Promise<Subscription[]> {
-    const subscriptionsBySubscriptorAndPromotion = await this._model.find({
+  ): Promise<Subscription | null> {
+    const subscriptionsBySubscriptorAndPromotion = await this._model.findOne({
       subscriptor,
       promotion,
     });
-    if (subscriptionsBySubscriptorAndPromotion.length === 0)
-      return subscriptionsBySubscriptorAndPromotion;
-    const subscriptionsBySubscriptorAndPromotionMapped =
-      subscriptionsBySubscriptorAndPromotion.map((subscription) =>
-        this.map(subscription)
-      );
+    if (subscriptionsBySubscriptorAndPromotion === null) return null;
+    const subscriptionsBySubscriptorAndPromotionMapped = this.map(subscriptionsBySubscriptorAndPromotion)
     return subscriptionsBySubscriptorAndPromotionMapped;
   }
 
@@ -77,21 +76,18 @@ export default class MongoSubscriptionRepository
     return subscriptionMapped;
   }
 
-  async update(inputData: Subscription): Promise<Subscription> {
+  async update(inputData: Subscription): Promise<Subscription | null> {
     const subscriptionUpdated = await this._model.findByIdAndUpdate(
       inputData.id,
       inputData,
       { returnDocument: "after" }
     );
+    if (subscriptionUpdated === null) return null
     const subscriptionMapped = this.map(subscriptionUpdated);
     return subscriptionMapped;
   }
 
   async delete(id: Subscription["id"]): Promise<void> {
     await this._model.findByIdAndDelete(id);
-  }
-
-  generateUuid(): string {
-    return this._uuidAdapter.generateUuid();
   }
 }

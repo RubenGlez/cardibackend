@@ -37,7 +37,6 @@ const SubscriptionSchema = new Schema<Subscription>(
     },
     steps: {
       type: [{
-        id: String,
         date: Date
       }],
       required: true

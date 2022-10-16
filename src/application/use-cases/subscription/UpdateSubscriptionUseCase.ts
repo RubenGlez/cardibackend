@@ -30,7 +30,7 @@ export default class UpdateSubscriptionUseCase {
     this._getPromotionByIdService = new GetPromotionByIdService(promotionRepository)
   }
 
-  async run (inputData: InputData, tenantId: User['id']): Promise<Subscription> {
+  async run (inputData: InputData, tenantId: User['id']): Promise<Subscription | null> {
     const currentSubscription = await this._getSubscriptionByIdService.run(inputData.id)
     if (currentSubscription?.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
 
@@ -44,22 +44,17 @@ export default class UpdateSubscriptionUseCase {
     if (!isStandardPromotion) throw new CardiError(CardiErrorTypes.InvalidPromotionType)
 
     const isSubscriptionCompleted = currentSubscription.steps.length === this._subscriptionSteps
-    if (isSubscriptionCompleted) throw new CardiError(CardiErrorTypes.InvalidPromotionType)
+    if (isSubscriptionCompleted) throw new CardiError(CardiErrorTypes.SubscriptionAlreadyCompleted)
 
     const isLastStep = currentSubscription.steps.length === (this._subscriptionSteps - 1)
 
     const status = isLastStep ? SubscriptionStatus.completed : SubscriptionStatus.active
 
-    const stepId = this._subscriptionRepository.generateUuid()
-
     const subscriptionToUpdate: Subscription = {
       ...currentSubscription,
       steps: [
         ...currentSubscription.steps,
-        {
-          id: stepId,
-          date: today
-        }
+        { date: today }
       ],
       status
     }

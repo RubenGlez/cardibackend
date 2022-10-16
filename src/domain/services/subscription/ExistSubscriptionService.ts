@@ -8,7 +8,7 @@ export default class ExistSubscriptionService {
   }
 
   async run (subscriptor: Subscription['subscriptor'], promotion: Subscription['promotion']): Promise<boolean> {
-    const subscription = await this._subscriptionRepository.getAllBySubscriptorAndPromotion(subscriptor, promotion)
+    const subscription = await this._subscriptionRepository.getBySubscriptorAndPromotion(subscriptor, promotion)
     if (subscription !== null) return true
     return false
   }

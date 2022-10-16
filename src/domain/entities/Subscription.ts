@@ -4,7 +4,7 @@ import { Promotion } from "./Promotion"
 import { User } from "./User"
 
 export interface SubscriptionStep {
-  id: string
+  id?: string
   date: Date
 }
 
@@ -26,4 +26,6 @@ export interface Subscription {
   // datos de la subscripción
   steps: SubscriptionStep[]
   status: SubscriptionStatus
+  createdAt?: Date
+  updatedAt?: Date
 }

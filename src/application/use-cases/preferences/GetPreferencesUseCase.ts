@@ -7,7 +7,7 @@ export default class GetPreferencesUseCase {
     this._getPreferencesByUserService = new GetPreferencesByUserService(companyRepository)
   }
 
-  async run (id: User['id']): Promise<Preferences> {
-    return await this._getPreferencesByUserService.run(id)
+  async run (tenantId: User['id']): Promise<Preferences> {
+    return await this._getPreferencesByUserService.run(tenantId)
   }
 }

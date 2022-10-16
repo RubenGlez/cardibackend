@@ -1,17 +1,4 @@
 {
-  "name": "cardiclean",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "nodemon ./src/index.ts",
-    "debug": "ndb nodemon ./src/index.ts",
-    "db": "mongod --dbpath ./data",
-    "typecheck": "npx tsc --project ./tsconfig.json"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
@@ -20,8 +7,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.4.0",
     "morgan": "^1.10.0",
-    "ndb": "^1.1.5",
-    "uuidv4": "^6.2.13"
+    "ndb": "^1.1.5"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
