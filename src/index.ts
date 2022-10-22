@@ -11,4 +11,4 @@ const runApiRest = async (): Promise<void> => {
   await MongoInstance.connect()
 }
 
-runApiRest()
+void runApiRest()
