@@ -13,7 +13,6 @@ export default class UpdateCompanyUseCase {
   private readonly _companyRepository: CompanyRepository
   private readonly _getCompanyByIdService: GetCompanyByIdService
 
-
   constructor (companyRepository: CompanyRepository) {
     this._companyRepository = companyRepository
     this._getCompanyByIdService = new GetCompanyByIdService(companyRepository)

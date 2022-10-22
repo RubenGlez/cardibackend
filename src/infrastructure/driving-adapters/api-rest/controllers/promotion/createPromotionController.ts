@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { MongoPromotionRepository, MongoUserRepository } from '../../../..'
+import { MongoPromotionRepository } from '../../../..'
 import { CreatePromotionUseCase } from '../../../../../application'
 
 export default async function createPromotionController (
@@ -8,10 +8,8 @@ export default async function createPromotionController (
   next: NextFunction
 ): Promise<void> {
   const mongoPromotionRepository = new MongoPromotionRepository()
-  const mongoUserRepository = new MongoUserRepository()
   const createPromotionUseCase = new CreatePromotionUseCase(
     mongoPromotionRepository,
-    mongoUserRepository
   )
 
   try {

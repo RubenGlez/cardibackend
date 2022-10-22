@@ -2,27 +2,18 @@ import {
   Promotion,
   PromotionRepository,
   User,
-  UserRepository,
-  UserHasBusinessRoleService,
-  CardiError,
-  CardiErrorTypes,
 } from '../../../domain'
 
 type InputData = Omit<Promotion, 'id'>
 
 export default class CreatePromotionUseCase {
   private readonly _promotionRepository: PromotionRepository
-  private readonly _userHasBusinessRoleService: UserHasBusinessRoleService
 
-  constructor (promotionRepository: PromotionRepository, userRepository: UserRepository) {
+  constructor (promotionRepository: PromotionRepository) {
     this._promotionRepository = promotionRepository
-    this._userHasBusinessRoleService = new UserHasBusinessRoleService(userRepository)
   }
 
   async run (inputData: InputData, tenantId: User['id']): Promise<Promotion> {
-    const userHasBusinessRole = await this._userHasBusinessRoleService.run(tenantId)
-    if (!userHasBusinessRole) throw new CardiError(CardiErrorTypes.InvalidUserRole)
-
     const promotionToCreate: Promotion = {
       owner: tenantId,
       company: inputData.company,

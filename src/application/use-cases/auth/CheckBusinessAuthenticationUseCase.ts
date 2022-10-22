@@ -5,9 +5,10 @@ import {
   User,
   CardiError,
   CardiErrorTypes,
+  UserRole,
 } from '../../../domain'
 
-export default class CheckAuthenticationUseCase {
+export default class CheckBusinessAuthenticationUseCase {
   private readonly _authRepository: AuthRepository
   private readonly _userRepository: UserRepository
 
@@ -28,6 +29,8 @@ export default class CheckAuthenticationUseCase {
 
     const user = await this._userRepository.getById(userIdFromAccessToken)
     if (user === null) throw new CardiError(CardiErrorTypes.InvalidAccessToken)
+    
+    if (user.role !== UserRole.Business) throw new CardiError(CardiErrorTypes.InvalidUserRole)
 
     return user.id
   }

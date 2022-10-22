@@ -1,4 +1,19 @@
 {
+  "name": "cardiclean",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon ./src/index.ts",
+    "debug": "ndb nodemon ./src/index.ts",
+    "db": "mongod --dbpath ./data",
+    "typecheck": "npx tsc --project ./tsconfig.json",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint --fix . --ext .js,.jsx,.ts,.tsx"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",

@@ -2,17 +2,17 @@ import { Request, Response, NextFunction } from 'express'
 import {
   MongoUserRepository,
   MongoAuthRepository
-} from '../../../../infrastructure'
-import { CheckAuthenticationUseCase } from '../../../../application'
+} from '../../..'
+import { CheckBasicAuthenticationUseCase } from '../../../../application'
 
-export default async function authenticationMiddleware (
+export default async function basicAuthenticationMiddleware (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   const mongoUserRepository = new MongoUserRepository()
   const mongoAuthRepository = new MongoAuthRepository()
-  const checkAuthenticationUseCase = new CheckAuthenticationUseCase(
+  const checkBasicAuthenticationUseCase = new CheckBasicAuthenticationUseCase(
     mongoAuthRepository,
     mongoUserRepository
   )
@@ -21,7 +21,7 @@ export default async function authenticationMiddleware (
     const authHeader = req.header('Authorization')
     const accessToken = authHeader?.replace('Bearer ', '')
 
-    const userIdFromAccessToken = await checkAuthenticationUseCase.run(accessToken)
+    const userIdFromAccessToken = await checkBasicAuthenticationUseCase.run(accessToken)
 
     req.tenantId = userIdFromAccessToken
 

@@ -1,1 +1,2 @@
-export { default as authenticationMiddleware } from './authenticationMiddleware'
+export { default as basicAuthenticationMiddleware } from './basicAuthenticationMiddleware'
+export { default as businessAuthenticationMiddleware } from './businessAuthenticationMiddleware'

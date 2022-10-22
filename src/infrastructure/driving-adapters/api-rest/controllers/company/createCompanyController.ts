@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { MongoCompanyRepository, MongoUserRepository } from '../../../../../infrastructure'
+import { MongoCompanyRepository } from '../../../../../infrastructure'
 import { CreateCompanyUseCase } from '../../../../../application'
 
 export default async function createCompanyController (
@@ -8,10 +8,8 @@ export default async function createCompanyController (
   next: NextFunction
 ): Promise<void> {
   const mongoCompanyRepository = new MongoCompanyRepository()
-  const mongoUserRepository = new MongoUserRepository()
   const createCompanyUseCase = new CreateCompanyUseCase(
     mongoCompanyRepository,
-    mongoUserRepository
   )
 
   try {

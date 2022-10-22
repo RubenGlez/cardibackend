@@ -19,7 +19,6 @@ export default class DeleteCardUseCase {
     cardId: Card['id'],
     tenantId: Card['id']
   ): Promise<void> {
-    
     const cardToDelete = await this._getCardByIdService.run(cardId)
     if (cardToDelete.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
 

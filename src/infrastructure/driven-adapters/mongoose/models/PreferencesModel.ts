@@ -4,21 +4,21 @@ import { Preferences } from '../../../../domain'
 const { ObjectId, String } = Schema.Types
 
 const PreferencesSchema = new Schema<Preferences>(
-  {
-    user: {
-      type: ObjectId,
-      ref: 'User',
-      required: true
+    {
+        user: {
+            type: ObjectId,
+            ref: 'User',
+            required: true
+        },
+        companySelected: {
+            type: ObjectId,
+            ref: 'Company',
+        },
+        themeSelected: {
+            type: String,
+        }
     },
-    companySelected: {
-      type: ObjectId,
-      ref: 'Company',
-    },
-    themeSelected: {
-      type: String,
-    }
-  },
-  { timestamps: true }
+    { timestamps: true }
 )
 
 const PreferencesModel = model<Preferences>('Preferences', PreferencesSchema)

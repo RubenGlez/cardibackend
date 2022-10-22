@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { MongoCardRepository, MongoUserRepository } from '../../../../../infrastructure'
+import { MongoCardRepository } from '../../../../../infrastructure'
 import { CreateCardUseCase } from '../../../../../application'
 
 export default async function createCardController (
@@ -8,10 +8,8 @@ export default async function createCardController (
   next: NextFunction
 ): Promise<void> {
   const mongoCardRepository = new MongoCardRepository()
-  const mongoUserRepository = new MongoUserRepository()
   const createCardUseCase = new CreateCardUseCase(
     mongoCardRepository,
-    mongoUserRepository
   )
 
   try {

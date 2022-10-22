@@ -18,6 +18,7 @@ export enum CardiErrorTypes {
   SubscriptionNotFound = 'SubscriptionNotFound',
   InvalidPromotionType = 'InvalidPromotionType',
   InvalidSusbcriptorRole = 'InvalidSusbcriptorRole',
+  WalletNotFound = 'WalletNotFound',
   NotOwned = 'NotOwned',
   Unknown = 'Unknown',
 }

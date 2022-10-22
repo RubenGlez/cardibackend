@@ -115,4 +115,9 @@ export const cardiErrors: CardiErrors = {
     message: 'Invalid susbcriptor role',
     status: 500,
   },
+  [CardiErrorTypes.WalletNotFound]: {
+    name: CardiErrorTypes.WalletNotFound,
+    message: 'Wallet not found',
+    status: 500,
+  },
 }

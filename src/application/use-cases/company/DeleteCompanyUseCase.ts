@@ -19,7 +19,6 @@ export default class DeleteCompanyUseCase {
     companyId: Company['id'],
     tenantId: Company['id']
   ): Promise<void> {
-    
     const companyToDelete = await this._getCompanyByIdService.run(companyId)
     if (companyToDelete.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
 
