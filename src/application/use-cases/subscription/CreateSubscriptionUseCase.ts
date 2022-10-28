@@ -9,41 +9,63 @@ import {
   SubscriptionStatus,
   GetUserByIdService,
   UserRepository,
-  UserRole
+  UserRole,
+  Promotion
 } from '../../../domain'
 
 type InputData = Pick<Subscription, 'subscriptor' | 'promotion'>
 
 export default class CreateSubscriptionUseCase {
   private readonly _subscriptionRepository: SubscriptionRepository
+  private readonly _promotionRepository: PromotionRepository
   private readonly _getPromotionByIdService: GetPromotionByIdService
   private readonly _getUserByIdService: GetUserByIdService
 
-  constructor (
-    subscriptionRepository: SubscriptionRepository, 
+  constructor(
+    subscriptionRepository: SubscriptionRepository,
     promotionRepository: PromotionRepository,
     userRepository: UserRepository
   ) {
     this._subscriptionRepository = subscriptionRepository
-    this._getPromotionByIdService = new GetPromotionByIdService(promotionRepository)
+    this._promotionRepository = promotionRepository
+    this._getPromotionByIdService = new GetPromotionByIdService(
+      promotionRepository
+    )
     this._getUserByIdService = new GetUserByIdService(userRepository)
   }
 
-  async run (inputData: InputData, tenantId: User['id']): Promise<Subscription> {
-    const promotion = await this._getPromotionByIdService.run(inputData.promotion)
-    if (promotion.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
+  async run(inputData: InputData, tenantId: User['id']): Promise<Subscription> {
+    const promotion = await this._getPromotionByIdService.run(
+      inputData.promotion
+    )
+    if (promotion.owner !== tenantId) {
+      throw new CardiError(CardiErrorTypes.NotOwned)
+    }
 
-    const subscriptor = await this._getUserByIdService.run(inputData.subscriptor)
-    const subscriptoHasBasicRole = subscriptor.role === UserRole.Basic
-    if (!subscriptoHasBasicRole) throw new CardiError(CardiErrorTypes.InvalidSusbcriptorRole)
+    const subscriptor = await this._getUserByIdService.run(
+      inputData.subscriptor
+    )
+    const subscriptorHasBasicRole = subscriptor.role === UserRole.Basic
+    if (!subscriptorHasBasicRole) {
+      throw new CardiError(CardiErrorTypes.InvalidSusbcriptorRole)
+    }
 
     const today = new Date()
-    const isPromoOutdated = promotion.validFrom > today || promotion.validTo < today
+    const isPromoOutdated =
+      promotion.validFrom > today || promotion.validTo < today
     if (isPromoOutdated) throw new CardiError(CardiErrorTypes.PromotionOutdated)
-    
-    const subscriptionFound = await this._subscriptionRepository.getBySubscriptorAndPromotion(inputData.subscriptor, inputData.promotion)
-    if (subscriptionFound !== null) throw new CardiError(CardiErrorTypes.SubscriptionAlreadyExist, { id: subscriptionFound?.id ?? '' })
-    
+
+    const subscriptionFound =
+      await this._subscriptionRepository.getBySubscriptorAndPromotion(
+        inputData.subscriptor,
+        inputData.promotion
+      )
+    if (subscriptionFound !== null) {
+      throw new CardiError(CardiErrorTypes.SubscriptionAlreadyExist, {
+        id: subscriptionFound?.id ?? ''
+      })
+    }
+
     const subscriptionToCreate: Subscription = {
       subscriptor: inputData.subscriptor,
       owner: promotion.owner,
@@ -51,9 +73,18 @@ export default class CreateSubscriptionUseCase {
       card: promotion.card,
       company: promotion.company,
       steps: [{ date: today }],
-      status: SubscriptionStatus.active
+      status: SubscriptionStatus.inprogress
     }
-    const subscriptionCreated = await this._subscriptionRepository.save(subscriptionToCreate)
+    const subscriptionCreated = await this._subscriptionRepository.save(
+      subscriptionToCreate
+    )
+
+    const promotionToUpdate: Promotion = {
+      ...promotion,
+      subscriptions: [...promotion.subscriptions, subscriptionCreated]
+    }
+    await this._promotionRepository.update(promotionToUpdate)
+
     return subscriptionCreated
   }
 }

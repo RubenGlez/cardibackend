@@ -1,7 +1,7 @@
-import { Card } from "./Card"
-import { Company } from "./Company"
-import { Promotion } from "./Promotion"
-import { User } from "./User"
+import { Card } from './Card'
+import { Company } from './Company'
+import { Promotion } from './Promotion'
+import { User } from './User'
 
 export interface SubscriptionStep {
   id?: string
@@ -9,8 +9,7 @@ export interface SubscriptionStep {
 }
 
 export enum SubscriptionStatus {
-  active = 'active',
-  inactive = 'inactive',
+  inprogress = 'inprogress',
   completed = 'completed'
 }
 
