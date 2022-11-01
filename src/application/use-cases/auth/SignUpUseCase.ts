@@ -45,6 +45,6 @@ export default class SignUpUseCase {
     }
     await this._preferencesRepository.save(preferencesToCreate)
 
-    return { userId: userCreated.id, accessToken }
+    return { userId: userCreated.id, accessToken, userRole: userCreated.role }
   }
 }

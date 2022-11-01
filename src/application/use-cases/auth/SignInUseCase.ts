@@ -33,6 +33,6 @@ export default class SignInUseCase {
     const userUpdated = await this._userRepository.update(foundUser)
 
     const accessToken = await this._authRepository.generateToken(userUpdated.id)
-    return { userId: userUpdated.id, accessToken }
+    return { userId: userUpdated.id, accessToken, userRole: userUpdated.role }
   }
 }
