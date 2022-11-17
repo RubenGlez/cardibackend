@@ -11,7 +11,7 @@ export default class MongoPromotionRepository implements PromotionRepository {
       transform: (doc: any, ret: any) => {
         ret.id = ret._id
         delete ret._id
-        ret.subscriptions = ret.subscriptions.map((sub: any) => {
+        ret.subscriptions = ret.subscriptions?.map((sub: any) => {
           const _sub = { ...sub }
           delete _sub._id
           return _sub
@@ -19,15 +19,6 @@ export default class MongoPromotionRepository implements PromotionRepository {
         return ret
       }
     })
-    // const promotion = promotionToMap.toObject({ versionKey: false })
-    // promotion.id = promotion._id
-    // delete promotion._id
-
-    // promotion.subscriptions = promotion.subscriptions.map(sub => {
-    //   const _sub = { ...sub }
-    //   delete _sub._id
-    //   return _sub
-    // })
     return promotion as Promotion
   }
 

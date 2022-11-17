@@ -10,14 +10,12 @@ import {
   GetUserByIdService,
   UserRepository,
   UserRole,
-  Promotion
 } from '../../../domain'
 
 type InputData = Pick<Subscription, 'subscriptor' | 'promotion'>
 
 export default class CreateSubscriptionUseCase {
   private readonly _subscriptionRepository: SubscriptionRepository
-  private readonly _promotionRepository: PromotionRepository
   private readonly _getPromotionByIdService: GetPromotionByIdService
   private readonly _getUserByIdService: GetUserByIdService
 
@@ -27,7 +25,6 @@ export default class CreateSubscriptionUseCase {
     userRepository: UserRepository
   ) {
     this._subscriptionRepository = subscriptionRepository
-    this._promotionRepository = promotionRepository
     this._getPromotionByIdService = new GetPromotionByIdService(
       promotionRepository
     )
@@ -38,7 +35,8 @@ export default class CreateSubscriptionUseCase {
     const promotion = await this._getPromotionByIdService.run(
       inputData.promotion
     )
-    if (promotion.owner !== tenantId) {
+
+    if (promotion.owner?.toString() !== tenantId) {
       throw new CardiError(CardiErrorTypes.NotOwned)
     }
 
@@ -73,17 +71,11 @@ export default class CreateSubscriptionUseCase {
       card: promotion.card,
       company: promotion.company,
       steps: [{ date: today }],
-      status: SubscriptionStatus.inprogress
+      status: SubscriptionStatus.inProgress
     }
     const subscriptionCreated = await this._subscriptionRepository.save(
       subscriptionToCreate
     )
-
-    const promotionToUpdate: Promotion = {
-      ...promotion,
-      subscriptions: [...promotion.subscriptions, subscriptionCreated]
-    }
-    await this._promotionRepository.update(promotionToUpdate)
 
     return subscriptionCreated
   }

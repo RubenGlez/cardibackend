@@ -2,7 +2,6 @@ import { Schema, model } from 'mongoose'
 import {
   Promotion,
   PromotionType,
-  SubscriptionStatus
 } from '../../../../domain'
 
 const { ObjectId } = Schema.Types
@@ -42,30 +41,6 @@ const PromotionSchema = new Schema<Promotion>(
       enum: Object.values(PromotionType),
       required: true
     },
-    subscriptions: [
-      {
-        id: {
-          type: ObjectId,
-          ref: 'Subscription'
-        },
-        subscriptor: {
-          type: ObjectId,
-          ref: 'User',
-          required: true
-        },
-        status: {
-          type: String,
-          enum: Object.values(SubscriptionStatus),
-          required: true
-        },
-        createdAt: {
-          type: Date
-        },
-        updatedAt: {
-          type: Date
-        }
-      }
-    ],
     validFrom: {
       type: Date,
       required: true

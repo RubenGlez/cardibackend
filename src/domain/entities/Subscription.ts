@@ -9,7 +9,7 @@ export interface SubscriptionStep {
 }
 
 export enum SubscriptionStatus {
-  inprogress = 'inprogress',
+  inProgress = 'inProgress',
   completed = 'completed'
 }
 

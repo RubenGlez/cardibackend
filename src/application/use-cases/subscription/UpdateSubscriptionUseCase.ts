@@ -65,7 +65,7 @@ export default class UpdateSubscriptionUseCase {
 
     const status = isLastStep
       ? SubscriptionStatus.completed
-      : SubscriptionStatus.inprogress
+      : SubscriptionStatus.inProgress
 
     const subscriptionToUpdate: Subscription = {
       ...currentSubscription,

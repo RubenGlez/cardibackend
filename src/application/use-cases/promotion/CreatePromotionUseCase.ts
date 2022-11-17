@@ -17,7 +17,6 @@ export default class CreatePromotionUseCase {
       name: inputData.name,
       description: inputData.description,
       type: inputData.type,
-      subscriptions: [],
       validFrom: inputData.validFrom,
       validTo: inputData.validTo
     }

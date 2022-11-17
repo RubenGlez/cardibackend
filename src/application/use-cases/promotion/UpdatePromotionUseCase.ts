@@ -9,7 +9,7 @@ import {
 
 type InputData = Pick<
   Promotion,
-  'id' | 'name' | 'description' | 'subscriptions' | 'validFrom' | 'validTo'
+  'id' | 'name' | 'description' | 'validFrom' | 'validTo'
 >
 
 export default class UpdatePromotionUseCase {
@@ -35,7 +35,6 @@ export default class UpdatePromotionUseCase {
       ...currentPromotion,
       name: inputData.name ?? currentPromotion.name,
       description: inputData.description ?? currentPromotion.description,
-      subscriptions: inputData.subscriptions ?? currentPromotion.subscriptions,
       validFrom: inputData.validFrom ?? currentPromotion.validFrom,
       validTo: inputData.validTo ?? currentPromotion.validTo
     }
