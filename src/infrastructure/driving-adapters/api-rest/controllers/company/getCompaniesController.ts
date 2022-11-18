@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
-import { MongoCompanyRepository } from '../../../../../infrastructure'
-import { GetCompaniesUseCase } from '../../../../../application'
+import GetCompaniesUseCase from '../../../../../application/use-cases/company/GetCompaniesUseCase'
+import MongoCompanyRepository from '../../../../implementations/mongo/MongoCompanyRepository'
 
-export default async function getCompaniesController (
+export default async function getCompaniesController(
   req: Request,
   res: Response,
   next: NextFunction

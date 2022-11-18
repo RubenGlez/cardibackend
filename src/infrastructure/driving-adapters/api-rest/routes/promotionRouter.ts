@@ -1,11 +1,10 @@
 import express, { Router } from 'express'
-import {
-  createPromotionController,
-  deletePromotionController,
-  getPromotionsController,
-  getPromotionController,
-  updatePromotionController,
-} from '../controllers'
+import createPromotionController from '../controllers/promotion/createPromotionController'
+import deletePromotionController from '../controllers/promotion/deletePromotionController'
+import getPromotionController from '../controllers/promotion/getPromotionController'
+import getPromotionsController from '../controllers/promotion/getPromotionsController'
+import updatePromotionController from '../controllers/promotion/updatePromotionController'
+
 
 const router: Router = express.Router()
 

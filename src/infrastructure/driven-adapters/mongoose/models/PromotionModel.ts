@@ -1,8 +1,6 @@
 import { Schema, model } from 'mongoose'
-import {
-  Promotion,
-  PromotionType,
-} from '../../../../domain'
+import { Promotion, PromotionType } from '../../../../domain/entities/Promotion'
+
 
 const { ObjectId } = Schema.Types
 

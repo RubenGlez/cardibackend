@@ -1,11 +1,10 @@
 import { Request, Response, NextFunction } from 'express'
-import {
-  MongoUserRepository,
-  MongoAuthRepository
-} from '../../..'
-import { CheckBusinessAuthenticationUseCase } from '../../../../application'
+import { CheckBusinessAuthenticationUseCase } from '../../../../application/use-cases/auth'
+import MongoAuthRepository from '../../../implementations/mongo/MongoAuthRepository'
+import MongoUserRepository from '../../../implementations/mongo/MongoUserRepository'
 
-export default async function businessAuthenticationMiddleware (
+
+export default async function businessAuthenticationMiddleware(
   req: Request,
   res: Response,
   next: NextFunction

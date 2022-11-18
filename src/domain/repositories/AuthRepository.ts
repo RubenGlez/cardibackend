@@ -1,5 +1,6 @@
-import { Auth } from 'domain/entities/Auth'
-import { User } from '../../domain'
+import { Auth } from "../entities/Auth"
+import { User } from "../entities/User"
+
 
 export type SignUpInputData = Pick<User, 'email' | 'password' | 'username' | 'role'>
 export type SignInInputData = Pick<User, 'email' | 'password'>

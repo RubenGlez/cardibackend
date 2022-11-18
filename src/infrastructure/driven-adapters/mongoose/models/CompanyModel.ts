@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { Company } from '../../../../domain'
+import { Company } from '../../../../domain/entities/Company'
 
 const { ObjectId } = Schema.Types
 

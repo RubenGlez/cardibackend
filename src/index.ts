@@ -1,10 +1,11 @@
-import { MongoDB, Server } from './infrastructure'
+import MongooseAdapter from "./infrastructure/driven-adapters/mongoose"
+import Server from "./infrastructure/driving-adapters/api-rest/server"
 
-const port = 8000
+const port = 3000
 const dbUri = 'mongodb://127.0.0.1:27017/daren-back-db'
 
 const ServerInstance = new Server(port)
-const MongoInstance = new MongoDB(dbUri)
+const MongoInstance = new MongooseAdapter(dbUri)
 
 const runApiRest = async (): Promise<void> => {
   await ServerInstance.listen()

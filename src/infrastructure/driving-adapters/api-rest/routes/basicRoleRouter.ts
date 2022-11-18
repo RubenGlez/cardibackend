@@ -1,10 +1,4 @@
 import express, { Router } from 'express'
-// import cardRouter from './cardRouter'
-// import companyRouter from './companyRouter'
-// import preferencesRouter from './preferencesRouter'
-// import promotionRouter from './promotionRouter'
-// import subscriptionsRouter from './subscriptionsRouter'
-// import userRouter from './userRouter'
 
 const router: Router = express.Router()
 

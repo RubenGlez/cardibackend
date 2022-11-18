@@ -1,25 +1,25 @@
-import { BCryptAdapter, JwtAdapter } from '../../../infrastructure'
-import {
-  Auth,
-  AuthRepository,
-  User
-} from '../../../domain'
+import { Auth } from "../../../domain/entities/Auth"
+import { User } from "../../../domain/entities/User"
+import { AuthRepository } from "../../../domain/repositories/AuthRepository"
+import { BCryptAdapter } from "../../driven-adapters/bcrypt"
+import { JwtAdapter } from "../../driven-adapters/jwt"
+
 
 export default class MongoAuthRepository implements AuthRepository {
   private readonly _bcryptAdapter: BCryptAdapter
   private readonly _jwtAdapter: JwtAdapter
 
-  constructor () {
+  constructor() {
     this._bcryptAdapter = new BCryptAdapter()
     this._jwtAdapter = new JwtAdapter()
   }
 
-  async encryptPassword (password: User['password']): Promise<string> {
+  async encryptPassword(password: User['password']): Promise<string> {
     const encryptedPass = await this._bcryptAdapter.hash(password)
     return encryptedPass
   }
 
-  async comparePassword (
+  async comparePassword(
     password1: User['password'],
     password2: User['password']
   ): Promise<boolean> {
@@ -27,12 +27,12 @@ export default class MongoAuthRepository implements AuthRepository {
     return areSamePasswords
   }
 
-  generateToken (userId: User['id']): Auth['accessToken'] {
+  generateToken(userId: User['id']): Auth['accessToken'] {
     const accessToken = this._jwtAdapter.generateToken(userId)
     return accessToken
   }
 
-  verifyToken (accessToken: Auth['accessToken']): User['id'] {
+  verifyToken(accessToken: Auth['accessToken']): User['id'] {
     const userId = this._jwtAdapter.verifyToken(accessToken)
     return userId
   }

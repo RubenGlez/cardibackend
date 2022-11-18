@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
-import { MongoPreferencesRepository } from '../../../..'
-import { GetPreferencesUseCase } from '../../../../../application'
+import GetPreferencesUseCase from '../../../../../application/use-cases/preferences/GetPreferencesUseCase'
+import MongoPreferencesRepository from '../../../../implementations/mongo/MongoPreferencesRepository'
 
-export default async function getPreferencesController (
+
+export default async function getPreferencesController(
   req: Request,
   res: Response,
   next: NextFunction

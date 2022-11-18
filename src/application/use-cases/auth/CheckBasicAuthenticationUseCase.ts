@@ -1,12 +1,10 @@
-import {
-  Auth,
-  AuthRepository,
-  UserRepository,
-  User,
-  CardiError,
-  CardiErrorTypes,
-  UserRole
-} from '../../../domain'
+import { Auth } from "../../../domain/entities/Auth"
+import { User, UserRole } from "../../../domain/entities/User"
+import { CardiError } from "../../../domain/exceptions/CardiError"
+import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { AuthRepository } from "../../../domain/repositories/AuthRepository"
+import { UserRepository } from "../../../domain/repositories/UserRepository"
+
 
 export default class CheckBasicAuthenticationUseCase {
   private readonly _authRepository: AuthRepository

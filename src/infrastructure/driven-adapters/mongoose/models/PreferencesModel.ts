@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { Preferences } from '../../../../domain'
+import { Preferences } from '../../../../domain/entities/Preferences'
 
 const { ObjectId, String } = Schema.Types
 

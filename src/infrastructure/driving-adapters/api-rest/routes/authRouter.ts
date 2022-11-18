@@ -1,8 +1,7 @@
 import express, { Router } from 'express'
-import {
-  signUpController,
-  signInController
-} from '../controllers'
+import signInController from '../controllers/auth/signInController'
+import signUpController from '../controllers/auth/signUpController'
+
 
 const router: Router = express.Router()
 

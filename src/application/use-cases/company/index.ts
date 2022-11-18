@@ -1,5 +1,0 @@
-export { default as CreateCompanyUseCase } from './CreateCompanyUseCase'
-export { default as DeleteCompanyUseCase } from './DeleteCompanyUseCase'
-export { default as GetCompaniesUseCase } from './GetCompaniesUseCase'
-export { default as GetCompanyUseCase } from './GetCompanyUseCase'
-export { default as UpdateCompanyUseCase } from './UpdateCompanyUseCase'

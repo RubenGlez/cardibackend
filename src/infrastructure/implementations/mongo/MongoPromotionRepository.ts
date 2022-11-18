@@ -1,41 +1,32 @@
-import { Promotion, PromotionRepository, User } from '../../../domain'
-import { PromotionModel } from '../..'
+import { Promotion } from "../../../domain/entities/Promotion"
+import { User } from "../../../domain/entities/User"
+import { PromotionRepository } from "../../../domain/repositories/PromotionRepository"
+import PromotionModel from "../../driven-adapters/mongoose/models/PromotionModel"
 
 export default class MongoPromotionRepository implements PromotionRepository {
   private readonly _model = PromotionModel
 
-  private map(promotionToMap: any): Promotion {
-    const promotion = promotionToMap.toObject({
-      versionKey: false,
-      flattenMaps: true,
-      transform: (doc: any, ret: any) => {
-        ret.id = ret._id
-        delete ret._id
-        ret.subscriptions = ret.subscriptions?.map((sub: any) => {
-          const _sub = { ...sub }
-          delete _sub._id
-          return _sub
-        })
-        return ret
-      }
-    })
-    return promotion as Promotion
+  private toDTO(promotionToMap: any): Promotion {
+    const promotionDTO = Object.assign({ id: promotionToMap._id }, promotionToMap)
+    delete promotionDTO._id
+    delete promotionDTO.__v
+    return promotionDTO
   }
 
   async getAll(): Promise<Promotion[]> {
     const allPromotions = await this._model.find()
     if (allPromotions.length === 0) return allPromotions
     const allPromotionsMapped = allPromotions.map(promotion =>
-      this.map(promotion)
+      this.toDTO(promotion)
     )
     return allPromotionsMapped
   }
 
   async getAllByOwner(owner: User['id']): Promise<Promotion[]> {
-    const allPromotions = await this._model.find({ owner })
+    const allPromotions = await this._model.find({ owner }).lean()
     if (allPromotions.length === 0) return allPromotions
     const allPromotionsMapped = allPromotions.map(promotion =>
-      this.map(promotion)
+      this.toDTO(promotion)
     )
     return allPromotionsMapped
   }
@@ -43,21 +34,21 @@ export default class MongoPromotionRepository implements PromotionRepository {
   async getByName(name: Promotion['name']): Promise<Promotion | null> {
     const promotionFound = await this._model.findOne({ name })
     if (promotionFound === null) return null
-    const promotionMapped = this.map(promotionFound)
+    const promotionMapped = this.toDTO(promotionFound)
     return promotionMapped
   }
 
   async getById(id: Promotion['id']): Promise<Promotion | null> {
     const promotionFound = await this._model.findById(id)
     if (promotionFound === null) return null
-    const promotionMapped = this.map(promotionFound)
+    const promotionMapped = this.toDTO(promotionFound)
     return promotionMapped
   }
 
   async save(inputData: Promotion): Promise<Promotion> {
     const promotionToCreate = new this._model(inputData)
     const promotionCreated = await promotionToCreate.save()
-    const promotionMapped = this.map(promotionCreated)
+    const promotionMapped = this.toDTO(promotionCreated)
     return promotionMapped
   }
 
@@ -67,7 +58,7 @@ export default class MongoPromotionRepository implements PromotionRepository {
       inputData,
       { returnDocument: 'after' }
     )
-    const promotionMapped = this.map(promotionUpdated)
+    const promotionMapped = this.toDTO(promotionUpdated)
     return promotionMapped
   }
 

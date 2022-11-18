@@ -1,4 +1,6 @@
-import { Promotion, PromotionRepository, User } from '../../../domain'
+import { Promotion } from "../../../domain/entities/Promotion"
+import { User } from "../../../domain/entities/User"
+import { PromotionRepository } from "../../../domain/repositories/PromotionRepository"
 
 type InputData = Omit<Promotion, 'id'>
 

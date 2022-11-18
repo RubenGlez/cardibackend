@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { Subscription, SubscriptionStatus } from '../../../../domain'
+import { Subscription, SubscriptionStatus } from '../../../../domain/entities/Subscription'
 
 const { ObjectId } = Schema.Types
 

@@ -1,4 +1,4 @@
-import { Subscription } from "..";
+import { Subscription } from "../entities/Subscription";
 
 export interface SubscriptionRepository {
   getAllByPromotion: (promotion: Subscription["promotion"]) => Promise<Subscription[]>;

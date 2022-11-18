@@ -1,4 +1,5 @@
-import { Promotion, User } from '../../domain'
+import { Promotion } from "../entities/Promotion"
+import { User } from "../entities/User"
 
 export interface PromotionRepository {
   getAllByOwner: (owner: User['id']) => Promise<Promotion[]>

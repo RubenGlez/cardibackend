@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
-import { MongoPromotionRepository, MongoSubscriptionRepository } from '../../../..'
-import { UpdateSubscriptionUseCase } from '../../../../../application'
+import UpdateSubscriptionUseCase from '../../../../../application/use-cases/subscription/UpdateSubscriptionUseCase'
+import MongoPromotionRepository from '../../../../implementations/mongo/MongoPromotionRepository'
+import MongoSubscriptionRepository from '../../../../implementations/mongo/MongoSubscriptionRepository'
 
-export default async function updateSubscriptionController (
+
+export default async function updateSubscriptionController(
   req: Request,
   res: Response,
   next: NextFunction

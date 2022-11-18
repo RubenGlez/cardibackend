@@ -1,13 +1,15 @@
-import { GetCardByIdService, Card, CardRepository } from '../../../domain'
+import { Card } from "../../../domain/entities/Card"
+import { CardRepository } from "../../../domain/repositories/CardRepository"
+import GetCardByIdService from "../../../domain/services/card/GetCardByIdService"
 
 export default class GetCardUseCase {
   private readonly _getCardByIdService: GetCardByIdService
 
-  constructor (cardRepository: CardRepository) {
+  constructor(cardRepository: CardRepository) {
     this._getCardByIdService = new GetCardByIdService(cardRepository)
   }
 
-  async run (id: Card['id']): Promise<Card> {
+  async run(id: Card['id']): Promise<Card> {
     return await this._getCardByIdService.run(id)
   }
 }

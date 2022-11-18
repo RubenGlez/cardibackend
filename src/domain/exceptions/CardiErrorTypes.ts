@@ -21,4 +21,5 @@ export enum CardiErrorTypes {
   WalletNotFound = 'WalletNotFound',
   NotOwned = 'NotOwned',
   Unknown = 'Unknown',
+  NotFound = 'NotFound',
 }

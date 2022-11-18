@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
-import {
-  MongoUserRepository,
-  MongoAuthRepository
-} from '../../../../../infrastructure'
-import { SignInUseCase } from '../../../../../application'
+import { SignInUseCase } from '../../../../../application/use-cases/auth'
+import MongoAuthRepository from '../../../../implementations/mongo/MongoAuthRepository'
+import MongoUserRepository from '../../../../implementations/mongo/MongoUserRepository'
 
-export default async function signInController (
+
+export default async function signInController(
   req: Request,
   res: Response,
   next: NextFunction

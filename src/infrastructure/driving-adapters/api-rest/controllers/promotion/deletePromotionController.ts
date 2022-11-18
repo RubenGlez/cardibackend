@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
-import { MongoPromotionRepository } from '../../../..'
-import { DeletePromotionUseCase } from '../../../../../application'
+import DeletePromotionUseCase from '../../../../../application/use-cases/promotion/DeletePromotionUseCase'
+import MongoPromotionRepository from '../../../../implementations/mongo/MongoPromotionRepository'
 
-export default async function deletePromotionController (
+
+export default async function deletePromotionController(
   req: Request,
   res: Response,
   next: NextFunction

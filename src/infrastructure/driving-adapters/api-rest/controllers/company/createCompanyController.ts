@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
-import { MongoCompanyRepository } from '../../../../../infrastructure'
-import { CreateCompanyUseCase } from '../../../../../application'
+import CreateCompanyUseCase from '../../../../../application/use-cases/company/CreateCompanyUseCase'
+import MongoCompanyRepository from '../../../../implementations/mongo/MongoCompanyRepository'
 
-export default async function createCompanyController (
+
+export default async function createCompanyController(
   req: Request,
   res: Response,
   next: NextFunction

@@ -1,5 +1,6 @@
 import express, { Router } from 'express'
-import { errorController, notFoundController } from '../controllers'
+import errorController from '../controllers/errorController'
+import notFoundController from '../controllers/notFoundController'
 import versionOneRouter from './versionOneRouter'
 
 const router: Router = express.Router()

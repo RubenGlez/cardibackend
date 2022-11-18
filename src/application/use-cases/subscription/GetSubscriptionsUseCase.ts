@@ -1,12 +1,10 @@
-import {
-  CardiError,
-  CardiErrorTypes,
-  Promotion,
-  PromotionRepository,
-  Subscription,
-  SubscriptionRepository,
-  User
-} from '../../../domain'
+import { Promotion } from "../../../domain/entities/Promotion"
+import { Subscription } from "../../../domain/entities/Subscription"
+import { User } from "../../../domain/entities/User"
+import { CardiError } from "../../../domain/exceptions/CardiError"
+import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { PromotionRepository } from "../../../domain/repositories/PromotionRepository"
+import { SubscriptionRepository } from "../../../domain/repositories/SubscriptionRepository"
 
 export default class GetSubscriptionsUseCase {
   private readonly _subscriptionRepository: SubscriptionRepository

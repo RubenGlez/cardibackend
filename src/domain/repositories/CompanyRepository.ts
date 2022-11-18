@@ -1,4 +1,5 @@
-import { Company, User } from '../../domain'
+import { Company } from "../entities/Company"
+import { User } from "../entities/User"
 
 export interface CompanyRepository {
   getAllByOwner: (owner: User['id']) => Promise<Company[]>

@@ -1,5 +1,0 @@
-export { default as createCardController } from './createCardController'
-export { default as deleteCardController } from './deleteCardController'
-export { default as getCardController } from './getCardController'
-export { default as getCardsController } from './getCardsController'
-export { default as updateCardController } from './updateCardController'

@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
-import { MongoUserRepository } from '../../../../../infrastructure'
-import { GetUserUseCase } from '../../../../../application'
+import GetUserUseCase from '../../../../../application/use-cases/user/GetUserUseCase'
+import MongoUserRepository from '../../../../implementations/mongo/MongoUserRepository'
 
-export default async function getUserController (
+
+export default async function getUserController(
   req: Request,
   res: Response,
   next: NextFunction

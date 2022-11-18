@@ -1,15 +1,14 @@
-import {
-  GetSubscriptionByIdService,
-  Subscription,
-  SubscriptionRepository,
-  User,
-  CardiError,
-  CardiErrorTypes,
-  SubscriptionStatus,
-  PromotionRepository,
-  GetPromotionByIdService,
-  PromotionType
-} from '../../../domain'
+import { PromotionType } from "../../../domain/entities/Promotion"
+import { Subscription, SubscriptionStatus } from "../../../domain/entities/Subscription"
+import { User } from "../../../domain/entities/User"
+import { CardiError } from "../../../domain/exceptions/CardiError"
+import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { PromotionRepository } from "../../../domain/repositories/PromotionRepository"
+import { SubscriptionRepository } from "../../../domain/repositories/SubscriptionRepository"
+import GetPromotionByIdService from "../../../domain/services/promotion/GetPromotionByIdService"
+import GetSubscriptionByIdService from "../../../domain/services/subscription/GetSubscriptionByIdService"
+
+
 
 type InputData = Pick<Subscription, 'id'>
 

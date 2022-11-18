@@ -1,11 +1,8 @@
 import express, { Router } from 'express'
-import {
-  createSubscriptionController,
-  // deleteSubscriptionController,
-  getSubscriptionsController,
-  // getSubscriptionController,
-  updateSubscriptionController,
-} from '../controllers'
+import createSubscriptionController from '../controllers/subscription/createSubscriptionController'
+import getSubscriptionsController from '../controllers/subscription/getSubscriptionsController'
+import updateSubscriptionController from '../controllers/subscription/updateSubscriptionController'
+
 
 const router: Router = express.Router()
 

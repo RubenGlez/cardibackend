@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
-import { MongoCompanyRepository } from '../../../../../infrastructure'
-import { DeleteCompanyUseCase } from '../../../../../application'
+import DeleteCompanyUseCase from '../../../../../application/use-cases/company/DeleteCompanyUseCase'
+import MongoCompanyRepository from '../../../../implementations/mongo/MongoCompanyRepository'
 
-export default async function deleteCompanyController (
+
+export default async function deleteCompanyController(
   req: Request,
   res: Response,
   next: NextFunction

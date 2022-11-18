@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
-import { MongoPromotionRepository } from '../../../..'
-import { GetPromotionsUseCase } from '../../../../../application'
+import GetPromotionsUseCase from '../../../../../application/use-cases/promotion/GetPromotionsUseCase'
+import MongoPromotionRepository from '../../../../implementations/mongo/MongoPromotionRepository'
 
-export default async function getPromotionsController (
+
+export default async function getPromotionsController(
   req: Request,
   res: Response,
   next: NextFunction

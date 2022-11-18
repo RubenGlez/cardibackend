@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
-import { MongoCardRepository } from '../../../..'
-import { GetCardUseCase } from '../../../../../application'
+import GetCardUseCase from '../../../../../application/use-cases/card/GetCardUseCase'
+import MongoCardRepository from '../../../../implementations/mongo/MongoCardRepository'
 
-export default async function getCardController (
+
+export default async function getCardController(
   req: Request,
   res: Response,
   next: NextFunction

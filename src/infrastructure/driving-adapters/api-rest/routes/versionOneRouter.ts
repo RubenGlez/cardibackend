@@ -1,5 +1,6 @@
 import express, { Router } from 'express'
-import { basicAuthenticationMiddleware, businessAuthenticationMiddleware } from '../middlewares'
+import basicAuthenticationMiddleware from '../middlewares/basicAuthenticationMiddleware'
+import businessAuthenticationMiddleware from '../middlewares/businessAuthenticationMiddleware'
 import authRouter from './authRouter'
 import basicRoleRouter from './basicRoleRouter'
 import businessRoleRouter from './businessRoleRouter'

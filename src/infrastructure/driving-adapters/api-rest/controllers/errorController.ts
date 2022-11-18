@@ -1,7 +1,8 @@
-import { CardiError, CardiErrorTypes } from '../../../../domain'
 import { Request, NextFunction, Response } from 'express'
+import { CardiError } from '../../../../domain/exceptions/CardiError'
+import { CardiErrorTypes } from '../../../../domain/exceptions/CardiErrorTypes'
 
-export default function errorController (
+export default function errorController(
   err: Error | CardiError,
   req: Request,
   res: Response,

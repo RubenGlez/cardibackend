@@ -1,9 +1,8 @@
 import express, { Router } from 'express'
-import {
-  deleteUserController,
-  getUserController,
-  updateUserController
-} from '../controllers'
+import deleteUserController from '../controllers/user/deleteUserController'
+import getUserController from '../controllers/user/getUserController'
+import updateUserController from '../controllers/user/updateUserController'
+
 
 const router: Router = express.Router()
 

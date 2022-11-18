@@ -1,15 +1,12 @@
-import {
-  CardiError,
-  CardiErrorTypes,
-  Auth,
-  AuthRepository,
-  ExistUserByEmailService,
-  Preferences,
-  PreferencesRepository,
-  SignUpInputData,
-  User,
-  UserRepository
-} from '../../../domain'
+import { Auth } from "../../../domain/entities/Auth"
+import { Preferences } from "../../../domain/entities/Preferences"
+import { User } from "../../../domain/entities/User"
+import { CardiError } from "../../../domain/exceptions/CardiError"
+import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { AuthRepository, SignUpInputData } from "../../../domain/repositories/AuthRepository"
+import { PreferencesRepository } from "../../../domain/repositories/PreferencesRepository"
+import { UserRepository } from "../../../domain/repositories/UserRepository"
+import ExistUserByEmailService from "../../../domain/services/user/ExistUserByEmailService"
 
 export default class SignUpUseCase {
   private readonly _authRepository: AuthRepository
@@ -17,14 +14,14 @@ export default class SignUpUseCase {
   private readonly _preferencesRepository: PreferencesRepository
   private readonly _existUserByEmailService: ExistUserByEmailService
 
-  constructor (authRepository: AuthRepository, userRepository: UserRepository, preferencesRepository: PreferencesRepository) {
+  constructor(authRepository: AuthRepository, userRepository: UserRepository, preferencesRepository: PreferencesRepository) {
     this._authRepository = authRepository
     this._userRepository = userRepository
     this._preferencesRepository = preferencesRepository
     this._existUserByEmailService = new ExistUserByEmailService(userRepository)
   }
 
-  async run (inputData: SignUpInputData): Promise<Auth> {
+  async run(inputData: SignUpInputData): Promise<Auth> {
     const existUser = await this._existUserByEmailService.run(inputData.email)
     if (existUser) throw new CardiError(CardiErrorTypes.UserAlreadyExist)
 
@@ -40,7 +37,7 @@ export default class SignUpUseCase {
     const userCreated = await this._userRepository.save(userToCreate)
     const accessToken = await this._authRepository.generateToken(userCreated.id)
 
-    const preferencesToCreate: Preferences= {
+    const preferencesToCreate: Preferences = {
       user: userCreated.id
     }
     await this._preferencesRepository.save(preferencesToCreate)

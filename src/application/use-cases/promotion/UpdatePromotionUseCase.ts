@@ -1,11 +1,9 @@
-import {
-  CardiError,
-  CardiErrorTypes,
-  GetPromotionByIdService,
-  Promotion,
-  PromotionRepository,
-  User
-} from '../../../domain'
+import { Promotion } from "../../../domain/entities/Promotion"
+import { User } from "../../../domain/entities/User"
+import { CardiError } from "../../../domain/exceptions/CardiError"
+import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { PromotionRepository } from "../../../domain/repositories/PromotionRepository"
+import GetPromotionByIdService from "../../../domain/services/promotion/GetPromotionByIdService"
 
 type InputData = Pick<
   Promotion,

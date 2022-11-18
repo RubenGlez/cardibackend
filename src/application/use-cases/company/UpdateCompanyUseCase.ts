@@ -1,11 +1,10 @@
-import {
-  GetCompanyByIdService,
-  Company,
-  CompanyRepository,
-  User,
-  CardiError,
-  CardiErrorTypes,
-} from '../../../domain'
+import { Company } from "../../../domain/entities/Company"
+import { User } from "../../../domain/entities/User"
+import { CardiError } from "../../../domain/exceptions/CardiError"
+import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { CompanyRepository } from "../../../domain/repositories/CompanyRepository"
+import GetCompanyByIdService from "../../../domain/services/company/GetCompanyByIdService"
+
 
 type InputData = Pick<Company, 'id' | 'name' | 'description' | 'contact'>
 
@@ -13,12 +12,12 @@ export default class UpdateCompanyUseCase {
   private readonly _companyRepository: CompanyRepository
   private readonly _getCompanyByIdService: GetCompanyByIdService
 
-  constructor (companyRepository: CompanyRepository) {
+  constructor(companyRepository: CompanyRepository) {
     this._companyRepository = companyRepository
     this._getCompanyByIdService = new GetCompanyByIdService(companyRepository)
   }
 
-  async run (inputData: InputData, tenantId: User['id']): Promise<Company> {
+  async run(inputData: InputData, tenantId: User['id']): Promise<Company> {
     const currentCompany = await this._getCompanyByIdService.run(inputData.id)
     if (currentCompany?.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
 

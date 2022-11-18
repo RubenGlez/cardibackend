@@ -120,4 +120,9 @@ export const cardiErrors: CardiErrors = {
     message: 'Wallet not found',
     status: 500,
   },
+  [CardiErrorTypes.NotFound]: {
+    name: CardiErrorTypes.NotFound,
+    message: 'Route not found',
+    status: 404,
+  },
 }

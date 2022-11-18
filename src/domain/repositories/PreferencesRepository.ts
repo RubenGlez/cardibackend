@@ -1,4 +1,5 @@
-import { Preferences, User } from '..'
+import { Preferences } from "../entities/Preferences"
+import { User } from "../entities/User"
 
 export interface PreferencesRepository {
   getByUserId: (id: User['id']) => Promise<Preferences | null>

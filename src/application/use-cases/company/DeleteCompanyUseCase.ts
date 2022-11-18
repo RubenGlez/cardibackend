@@ -1,21 +1,19 @@
-import {
-  GetCompanyByIdService,
-  Company,
-  CompanyRepository,
-  CardiError,
-  CardiErrorTypes,
-} from '../../../domain'
+import { Company } from "../../../domain/entities/Company"
+import { CardiError } from "../../../domain/exceptions/CardiError"
+import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { CompanyRepository } from "../../../domain/repositories/CompanyRepository"
+import GetCompanyByIdService from "../../../domain/services/company/GetCompanyByIdService"
 
 export default class DeleteCompanyUseCase {
   private readonly _companyRepository: CompanyRepository
   private readonly _getCompanyByIdService: GetCompanyByIdService
 
-  constructor (companyRepository: CompanyRepository) {
+  constructor(companyRepository: CompanyRepository) {
     this._companyRepository = companyRepository
     this._getCompanyByIdService = new GetCompanyByIdService(companyRepository)
   }
 
-  async run (
+  async run(
     companyId: Company['id'],
     tenantId: Company['id']
   ): Promise<void> {
@@ -25,7 +23,7 @@ export default class DeleteCompanyUseCase {
     // has cards?
     // -> no : delete
     // -> yes : trow error "must delete cards firstly"
-  
+
     await this._companyRepository.delete(companyToDelete.id)
   }
 }

@@ -1,14 +1,12 @@
-import {
-  Preferences,
-  PreferencesRepository,
-  User
-} from '../../../domain'
-import { PreferencesModel } from '../..'
+import { Preferences } from "../../../domain/entities/Preferences"
+import { User } from "../../../domain/entities/User"
+import { PreferencesRepository } from "../../../domain/repositories/PreferencesRepository"
+import PreferencesModel from "../../driven-adapters/mongoose/models/PreferencesModel"
 
 export default class MongoPreferencesRepository implements PreferencesRepository {
   private readonly _model = PreferencesModel
 
-  private map (preferencesToMap: any): Preferences {
+  private map(preferencesToMap: any): Preferences {
     const preferences = preferencesToMap.toObject({ versionKey: false })
     preferences.id = preferences._id.toString()
     delete preferences._id
@@ -18,21 +16,21 @@ export default class MongoPreferencesRepository implements PreferencesRepository
   }
 
 
-  async getByUserId (userId: User['id']): Promise<Preferences | null> {
+  async getByUserId(userId: User['id']): Promise<Preferences | null> {
     const preferencesFound = await this._model.findOne({ user: userId })
     if (preferencesFound === null) return null
     const preferencesMapped = this.map(preferencesFound)
     return preferencesMapped
   }
 
-  async save (inputData: Preferences): Promise<Preferences> {
+  async save(inputData: Preferences): Promise<Preferences> {
     const preferencesToCreate = new this._model(inputData)
     const preferencesCreated = await preferencesToCreate.save()
     const preferencesMapped = this.map(preferencesCreated)
     return preferencesMapped
   }
 
-  async update (inputData: Preferences): Promise<Preferences> {
+  async update(inputData: Preferences): Promise<Preferences> {
     const preferencesUpdated = await this._model.findByIdAndUpdate(
       inputData.id,
       inputData,
@@ -42,7 +40,7 @@ export default class MongoPreferencesRepository implements PreferencesRepository
     return preferencesMapped
   }
 
-  async delete (id: Preferences['id']): Promise<void> {
+  async delete(id: Preferences['id']): Promise<void> {
     await this._model.findByIdAndDelete(id)
   }
 }

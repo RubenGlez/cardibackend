@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
-import { MongoCardRepository } from '../../../..'
-import { DeleteCardUseCase } from '../../../../../application'
+import DeleteCardUseCase from '../../../../../application/use-cases/card/DeleteCardUseCase'
+import MongoCardRepository from '../../../../implementations/mongo/MongoCardRepository'
 
-export default async function deleteCardController (
+
+export default async function deleteCardController(
   req: Request,
   res: Response,
   next: NextFunction

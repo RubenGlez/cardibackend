@@ -1,10 +1,12 @@
 import { Request, Response, NextFunction } from 'express'
+import { CardiError } from '../../../../domain/exceptions/CardiError'
+import { CardiErrorTypes } from '../../../../domain/exceptions/CardiErrorTypes'
 
-export default function notFoundController (
+export default function notFoundController(
   req: Request,
   res: Response,
   next: NextFunction
 ): void {
-  const error = new Error('404. Not found')
+  const error = new CardiError(CardiErrorTypes.NotFound)
   next(error)
 }

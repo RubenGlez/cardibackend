@@ -1,4 +1,5 @@
-import { Card, User } from '../../domain'
+import { Card } from "../entities/Card"
+import { User } from "../entities/User"
 
 export interface CardRepository {
   getAllByOwner: (owner: User['id']) => Promise<Card[]>

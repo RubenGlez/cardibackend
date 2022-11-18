@@ -1,9 +1,7 @@
-import {
-  GetPreferencesByUserService,
-  Preferences,
-  PreferencesRepository,
-  User,
-} from '../../../domain'
+import { Preferences } from "../../../domain/entities/Preferences"
+import { User } from "../../../domain/entities/User"
+import { PreferencesRepository } from "../../../domain/repositories/PreferencesRepository"
+import GetPreferencesByUserService from "../../../domain/services/preferences/GetPreferencesByUserService"
 
 type InputData = Omit<Preferences, 'id' | 'user' | 'createdAt' | 'updatedAt'>
 
@@ -12,12 +10,12 @@ export default class UpdatePreferencesUseCase {
   private readonly _getPreferencesByUserService: GetPreferencesByUserService
 
 
-  constructor (preferencesRepository: PreferencesRepository) {
+  constructor(preferencesRepository: PreferencesRepository) {
     this._preferencesRepository = preferencesRepository
     this._getPreferencesByUserService = new GetPreferencesByUserService(preferencesRepository)
   }
 
-  async run (inputData: InputData, tenantId: User['id']): Promise<Preferences> {
+  async run(inputData: InputData, tenantId: User['id']): Promise<Preferences> {
     const currentPreferences = await this._getPreferencesByUserService.run(tenantId)
 
     const preferencesToUpdate: Preferences = {

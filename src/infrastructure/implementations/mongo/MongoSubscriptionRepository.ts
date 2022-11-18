@@ -1,6 +1,7 @@
-import { Subscription, SubscriptionRepository } from '../../../domain'
-import { SubscriptionModel } from '../..'
 import { Document, Types } from 'mongoose'
+import { Subscription } from '../../../domain/entities/Subscription'
+import { SubscriptionRepository } from '../../../domain/repositories/SubscriptionRepository'
+import SubscriptionModel from '../../driven-adapters/mongoose/models/SubscriptionModel'
 
 type SubscriptionToMap = Document<unknown, any, Subscription> &
   Subscription & {
@@ -8,8 +9,7 @@ type SubscriptionToMap = Document<unknown, any, Subscription> &
   }
 
 export default class MongoSubscriptionRepository
-  implements SubscriptionRepository
-{
+  implements SubscriptionRepository {
   private readonly _model = SubscriptionModel
 
   private map(subscriptionToMap: SubscriptionToMap): Subscription {

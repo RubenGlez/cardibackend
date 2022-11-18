@@ -1,4 +1,5 @@
-import { Wallet, User } from '..'
+import { User } from "../entities/User"
+import { Wallet } from "../entities/Wallet"
 
 export interface WalletRepository {
   getByOwner: (owner: User['id']) => Promise<Wallet | null>

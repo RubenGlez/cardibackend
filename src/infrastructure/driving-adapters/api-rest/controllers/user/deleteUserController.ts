@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
-import { MongoUserRepository } from '../../../../../infrastructure'
-import { DeleteUserUseCase } from '../../../../../application'
+import DeleteUserUseCase from '../../../../../application/use-cases/user/DeleteUserUseCase'
+import MongoUserRepository from '../../../../implementations/mongo/MongoUserRepository'
 
-export default async function deleteUserController (
+
+export default async function deleteUserController(
   req: Request,
   res: Response,
   next: NextFunction
