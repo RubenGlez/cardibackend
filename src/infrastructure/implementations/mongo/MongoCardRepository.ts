@@ -8,9 +8,11 @@ export default class MongoCardRepository implements CardRepository {
   private readonly _model = CardModel
 
   private toDto(cardToMap: any): Card {
-    const cardDTO = Object.assign({ id: cardToMap._id }, cardToMap)
+    const cardDTO = Object.assign({ id: cardToMap._id?.toString() }, cardToMap)
     delete cardDTO._id
     delete cardDTO.__v
+    cardDTO.owner = cardDTO.owner?.toString()
+    cardDTO.company = cardDTO.company?.toString()
     return cardDTO
   }
 

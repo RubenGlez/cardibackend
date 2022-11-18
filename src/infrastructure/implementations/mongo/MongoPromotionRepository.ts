@@ -7,9 +7,14 @@ export default class MongoPromotionRepository implements PromotionRepository {
   private readonly _model = PromotionModel
 
   private toDTO(promotionToMap: any): Promotion {
-    const promotionDTO = Object.assign({ id: promotionToMap._id }, promotionToMap)
+    const promotionDTO = Object.assign({ id: promotionToMap._id?.toString() }, promotionToMap)
     delete promotionDTO._id
     delete promotionDTO.__v
+
+    promotionDTO.user = promotionDTO.user?.toString()
+    promotionDTO.company = promotionDTO.company?.toString()
+    promotionDTO.card = promotionDTO.card?.toString()
+
     return promotionDTO
   }
 

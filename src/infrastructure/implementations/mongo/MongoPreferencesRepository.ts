@@ -3,13 +3,18 @@ import { User } from "../../../domain/entities/User"
 import { PreferencesRepository } from "../../../domain/repositories/PreferencesRepository"
 import PreferencesModel from "../../driven-adapters/mongoose/models/PreferencesModel"
 
+
 export default class MongoPreferencesRepository implements PreferencesRepository {
   private readonly _model = PreferencesModel
 
   private toDto(preferencesToMap: any): Preferences {
-    const preferencesDTO = Object.assign({ id: preferencesToMap._id }, preferencesToMap)
+    const preferencesDTO = Object.assign({ id: preferencesToMap._id?.toString() }, preferencesToMap)
     delete preferencesDTO._id
     delete preferencesDTO.__v
+
+    preferencesDTO.user = preferencesDTO.user?.toString()
+    preferencesDTO.companySelected = preferencesDTO.companySelected?.toString()
+
     return preferencesDTO
   }
 

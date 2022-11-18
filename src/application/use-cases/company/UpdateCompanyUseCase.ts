@@ -19,6 +19,7 @@ export default class UpdateCompanyUseCase {
 
   async run(inputData: InputData, tenantId: User['id']): Promise<Company> {
     const currentCompany = await this._getCompanyByIdService.run(inputData.id)
+    console.log('--aqui', currentCompany?.owner, tenantId)
     if (currentCompany?.owner !== tenantId) throw new OutputError(OutputErrorTypes.NotOwned)
 
     const companyToUpdate: Company = {

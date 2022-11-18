@@ -7,9 +7,16 @@ export default class MongoSubscriptionRepository
   private readonly _model = SubscriptionModel
 
   private toDto(subscriptionToMap: any): Subscription {
-    const subscriptionDTO = Object.assign({ id: subscriptionToMap._id }, subscriptionToMap)
+    const subscriptionDTO = Object.assign({ id: subscriptionToMap._id?.toString() }, subscriptionToMap)
     delete subscriptionDTO._id
     delete subscriptionDTO.__v
+
+    subscriptionDTO.subscriptor = subscriptionDTO.subscriptor?.toString()
+    subscriptionDTO.owner = subscriptionDTO.owner?.toString()
+    subscriptionDTO.card = subscriptionDTO.card?.toString()
+    subscriptionDTO.promotion = subscriptionDTO.promotion?.toString()
+    subscriptionDTO.company = subscriptionDTO.company?.toString()
+
     return subscriptionDTO
   }
 

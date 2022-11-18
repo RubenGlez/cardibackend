@@ -8,14 +8,15 @@ export default class MongoCompanyRepository implements CompanyRepository {
   private readonly _model = CompanyModel
 
   private toDto(companyToMap: any): Company {
-    const companyDTO = Object.assign({ id: companyToMap._id }, companyToMap)
+    const companyDTO = Object.assign({ id: companyToMap._id?.toString() }, companyToMap)
     delete companyDTO._id
     delete companyDTO.__v
+    companyDTO.owner = companyDTO.owner?.toString()
     return companyDTO
   }
 
   async getAllByOwner(owner: User['id']): Promise<Company[]> {
-    const allCompanys = await this._model.find({ owner }).lean()
+    const allCompanys = await this._model.find({ owner }).lean({})
     if (allCompanys.length === 0) return allCompanys
     const allCompanysMapped = allCompanys.map((company) => this.toDto(company))
     return allCompanysMapped

@@ -7,7 +7,7 @@ export default class MongoUserRepository implements UserRepository {
   private readonly _model = UserModel
 
   private toDto(userToMap: any): User {
-    const userDTO = Object.assign({ id: userToMap._id }, userToMap)
+    const userDTO = Object.assign({ id: userToMap._id?.toString() }, userToMap)
     delete userDTO._id
     delete userDTO.__v
     return userDTO
