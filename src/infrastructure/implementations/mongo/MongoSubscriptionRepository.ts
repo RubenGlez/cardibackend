@@ -30,15 +30,6 @@ export default class MongoSubscriptionRepository
     }
   }
 
-  async getAll(): Promise<Subscription[]> {
-    const allSubscriptions = await this._model.find()
-    if (allSubscriptions.length === 0) return allSubscriptions
-    const allSubscriptionsMapped = allSubscriptions.map(subscription =>
-      this.map(subscription)
-    )
-    return allSubscriptionsMapped
-  }
-
   async getAllByPromotion(
     promotion: Subscription['promotion']
   ): Promise<Subscription[]> {
@@ -88,9 +79,5 @@ export default class MongoSubscriptionRepository
     if (subscriptionUpdated === null) return null
     const subscriptionMapped = this.map(subscriptionUpdated)
     return subscriptionMapped
-  }
-
-  async delete(id: Subscription['id']): Promise<void> {
-    await this._model.findByIdAndDelete(id)
   }
 }

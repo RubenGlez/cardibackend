@@ -13,15 +13,6 @@ export default class MongoPromotionRepository implements PromotionRepository {
     return promotionDTO
   }
 
-  async getAll(): Promise<Promotion[]> {
-    const allPromotions = await this._model.find()
-    if (allPromotions.length === 0) return allPromotions
-    const allPromotionsMapped = allPromotions.map(promotion =>
-      this.toDTO(promotion)
-    )
-    return allPromotionsMapped
-  }
-
   async getAllByOwner(owner: User['id']): Promise<Promotion[]> {
     const allPromotions = await this._model.find({ owner }).lean()
     if (allPromotions.length === 0) return allPromotions
@@ -29,13 +20,6 @@ export default class MongoPromotionRepository implements PromotionRepository {
       this.toDTO(promotion)
     )
     return allPromotionsMapped
-  }
-
-  async getByName(name: Promotion['name']): Promise<Promotion | null> {
-    const promotionFound = await this._model.findOne({ name })
-    if (promotionFound === null) return null
-    const promotionMapped = this.toDTO(promotionFound)
-    return promotionMapped
   }
 
   async getById(id: Promotion['id']): Promise<Promotion | null> {

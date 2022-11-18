@@ -39,8 +39,4 @@ export default class MongoPreferencesRepository implements PreferencesRepository
     const preferencesMapped = this.map(preferencesUpdated)
     return preferencesMapped
   }
-
-  async delete(id: Preferences['id']): Promise<void> {
-    await this._model.findByIdAndDelete(id)
-  }
 }

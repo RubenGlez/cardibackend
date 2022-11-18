@@ -13,13 +13,6 @@ export default class MongoUserRepository implements UserRepository {
     return user as User
   }
 
-  async getAll(): Promise<User[]> {
-    const allUsers = await this._model.find()
-    if (allUsers.length === 0) return [] as User[]
-    const allUsersMapped = allUsers.map((user) => this.map(user))
-    return allUsersMapped
-  }
-
   async getByEmail(email: User['email']): Promise<User | null> {
     const userFound = await this._model.findOne({ email })
     if (userFound === null) return null
@@ -49,9 +42,5 @@ export default class MongoUserRepository implements UserRepository {
     )
     const userMapped = this.map(userUpdated)
     return userMapped
-  }
-
-  async delete(id: User['id']): Promise<void> {
-    await this._model.findByIdAndDelete(id)
   }
 }

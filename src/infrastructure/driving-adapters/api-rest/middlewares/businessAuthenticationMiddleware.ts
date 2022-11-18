@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { CheckBusinessAuthenticationUseCase } from '../../../../application/use-cases/auth'
+import CheckBusinessAuthenticationUseCase from '../../../../application/use-cases/auth/CheckBusinessAuthenticationUseCase'
 import MongoAuthRepository from '../../../implementations/mongo/MongoAuthRepository'
 import MongoUserRepository from '../../../implementations/mongo/MongoUserRepository'
 

@@ -16,13 +16,6 @@ export default class MongoCardRepository implements CardRepository {
     return card as Card
   }
 
-  async getAll(): Promise<Card[]> {
-    const allCards = await this._model.find()
-    if (allCards.length === 0) return allCards
-    const allCardsMapped = allCards.map((card) => this.map(card))
-    return allCardsMapped
-  }
-
   async getAllByOwner(owner: User['id']): Promise<Card[]> {
     const allCards = await this._model.find({ owner })
     if (allCards.length === 0) return allCards

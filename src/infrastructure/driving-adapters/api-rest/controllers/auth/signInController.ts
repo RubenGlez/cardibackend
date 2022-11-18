@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { SignInUseCase } from '../../../../../application/use-cases/auth'
+import SignInUseCase from '../../../../../application/use-cases/auth/SignInUseCase'
 import MongoAuthRepository from '../../../../implementations/mongo/MongoAuthRepository'
 import MongoUserRepository from '../../../../implementations/mongo/MongoUserRepository'
 
