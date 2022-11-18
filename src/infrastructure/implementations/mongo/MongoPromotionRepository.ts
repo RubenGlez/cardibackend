@@ -23,7 +23,7 @@ export default class MongoPromotionRepository implements PromotionRepository {
   }
 
   async getById(id: Promotion['id']): Promise<Promotion | null> {
-    const promotionFound = await this._model.findById(id)
+    const promotionFound = await this._model.findById(id).lean()
     if (promotionFound === null) return null
     const promotionMapped = this.toDTO(promotionFound)
     return promotionMapped
@@ -32,7 +32,7 @@ export default class MongoPromotionRepository implements PromotionRepository {
   async save(inputData: Promotion): Promise<Promotion> {
     const promotionToCreate = new this._model(inputData)
     const promotionCreated = await promotionToCreate.save()
-    const promotionMapped = this.toDTO(promotionCreated)
+    const promotionMapped = this.toDTO(promotionCreated.toObject())
     return promotionMapped
   }
 
@@ -41,7 +41,7 @@ export default class MongoPromotionRepository implements PromotionRepository {
       inputData.id,
       inputData,
       { returnDocument: 'after' }
-    )
+    ).lean()
     const promotionMapped = this.toDTO(promotionUpdated)
     return promotionMapped
   }

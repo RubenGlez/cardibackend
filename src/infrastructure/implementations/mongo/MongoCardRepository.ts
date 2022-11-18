@@ -7,33 +7,31 @@ import CardModel from "../../driven-adapters/mongoose/models/CardModel"
 export default class MongoCardRepository implements CardRepository {
   private readonly _model = CardModel
 
-  private map(cardToMap: any): Card {
-    const card = cardToMap.toObject({ versionKey: false })
-    card.id = card._id.toString()
-    delete card._id
-    card.owner = card.owner.toString()
-    card.company = card.company.toString()
-    return card as Card
+  private toDto(cardToMap: any): Card {
+    const cardDTO = Object.assign({ id: cardToMap._id }, cardToMap)
+    delete cardDTO._id
+    delete cardDTO.__v
+    return cardDTO
   }
 
   async getAllByOwner(owner: User['id']): Promise<Card[]> {
-    const allCards = await this._model.find({ owner })
+    const allCards = await this._model.find({ owner }).lean()
     if (allCards.length === 0) return allCards
-    const allCardsMapped = allCards.map((card) => this.map(card))
+    const allCardsMapped = allCards.map((card) => this.toDto(card))
     return allCardsMapped
   }
 
   async getById(id: Card['id']): Promise<Card | null> {
-    const cardFound = await this._model.findById(id)
+    const cardFound = await this._model.findById(id).lean()
     if (cardFound === null) return null
-    const cardMapped = this.map(cardFound)
+    const cardMapped = this.toDto(cardFound)
     return cardMapped
   }
 
   async save(inputData: Card): Promise<Card> {
     const cardToCreate = new this._model(inputData)
     const cardCreated = await cardToCreate.save()
-    const cardMapped = this.map(cardCreated)
+    const cardMapped = this.toDto(cardCreated.toObject())
     return cardMapped
   }
 
@@ -42,12 +40,12 @@ export default class MongoCardRepository implements CardRepository {
       inputData.id,
       inputData,
       { returnDocument: 'after' }
-    )
-    const cardMapped = this.map(cardUpdated)
+    ).lean()
+    const cardMapped = this.toDto(cardUpdated)
     return cardMapped
   }
 
   async delete(id: Card['id']): Promise<void> {
-    await this._model.findByIdAndDelete(id)
+    await this._model.findByIdAndDelete(id).lean()
   }
 }

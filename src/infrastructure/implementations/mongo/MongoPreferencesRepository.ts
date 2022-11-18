@@ -6,27 +6,25 @@ import PreferencesModel from "../../driven-adapters/mongoose/models/PreferencesM
 export default class MongoPreferencesRepository implements PreferencesRepository {
   private readonly _model = PreferencesModel
 
-  private map(preferencesToMap: any): Preferences {
-    const preferences = preferencesToMap.toObject({ versionKey: false })
-    preferences.id = preferences._id.toString()
-    delete preferences._id
-    preferences.user = preferences.user.toString()
-    preferences.companySelected = preferences.companySelected?.toString()
-    return preferences as Preferences
+  private toDto(preferencesToMap: any): Preferences {
+    const preferencesDTO = Object.assign({ id: preferencesToMap._id }, preferencesToMap)
+    delete preferencesDTO._id
+    delete preferencesDTO.__v
+    return preferencesDTO
   }
 
 
   async getByUserId(userId: User['id']): Promise<Preferences | null> {
-    const preferencesFound = await this._model.findOne({ user: userId })
+    const preferencesFound = await this._model.findOne({ user: userId }).lean()
     if (preferencesFound === null) return null
-    const preferencesMapped = this.map(preferencesFound)
+    const preferencesMapped = this.toDto(preferencesFound)
     return preferencesMapped
   }
 
   async save(inputData: Preferences): Promise<Preferences> {
     const preferencesToCreate = new this._model(inputData)
     const preferencesCreated = await preferencesToCreate.save()
-    const preferencesMapped = this.map(preferencesCreated)
+    const preferencesMapped = this.toDto(preferencesCreated.toObject())
     return preferencesMapped
   }
 
@@ -35,8 +33,8 @@ export default class MongoPreferencesRepository implements PreferencesRepository
       inputData.id,
       inputData,
       { returnDocument: 'after' }
-    )
-    const preferencesMapped = this.map(preferencesUpdated)
+    ).lean()
+    const preferencesMapped = this.toDto(preferencesUpdated)
     return preferencesMapped
   }
 }

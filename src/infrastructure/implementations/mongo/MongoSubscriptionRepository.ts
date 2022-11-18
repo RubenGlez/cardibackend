@@ -1,42 +1,25 @@
-import { Document, Types } from 'mongoose'
 import { Subscription } from '../../../domain/entities/Subscription'
 import { SubscriptionRepository } from '../../../domain/repositories/SubscriptionRepository'
 import SubscriptionModel from '../../driven-adapters/mongoose/models/SubscriptionModel'
-
-type SubscriptionToMap = Document<unknown, any, Subscription> &
-  Subscription & {
-    _id: Types.ObjectId
-  }
 
 export default class MongoSubscriptionRepository
   implements SubscriptionRepository {
   private readonly _model = SubscriptionModel
 
-  private map(subscriptionToMap: SubscriptionToMap): Subscription {
-    return {
-      id: subscriptionToMap._id.toString(),
-      subscriptor: subscriptionToMap.subscriptor?.toString(),
-      owner: subscriptionToMap.owner?.toString(),
-      promotion: subscriptionToMap.promotion?.toString(),
-      card: subscriptionToMap.card?.toString(),
-      company: subscriptionToMap.company?.toString(),
-      steps: subscriptionToMap.steps.map(step => ({
-        id: step.id?.toString(),
-        date: step.date
-      })),
-      status: subscriptionToMap.status,
-      createdAt: subscriptionToMap.createdAt,
-      updatedAt: subscriptionToMap.updatedAt
-    }
+  private toDto(subscriptionToMap: any): Subscription {
+    const subscriptionDTO = Object.assign({ id: subscriptionToMap._id }, subscriptionToMap)
+    delete subscriptionDTO._id
+    delete subscriptionDTO.__v
+    return subscriptionDTO
   }
 
   async getAllByPromotion(
     promotion: Subscription['promotion']
   ): Promise<Subscription[]> {
-    const subscriptionsByPromotion = await this._model.find({ promotion })
+    const subscriptionsByPromotion = await this._model.find({ promotion }).lean()
     if (subscriptionsByPromotion.length === 0) return subscriptionsByPromotion
     const subscriptionsByPromotionMapped = subscriptionsByPromotion.map(
-      subscription => this.map(subscription)
+      subscription => this.toDto(subscription)
     )
     return subscriptionsByPromotionMapped
   }
@@ -48,25 +31,25 @@ export default class MongoSubscriptionRepository
     const subscriptionsBySubscriptorAndPromotion = await this._model.findOne({
       subscriptor,
       promotion
-    })
+    }).lean()
     if (subscriptionsBySubscriptorAndPromotion === null) return null
-    const subscriptionsBySubscriptorAndPromotionMapped = this.map(
+    const subscriptionsBySubscriptorAndPromotionMapped = this.toDto(
       subscriptionsBySubscriptorAndPromotion
     )
     return subscriptionsBySubscriptorAndPromotionMapped
   }
 
   async getById(id: Subscription['id']): Promise<Subscription | null> {
-    const subscriptionFound = await this._model.findById(id)
+    const subscriptionFound = await this._model.findById(id).lean()
     if (subscriptionFound === null) return null
-    const subscriptionMapped = this.map(subscriptionFound)
+    const subscriptionMapped = this.toDto(subscriptionFound)
     return subscriptionMapped
   }
 
   async save(inputData: Subscription): Promise<Subscription> {
     const subscriptionToCreate = new this._model(inputData)
     const subscriptionCreated = await subscriptionToCreate.save()
-    const subscriptionMapped = this.map(subscriptionCreated)
+    const subscriptionMapped = this.toDto(subscriptionCreated.toObject())
     return subscriptionMapped
   }
 
@@ -75,9 +58,9 @@ export default class MongoSubscriptionRepository
       inputData.id,
       inputData,
       { returnDocument: 'after' }
-    )
+    ).lean()
     if (subscriptionUpdated === null) return null
-    const subscriptionMapped = this.map(subscriptionUpdated)
+    const subscriptionMapped = this.toDto(subscriptionUpdated)
     return subscriptionMapped
   }
 }

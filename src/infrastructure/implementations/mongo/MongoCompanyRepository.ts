@@ -7,39 +7,38 @@ import CompanyModel from "../../driven-adapters/mongoose/models/CompanyModel"
 export default class MongoCompanyRepository implements CompanyRepository {
   private readonly _model = CompanyModel
 
-  private map(companyToMap: any): Company {
-    const company = companyToMap.toObject({ versionKey: false })
-    company.id = company._id.toString()
-    delete company._id
-    company.owner = company.owner.toString()
-    return company as Company
+  private toDto(companyToMap: any): Company {
+    const companyDTO = Object.assign({ id: companyToMap._id }, companyToMap)
+    delete companyDTO._id
+    delete companyDTO.__v
+    return companyDTO
   }
 
   async getAllByOwner(owner: User['id']): Promise<Company[]> {
-    const allCompanys = await this._model.find({ owner })
+    const allCompanys = await this._model.find({ owner }).lean()
     if (allCompanys.length === 0) return allCompanys
-    const allCompanysMapped = allCompanys.map((company) => this.map(company))
+    const allCompanysMapped = allCompanys.map((company) => this.toDto(company))
     return allCompanysMapped
   }
 
   async getByName(name: Company['name']): Promise<Company | null> {
-    const companyFound = await this._model.findOne({ name })
+    const companyFound = await this._model.findOne({ name }).lean()
     if (companyFound === null) return null
-    const companyMapped = this.map(companyFound)
+    const companyMapped = this.toDto(companyFound)
     return companyMapped
   }
 
   async getById(id: Company['id']): Promise<Company | null> {
-    const companyFound = await this._model.findById(id)
+    const companyFound = await this._model.findById(id).lean()
     if (companyFound === null) return null
-    const companyMapped = this.map(companyFound)
+    const companyMapped = this.toDto(companyFound)
     return companyMapped
   }
 
   async save(inputData: Company): Promise<Company> {
     const companyToCreate = new this._model(inputData)
     const companyCreated = await companyToCreate.save()
-    const companyMapped = this.map(companyCreated)
+    const companyMapped = this.toDto(companyCreated.toObject())
     return companyMapped
   }
 
@@ -48,8 +47,8 @@ export default class MongoCompanyRepository implements CompanyRepository {
       inputData.id,
       inputData,
       { returnDocument: 'after' }
-    )
-    const companyMapped = this.map(companyUpdated)
+    ).lean()
+    const companyMapped = this.toDto(companyUpdated)
     return companyMapped
   }
 
