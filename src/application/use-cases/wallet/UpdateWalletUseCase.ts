@@ -1,7 +1,7 @@
 import { User } from "../../../domain/entities/User"
 import { Wallet } from "../../../domain/entities/Wallet"
-import { CardiError } from "../../../domain/exceptions/CardiError"
-import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { OutputError } from "../../../domain/exceptions/OutputError"
+import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
 import { WalletRepository } from "../../../domain/repositories/WalletRepository"
 import { GetWalletByIdService } from "../../../domain/services/wallet"
 
@@ -19,7 +19,7 @@ export default class UpdateWalletUseCase {
 
   async run(inputData: InputData, tenantId: User['id']): Promise<Wallet> {
     const currentWallet = await this._getWalletByIdService.run(inputData.id)
-    if (currentWallet?.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
+    if (currentWallet?.owner !== tenantId) throw new OutputError(OutputErrorTypes.NotOwned)
 
     const walletToUpdate: Wallet = {
       ...currentWallet,

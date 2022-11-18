@@ -1,6 +1,6 @@
 import { Company } from "../../../domain/entities/Company"
-import { CardiError } from "../../../domain/exceptions/CardiError"
-import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { OutputError } from "../../../domain/exceptions/OutputError"
+import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
 import { CompanyRepository } from "../../../domain/repositories/CompanyRepository"
 import GetCompanyByIdService from "../../../domain/services/company/GetCompanyByIdService"
 
@@ -18,7 +18,7 @@ export default class DeleteCompanyUseCase {
     tenantId: Company['id']
   ): Promise<void> {
     const companyToDelete = await this._getCompanyByIdService.run(companyId)
-    if (companyToDelete.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
+    if (companyToDelete.owner !== tenantId) throw new OutputError(OutputErrorTypes.NotOwned)
 
     // has cards?
     // -> no : delete

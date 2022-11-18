@@ -1,8 +1,8 @@
 import { Auth } from "../../../domain/entities/Auth"
 import { Preferences } from "../../../domain/entities/Preferences"
 import { User } from "../../../domain/entities/User"
-import { CardiError } from "../../../domain/exceptions/CardiError"
-import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { OutputError } from "../../../domain/exceptions/OutputError"
+import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
 import { AuthRepository, SignUpInputData } from "../../../domain/repositories/AuthRepository"
 import { PreferencesRepository } from "../../../domain/repositories/PreferencesRepository"
 import { UserRepository } from "../../../domain/repositories/UserRepository"
@@ -23,7 +23,7 @@ export default class SignUpUseCase {
 
   async run(inputData: SignUpInputData): Promise<Auth> {
     const existUser = await this._existUserByEmailService.run(inputData.email)
-    if (existUser) throw new CardiError(CardiErrorTypes.UserAlreadyExist)
+    if (existUser) throw new OutputError(OutputErrorTypes.UserAlreadyExist)
 
     const encryptedPass = await this._authRepository.encryptPassword(inputData.password)
 

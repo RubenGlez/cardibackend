@@ -1,6 +1,6 @@
 import { User, UserRole } from "../../entities/User"
-import { CardiError } from "../../exceptions/CardiError"
-import { CardiErrorTypes } from "../../exceptions/CardiErrorTypes"
+import { OutputError } from "../../exceptions/OutputError"
+import { OutputErrorTypes } from "../../exceptions/OutputErrorTypes"
 import { UserRepository } from "../../repositories/UserRepository"
 
 export default class UserHasBusinessRoleService {
@@ -12,7 +12,7 @@ export default class UserHasBusinessRoleService {
 
   async run(id: User['id']): Promise<boolean> {
     const user = await this._userRepository.getById(id)
-    if (user === null) throw new CardiError(CardiErrorTypes.UserNotFound)
+    if (user === null) throw new OutputError(OutputErrorTypes.UserNotFound)
     return user.role === UserRole.Business
   }
 }

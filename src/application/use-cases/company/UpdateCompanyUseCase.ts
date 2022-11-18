@@ -1,7 +1,7 @@
 import { Company } from "../../../domain/entities/Company"
 import { User } from "../../../domain/entities/User"
-import { CardiError } from "../../../domain/exceptions/CardiError"
-import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { OutputError } from "../../../domain/exceptions/OutputError"
+import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
 import { CompanyRepository } from "../../../domain/repositories/CompanyRepository"
 import GetCompanyByIdService from "../../../domain/services/company/GetCompanyByIdService"
 
@@ -19,7 +19,7 @@ export default class UpdateCompanyUseCase {
 
   async run(inputData: InputData, tenantId: User['id']): Promise<Company> {
     const currentCompany = await this._getCompanyByIdService.run(inputData.id)
-    if (currentCompany?.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
+    if (currentCompany?.owner !== tenantId) throw new OutputError(OutputErrorTypes.NotOwned)
 
     const companyToUpdate: Company = {
       ...currentCompany,

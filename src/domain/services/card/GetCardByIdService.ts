@@ -1,6 +1,6 @@
 import { Card } from "../../entities/Card"
-import { CardiError } from "../../exceptions/CardiError"
-import { CardiErrorTypes } from "../../exceptions/CardiErrorTypes"
+import { OutputError } from "../../exceptions/OutputError"
+import { OutputErrorTypes } from "../../exceptions/OutputErrorTypes"
 import { CardRepository } from "../../repositories/CardRepository"
 
 export default class GetCardByIdService {
@@ -12,7 +12,7 @@ export default class GetCardByIdService {
 
   async run(id: Card['id']): Promise<Card> {
     const card = await this._cardRepository.getById(id)
-    if (card === null) throw new CardiError(CardiErrorTypes.CardNotFound)
+    if (card === null) throw new OutputError(OutputErrorTypes.CardNotFound)
     return card
   }
 }

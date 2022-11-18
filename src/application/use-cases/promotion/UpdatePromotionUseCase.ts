@@ -1,7 +1,7 @@
 import { Promotion } from "../../../domain/entities/Promotion"
 import { User } from "../../../domain/entities/User"
-import { CardiError } from "../../../domain/exceptions/CardiError"
-import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { OutputError } from "../../../domain/exceptions/OutputError"
+import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
 import { PromotionRepository } from "../../../domain/repositories/PromotionRepository"
 import GetPromotionByIdService from "../../../domain/services/promotion/GetPromotionByIdService"
 
@@ -26,7 +26,7 @@ export default class UpdatePromotionUseCase {
       inputData.id
     )
     if (currentPromotion?.owner !== tenantId) {
-      throw new CardiError(CardiErrorTypes.NotOwned)
+      throw new OutputError(OutputErrorTypes.NotOwned)
     }
 
     const promotionToUpdate: Promotion = {

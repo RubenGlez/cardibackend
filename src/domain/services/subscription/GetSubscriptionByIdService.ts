@@ -1,6 +1,6 @@
 import { Subscription } from "../../entities/Subscription"
-import { CardiError } from "../../exceptions/CardiError"
-import { CardiErrorTypes } from "../../exceptions/CardiErrorTypes"
+import { OutputError } from "../../exceptions/OutputError"
+import { OutputErrorTypes } from "../../exceptions/OutputErrorTypes"
 import { SubscriptionRepository } from "../../repositories/SubscriptionRepository"
 
 export default class GetSubscriptionByIdService {
@@ -12,7 +12,7 @@ export default class GetSubscriptionByIdService {
 
   async run(id: Subscription['id']): Promise<Subscription> {
     const subscription = await this._subscriptionRepository.getById(id)
-    if (subscription === null) throw new CardiError(CardiErrorTypes.SubscriptionNotFound)
+    if (subscription === null) throw new OutputError(OutputErrorTypes.SubscriptionNotFound)
     return subscription
   }
 }

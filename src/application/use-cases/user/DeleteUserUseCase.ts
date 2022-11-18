@@ -1,6 +1,6 @@
 import { User } from "../../../domain/entities/User"
-import { CardiError } from "../../../domain/exceptions/CardiError"
-import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { OutputError } from "../../../domain/exceptions/OutputError"
+import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
 import { UserRepository } from "../../../domain/repositories/UserRepository"
 import GetUserByIdService from "../../../domain/services/user/GetUserByIdService"
 
@@ -17,7 +17,7 @@ export default class DeleteUserUseCase {
     userId: User['id'],
     tenantId: User['id']
   ): Promise<void> {
-    if (userId !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
+    if (userId !== tenantId) throw new OutputError(OutputErrorTypes.NotOwned)
 
     const userToDelete = await this._getUserByIdService.run(userId)
     await this._userRepository.delete(userToDelete.id)

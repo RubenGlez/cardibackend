@@ -1,6 +1,6 @@
 import { Promotion } from "../../../domain/entities/Promotion"
-import { CardiError } from "../../../domain/exceptions/CardiError"
-import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { OutputError } from "../../../domain/exceptions/OutputError"
+import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
 import { PromotionRepository } from "../../../domain/repositories/PromotionRepository"
 import GetPromotionByIdService from "../../../domain/services/promotion/GetPromotionByIdService"
 
@@ -20,7 +20,7 @@ export default class DeletePromotionUseCase {
   ): Promise<void> {
 
     const promotionToDelete = await this._getPromotionByIdService.run(cromotionId)
-    if (promotionToDelete.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
+    if (promotionToDelete.owner !== tenantId) throw new OutputError(OutputErrorTypes.NotOwned)
 
     // has suscriptions?
     // -> no : delete

@@ -1,8 +1,8 @@
 import { PromotionType } from "../../../domain/entities/Promotion"
 import { Subscription, SubscriptionStatus } from "../../../domain/entities/Subscription"
 import { User } from "../../../domain/entities/User"
-import { CardiError } from "../../../domain/exceptions/CardiError"
-import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { OutputError } from "../../../domain/exceptions/OutputError"
+import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
 import { PromotionRepository } from "../../../domain/repositories/PromotionRepository"
 import { SubscriptionRepository } from "../../../domain/repositories/SubscriptionRepository"
 import GetPromotionByIdService from "../../../domain/services/promotion/GetPromotionByIdService"
@@ -39,7 +39,7 @@ export default class UpdateSubscriptionUseCase {
       inputData.id
     )
     if (currentSubscription?.owner !== tenantId)
-      throw new CardiError(CardiErrorTypes.NotOwned)
+      throw new OutputError(OutputErrorTypes.NotOwned)
 
     const promotion = await this._getPromotionByIdService.run(
       currentSubscription.promotion
@@ -48,16 +48,16 @@ export default class UpdateSubscriptionUseCase {
     const today = new Date()
     const isPromoOutdated =
       promotion.validFrom > today || promotion.validTo < today
-    if (isPromoOutdated) throw new CardiError(CardiErrorTypes.PromotionOutdated)
+    if (isPromoOutdated) throw new OutputError(OutputErrorTypes.PromotionOutdated)
 
     const isStandardPromotion = promotion.type === PromotionType.Standard
     if (!isStandardPromotion)
-      throw new CardiError(CardiErrorTypes.InvalidPromotionType)
+      throw new OutputError(OutputErrorTypes.InvalidPromotionType)
 
     const isSubscriptionCompleted =
       currentSubscription.steps.length === this._subscriptionSteps
     if (isSubscriptionCompleted)
-      throw new CardiError(CardiErrorTypes.SubscriptionAlreadyCompleted)
+      throw new OutputError(OutputErrorTypes.SubscriptionAlreadyCompleted)
 
     const isLastStep =
       currentSubscription.steps.length === this._subscriptionSteps - 1

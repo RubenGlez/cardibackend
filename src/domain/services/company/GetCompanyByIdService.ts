@@ -1,6 +1,6 @@
 import { Company } from "../../entities/Company"
-import { CardiError } from "../../exceptions/CardiError"
-import { CardiErrorTypes } from "../../exceptions/CardiErrorTypes"
+import { OutputError } from "../../exceptions/OutputError"
+import { OutputErrorTypes } from "../../exceptions/OutputErrorTypes"
 import { CompanyRepository } from "../../repositories/CompanyRepository"
 
 export default class GetCompanyByIdService {
@@ -12,7 +12,7 @@ export default class GetCompanyByIdService {
 
   async run(id: Company['id']): Promise<Company> {
     const company = await this._companyRepository.getById(id)
-    if (company === null) throw new CardiError(CardiErrorTypes.CompanyNotFound)
+    if (company === null) throw new OutputError(OutputErrorTypes.CompanyNotFound)
     return company
   }
 }

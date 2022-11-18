@@ -1,7 +1,7 @@
 import { Preferences } from "../../../domain/entities/Preferences"
 import { User } from "../../../domain/entities/User"
-import { CardiError } from "../../../domain/exceptions/CardiError"
-import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { OutputError } from "../../../domain/exceptions/OutputError"
+import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
 import { PreferencesRepository } from "../../../domain/repositories/PreferencesRepository"
 import ExistPreferencesByUserService from "../../../domain/services/preferences/ExistPreferencesByUserService"
 
@@ -19,7 +19,7 @@ export default class CreatePreferencesUseCase {
 
   async run(inputData: InputData, tenantId: User['id']): Promise<Preferences> {
     const existPreferences = await this._existPreferencesByUserService.run(tenantId)
-    if (existPreferences) throw new CardiError(CardiErrorTypes.PreferencesAlreadyExist)
+    if (existPreferences) throw new OutputError(OutputErrorTypes.PreferencesAlreadyExist)
 
     const preferencesToCreate: Preferences = {
       user: tenantId,

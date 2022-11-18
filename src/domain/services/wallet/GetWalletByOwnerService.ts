@@ -1,7 +1,7 @@
 import { User } from "../../entities/User"
 import { Wallet } from "../../entities/Wallet"
-import { CardiError } from "../../exceptions/CardiError"
-import { CardiErrorTypes } from "../../exceptions/CardiErrorTypes"
+import { OutputError } from "../../exceptions/OutputError"
+import { OutputErrorTypes } from "../../exceptions/OutputErrorTypes"
 import { WalletRepository } from "../../repositories/WalletRepository"
 
 export default class GetWalletByIdService {
@@ -13,7 +13,7 @@ export default class GetWalletByIdService {
 
   async run(userId: User['id']): Promise<Wallet> {
     const wallet = await this._walletRepository.getByOwner(userId)
-    if (wallet === null) throw new CardiError(CardiErrorTypes.WalletNotFound)
+    if (wallet === null) throw new OutputError(OutputErrorTypes.WalletNotFound)
     return wallet
   }
 }

@@ -1,7 +1,7 @@
 import { Preferences } from "../../entities/Preferences"
 import { User } from "../../entities/User"
-import { CardiError } from "../../exceptions/CardiError"
-import { CardiErrorTypes } from "../../exceptions/CardiErrorTypes"
+import { OutputError } from "../../exceptions/OutputError"
+import { OutputErrorTypes } from "../../exceptions/OutputErrorTypes"
 import { PreferencesRepository } from "../../repositories/PreferencesRepository"
 
 export default class GetPreferencesByUserService {
@@ -13,7 +13,7 @@ export default class GetPreferencesByUserService {
 
   async run(userId: User['id']): Promise<Preferences> {
     const preferences = await this._preferencesRepository.getByUserId(userId)
-    if (preferences === null) throw new CardiError(CardiErrorTypes.PreferencesNotFound)
+    if (preferences === null) throw new OutputError(OutputErrorTypes.PreferencesNotFound)
     return preferences
   }
 }

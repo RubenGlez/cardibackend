@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from 'express'
-import { CardiError } from '../../../../domain/exceptions/CardiError'
-import { CardiErrorTypes } from '../../../../domain/exceptions/CardiErrorTypes'
+import { OutputError } from '../../../../domain/exceptions/OutputError'
+import { OutputErrorTypes } from '../../../../domain/exceptions/OutputErrorTypes'
 
 export default function notFoundController(
   req: Request,
   res: Response,
   next: NextFunction
 ): void {
-  const error = new CardiError(CardiErrorTypes.NotFound)
+  const error = new OutputError(OutputErrorTypes.NotFound)
   next(error)
 }

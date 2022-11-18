@@ -1,7 +1,7 @@
 import { Company } from "../../../domain/entities/Company"
 import { User } from "../../../domain/entities/User"
-import { CardiError } from "../../../domain/exceptions/CardiError"
-import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { OutputError } from "../../../domain/exceptions/OutputError"
+import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
 import { CompanyRepository } from "../../../domain/repositories/CompanyRepository"
 import ExistCompanyByNameService from "../../../domain/services/company/ExistCompanyByNameService"
 
@@ -19,7 +19,7 @@ export default class CreateCompanyUseCase {
 
   async run(inputData: InputData, tenantId: User['id']): Promise<Company> {
     const existCompany = await this._existCompanyByNameService.run(inputData.name)
-    if (existCompany) throw new CardiError(CardiErrorTypes.CompanyAlreadyExist)
+    if (existCompany) throw new OutputError(OutputErrorTypes.CompanyAlreadyExist)
 
     const companyToCreate: Company = {
       owner: tenantId,

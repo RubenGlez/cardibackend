@@ -1,19 +1,19 @@
 import { Request, NextFunction, Response } from 'express'
-import { CardiError } from '../../../../domain/exceptions/CardiError'
-import { CardiErrorTypes } from '../../../../domain/exceptions/CardiErrorTypes'
+import { OutputError } from '../../../../domain/exceptions/OutputError'
+import { OutputErrorTypes } from '../../../../domain/exceptions/OutputErrorTypes'
 
 export default function errorController(
-  err: Error | CardiError,
+  err: Error | OutputError,
   req: Request,
   res: Response,
   next: NextFunction
 ): void {
-  if (err instanceof CardiError) {
+  if (err instanceof OutputError) {
     res.status(err.status).send(err)
   } else {
     console.error('--aqui error no controlado', err)
 
-    const cardiError = new CardiError(CardiErrorTypes.Unknown)
-    res.status(cardiError.status).send(cardiError)
+    const outputError = new OutputError(OutputErrorTypes.Unknown)
+    res.status(outputError.status).send(outputError)
   }
 }

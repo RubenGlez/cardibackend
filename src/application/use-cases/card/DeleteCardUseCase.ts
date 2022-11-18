@@ -1,6 +1,6 @@
 import { Card } from "../../../domain/entities/Card"
-import { CardiError } from "../../../domain/exceptions/CardiError"
-import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { OutputError } from "../../../domain/exceptions/OutputError"
+import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
 import { CardRepository } from "../../../domain/repositories/CardRepository"
 import GetCardByIdService from "../../../domain/services/card/GetCardByIdService"
 
@@ -18,7 +18,7 @@ export default class DeleteCardUseCase {
     tenantId: Card['id']
   ): Promise<void> {
     const cardToDelete = await this._getCardByIdService.run(cardId)
-    if (cardToDelete.owner !== tenantId) throw new CardiError(CardiErrorTypes.NotOwned)
+    if (cardToDelete.owner !== tenantId) throw new OutputError(OutputErrorTypes.NotOwned)
 
     // has promos?
     // -> no : delete

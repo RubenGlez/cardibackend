@@ -1,6 +1,6 @@
 import { Auth } from "../../../domain/entities/Auth"
-import { CardiError } from "../../../domain/exceptions/CardiError"
-import { CardiErrorTypes } from "../../../domain/exceptions/CardiErrorTypes"
+import { OutputError } from "../../../domain/exceptions/OutputError"
+import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
 import { AuthRepository, SignInInputData } from "../../../domain/repositories/AuthRepository"
 import { UserRepository } from "../../../domain/repositories/UserRepository"
 import GetUserByEmailService from "../../../domain/services/user/GetUserByEmailService"
@@ -18,14 +18,14 @@ export default class SignInUseCase {
 
   async run(inputData: SignInInputData): Promise<Auth> {
     const foundUser = await this._getUserByEmailService.run(inputData.email)
-    if (foundUser === null) throw new CardiError(CardiErrorTypes.UserNotFound)
+    if (foundUser === null) throw new OutputError(OutputErrorTypes.UserNotFound)
 
     const isPasswordCorrect = await this._authRepository.comparePassword(
       inputData.password,
       foundUser.password
     )
 
-    if (!isPasswordCorrect) throw new CardiError(CardiErrorTypes.InvalidCredentials)
+    if (!isPasswordCorrect) throw new OutputError(OutputErrorTypes.InvalidCredentials)
 
     const userUpdated = await this._userRepository.update(foundUser)
 

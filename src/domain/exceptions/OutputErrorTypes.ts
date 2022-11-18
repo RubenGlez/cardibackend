@@ -1,4 +1,4 @@
-export enum CardiErrorTypes {
+export enum OutputErrorTypes {
   ExpiredAccessToken = 'ExpiredAccessToken',
   InvalidAccessToken = 'InvalidAccessToken',
   InvalidCredentials = 'InvalidCredentials',
