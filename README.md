@@ -4,3 +4,5 @@
 2. Arrancar Node: npm run dev
 
 # TODO
+
+mejorar el tipado del método toDto()

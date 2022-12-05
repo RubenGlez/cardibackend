@@ -1,7 +1,7 @@
 import { User } from "../../../domain/entities/User"
 import { Wallet } from "../../../domain/entities/Wallet"
 import { WalletRepository } from "../../../domain/repositories/WalletRepository"
-import { GetWalletByOwnerService } from "../../../domain/services/wallet"
+import GetWalletByOwnerService from "../../../domain/services/wallet/GetWalletByOwnerService"
 
 export default class GetWalletUseCase {
   private readonly _getWalletByIdService: GetWalletByOwnerService

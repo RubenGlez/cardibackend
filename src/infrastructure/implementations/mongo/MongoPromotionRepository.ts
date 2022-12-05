@@ -1,16 +1,21 @@
-import { Promotion } from "../../../domain/entities/Promotion"
-import { User } from "../../../domain/entities/User"
-import { PromotionRepository } from "../../../domain/repositories/PromotionRepository"
-import PromotionModel from "../../driven-adapters/mongoose/models/PromotionModel"
+import { FilterQuery } from 'mongoose'
+import { Promotion } from '../../../domain/entities/Promotion'
+import { User } from '../../../domain/entities/User'
+import { PromotionRepository } from '../../../domain/repositories/PromotionRepository'
+import PromotionModel from '../../driven-adapters/mongoose/models/PromotionModel'
+import { PromotionFilters } from '../../driving-adapters/api-rest/controllers/promotion/helpers'
+import { getQueryPaginated, getQuerySorted } from './helpers'
 
 export default class MongoPromotionRepository implements PromotionRepository {
   private readonly _model = PromotionModel
 
   private toDTO(promotionToMap: any): Promotion {
-    const promotionDTO = Object.assign({ id: promotionToMap._id?.toString() }, promotionToMap)
+    const promotionDTO = Object.assign(
+      { id: promotionToMap._id?.toString() },
+      promotionToMap
+    )
     delete promotionDTO._id
     delete promotionDTO.__v
-
     promotionDTO.user = promotionDTO.user?.toString()
     promotionDTO.company = promotionDTO.company?.toString()
     promotionDTO.card = promotionDTO.card?.toString()
@@ -18,13 +23,36 @@ export default class MongoPromotionRepository implements PromotionRepository {
     return promotionDTO
   }
 
-  async getAllByOwner(owner: User['id']): Promise<Promotion[]> {
-    const allPromotions = await this._model.find({ owner }).lean()
-    if (allPromotions.length === 0) return allPromotions
-    const allPromotionsMapped = allPromotions.map(promotion =>
+  async getAllByOwner(
+    owner: User['id'],
+    filters: PromotionFilters
+  ): Promise<Promotion[]> {
+    const currentDate = new Date()
+
+    const stateFilters: Record<string, FilterQuery<Promotion>> = {
+      actived: {
+        validFrom: { $lte: currentDate }, validTo: { $gte: currentDate }
+      },
+      expired: {
+        validTo: { $lte: currentDate }
+      }
+    }
+    const stateFilter = filters.state !== undefined ? stateFilters[filters.state] : {}
+
+    const query = this._model
+      .find({ owner, ...stateFilter })
+      .sort(filters.sort)
+      .skip(filters.skip)
+      .limit(filters.limit)
+    const querySorted = getQuerySorted(query, filters)
+    const querySortedAndPaginated = getQueryPaginated(querySorted, filters)
+    const queryResult = await querySortedAndPaginated.lean()
+
+    if (queryResult.length === 0) return queryResult
+    const promotionsMapped = queryResult.map(promotion =>
       this.toDTO(promotion)
     )
-    return allPromotionsMapped
+    return promotionsMapped
   }
 
   async getById(id: Promotion['id']): Promise<Promotion | null> {
@@ -42,11 +70,9 @@ export default class MongoPromotionRepository implements PromotionRepository {
   }
 
   async update(inputData: Promotion): Promise<Promotion> {
-    const promotionUpdated = await this._model.findByIdAndUpdate(
-      inputData.id,
-      inputData,
-      { returnDocument: 'after' }
-    ).lean()
+    const promotionUpdated = await this._model
+      .findByIdAndUpdate(inputData.id, inputData, { returnDocument: 'after' })
+      .lean()
     const promotionMapped = this.toDTO(promotionUpdated)
     return promotionMapped
   }

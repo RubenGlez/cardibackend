@@ -3,7 +3,7 @@ import { Wallet } from "../../../domain/entities/Wallet"
 import { OutputError } from "../../../domain/exceptions/OutputError"
 import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
 import { WalletRepository } from "../../../domain/repositories/WalletRepository"
-import { GetWalletByIdService } from "../../../domain/services/wallet"
+import GetWalletByIdService from "../../../domain/services/wallet/GetWalletByOwnerService"
 
 type InputData = Omit<Wallet, 'owner' | 'company'>
 
