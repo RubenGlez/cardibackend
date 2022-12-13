@@ -31,27 +31,23 @@ export default class MongoPromotionRepository implements PromotionRepository {
 
     const stateFilters: Record<string, FilterQuery<Promotion>> = {
       actived: {
-        validFrom: { $lte: currentDate }, validTo: { $gte: currentDate }
+        validFrom: { $lte: currentDate },
+        validTo: { $gte: currentDate }
       },
       expired: {
         validTo: { $lte: currentDate }
       }
     }
-    const stateFilter = filters.state !== undefined ? stateFilters[filters.state] : {}
+    const stateFilter =
+      filters.state !== undefined ? stateFilters[filters.state] : {}
 
-    const query = this._model
-      .find({ owner, ...stateFilter })
-      .sort(filters.sort)
-      .skip(filters.skip)
-      .limit(filters.limit)
+    const query = this._model.find({ owner, ...stateFilter })
     const querySorted = getQuerySorted(query, filters)
     const querySortedAndPaginated = getQueryPaginated(querySorted, filters)
     const queryResult = await querySortedAndPaginated.lean()
 
     if (queryResult.length === 0) return queryResult
-    const promotionsMapped = queryResult.map(promotion =>
-      this.toDTO(promotion)
-    )
+    const promotionsMapped = queryResult.map(promotion => this.toDTO(promotion))
     return promotionsMapped
   }
 
@@ -80,4 +76,5 @@ export default class MongoPromotionRepository implements PromotionRepository {
   async delete(id: Promotion['id']): Promise<void> {
     await this._model.findByIdAndDelete(id)
   }
+
 }
