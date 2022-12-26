@@ -1,3 +1,4 @@
+import { Company } from '../../../domain/entities/Company'
 import { Subscription } from '../../../domain/entities/Subscription'
 import { SubscriptionRepository } from '../../../domain/repositories/SubscriptionRepository'
 import SubscriptionModel from '../../driven-adapters/mongoose/models/SubscriptionModel'
@@ -20,15 +21,15 @@ export default class MongoSubscriptionRepository
     return subscriptionDTO
   }
 
-  async getAllByPromotion(
-    promotion: Subscription['promotion']
+  async getAllByCompany(
+    company: Company['id']
   ): Promise<Subscription[]> {
-    const subscriptionsByPromotion = await this._model.find({ promotion }).lean()
-    if (subscriptionsByPromotion.length === 0) return subscriptionsByPromotion
-    const subscriptionsByPromotionMapped = subscriptionsByPromotion.map(
+    const subscriptionsByCompany = await this._model.find({ company }).lean()
+    if (subscriptionsByCompany.length === 0) return subscriptionsByCompany
+    const subscriptionsByCompanyMapped = subscriptionsByCompany.map(
       subscription => this.toDto(subscription)
     )
-    return subscriptionsByPromotionMapped
+    return subscriptionsByCompanyMapped
   }
 
   async getBySubscriptorAndPromotion(

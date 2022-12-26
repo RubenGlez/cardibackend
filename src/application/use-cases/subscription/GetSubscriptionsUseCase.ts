@@ -1,39 +1,39 @@
-import { Promotion } from "../../../domain/entities/Promotion"
+import { Company } from "../../../domain/entities/Company"
 import { Subscription } from "../../../domain/entities/Subscription"
 import { User } from "../../../domain/entities/User"
 import { OutputError } from "../../../domain/exceptions/OutputError"
 import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
-import { PromotionRepository } from "../../../domain/repositories/PromotionRepository"
+import { CompanyRepository } from "../../../domain/repositories/CompanyRepository"
 import { SubscriptionRepository } from "../../../domain/repositories/SubscriptionRepository"
 
 export default class GetSubscriptionsUseCase {
   private readonly _subscriptionRepository: SubscriptionRepository
-  private readonly _promotionRepository: PromotionRepository
+  private readonly _companyRepository: CompanyRepository
 
   constructor(
     subscriptionRepository: SubscriptionRepository,
-    promotionRepository: PromotionRepository
+    companyRepository: CompanyRepository
   ) {
     this._subscriptionRepository = subscriptionRepository
-    this._promotionRepository = promotionRepository
+    this._companyRepository = companyRepository
   }
 
   async run(
-    promotionId: Promotion['id'],
-    tenantId: User['id']
+    tenantId: User['id'],
+    companyId: Company['id'],
   ): Promise<Subscription[]> {
-    const promotion = await this._promotionRepository.getById(promotionId)
-    if (promotion == null) {
-      throw new OutputError(OutputErrorTypes.PromotionNotFound)
+    const company = await this._companyRepository.getById(companyId)
+    if (company == null) {
+      throw new OutputError(OutputErrorTypes.CompanyNotFound)
     }
 
-    const isPromotionOwnedByTenant = promotion.owner === tenantId
-    if (!isPromotionOwnedByTenant) {
+    const isCompanyOwnedByTenant = company.owner === tenantId
+    if (!isCompanyOwnedByTenant) {
       throw new OutputError(OutputErrorTypes.NotOwned)
     }
 
-    const subscriptions = await this._subscriptionRepository.getAllByPromotion(
-      promotionId
+    const subscriptions = await this._subscriptionRepository.getAllByCompany(
+      company.id
     )
     return subscriptions
   }

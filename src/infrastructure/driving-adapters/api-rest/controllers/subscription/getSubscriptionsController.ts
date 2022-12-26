@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import GetSubscriptionsUseCase from '../../../../../application/use-cases/subscription/GetSubscriptionsUseCase'
-import MongoPromotionRepository from '../../../../implementations/mongo/MongoPromotionRepository'
+import MongoCompanyRepository from '../../../../implementations/mongo/MongoCompanyRepository'
 import MongoSubscriptionRepository from '../../../../implementations/mongo/MongoSubscriptionRepository'
 
 export default async function getSubscriptionsController(
@@ -9,16 +9,16 @@ export default async function getSubscriptionsController(
   next: NextFunction
 ): Promise<void> {
   const mongoSubscriptionRepository = new MongoSubscriptionRepository()
-  const mongoPromotionRepository = new MongoPromotionRepository()
+  const mongoCompanyRepository = new MongoCompanyRepository()
   const getSubscriptionsUseCase = new GetSubscriptionsUseCase(
     mongoSubscriptionRepository,
-    mongoPromotionRepository
+    mongoCompanyRepository
   )
 
   try {
     const { tenantId, query } = req
-    const { promotionId } = query
-    const companies = await getSubscriptionsUseCase.run(promotionId?.toString(), tenantId)
+    const { companyId } = query
+    const companies = await getSubscriptionsUseCase.run(tenantId, companyId?.toString())
     res.json(companies)
 
   } catch (e) {

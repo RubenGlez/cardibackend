@@ -1,7 +1,8 @@
+import { Company } from "../entities/Company";
 import { Subscription } from "../entities/Subscription";
 
 export interface SubscriptionRepository {
-  getAllByPromotion: (promotion: Subscription["promotion"]) => Promise<Subscription[]>;
+  getAllByCompany: (company: Company["id"]) => Promise<Subscription[]>;
   getBySubscriptorAndPromotion: (
     subscriptor: Subscription["subscriptor"],
     promotion: Subscription["promotion"]

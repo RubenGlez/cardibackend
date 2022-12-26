@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import GetPromotionsUseCase from '../../../../../application/use-cases/promotion/GetPromotionsUseCase'
+import MongoCompanyRepository from '../../../../implementations/mongo/MongoCompanyRepository'
 import MongoPromotionRepository from '../../../../implementations/mongo/MongoPromotionRepository'
-import { getPromotionFilters } from './helpers'
 
 
 export default async function getPromotionsController(
@@ -10,12 +10,13 @@ export default async function getPromotionsController(
   next: NextFunction
 ): Promise<void> {
   const mongoPromotionRepository = new MongoPromotionRepository()
-  const getPromotionsUseCase = new GetPromotionsUseCase(mongoPromotionRepository)
+  const mongoCompanyRepository = new MongoCompanyRepository()
+  const getPromotionsUseCase = new GetPromotionsUseCase(mongoPromotionRepository, mongoCompanyRepository)
 
   try {
     const { tenantId, query } = req
-    const filters = getPromotionFilters(query)
-    const promotions = await getPromotionsUseCase.run(tenantId, filters)
+    const { companyId } = query
+    const promotions = await getPromotionsUseCase.run(tenantId, companyId?.toString())
     res.json(promotions)
 
   } catch (e) {
