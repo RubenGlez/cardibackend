@@ -1,3 +1,4 @@
+import { PipelineStage } from 'mongoose'
 import { Company } from '../../../domain/entities/Company'
 import { Metrics } from '../../../domain/entities/Metrics'
 import { MetricsRepository } from '../../../domain/repositories/MetricsRepository'
@@ -7,272 +8,130 @@ export default class MongoMetricsRepository implements MetricsRepository {
   private readonly _subscriptionModel = SubscriptionModel
 
   async getPromotionMetricsByCompany(company: Company['id']): Promise<Metrics> {
+    const filterByCompanyAndInProgress: PipelineStage = {
+      $match: {
+        $expr: {
+          $and: [
+            { $eq: ['$company', { $toObjectId: company }] },
+            { $eq: ['$status', 'inProgress'] }
+          ]
+        }
+      }
+    }
+    const filterByCompanyAndCompleted: PipelineStage = {
+      $match: {
+        $expr: {
+          $and: [
+            { $eq: ['$company', { $toObjectId: company }] },
+            { $eq: ['$status', 'completed'] }
+          ]
+        }
+      }
+    }
+    const groupedByPromotionId: PipelineStage = {
+      $group: {
+        _id: '$promotion',
+        subsCounter: { $count: {} }
+      }
+    }
+    const populatePromotions: PipelineStage = {
+      $lookup: {
+        from: 'promotions',
+        localField: '_id',
+        foreignField: '_id',
+        as: 'promotion_doc'
+      }
+    }
+    const replaceRootWithPromotions: PipelineStage = {
+      $replaceRoot: {
+        newRoot: {
+          $mergeObjects: [{ $arrayElemAt: ['$promotion_doc', 0] }, '$$ROOT']
+        }
+      }
+    }
+    const clearDocuments: PipelineStage = {
+      $project: {
+        promotion_doc: 0,
+        __v: 0
+      }
+    }
+    const filterByUnexpired: PipelineStage = {
+      $match: {
+        $expr: {
+          $and: [
+            {
+              $lt: ['$validFrom', '$$NOW']
+            },
+            {
+              $gt: ['$validTo', '$$NOW']
+            }
+          ]
+        }
+      }
+    }
+    const filterByExpired: PipelineStage = {
+      $match: {
+        $expr: {
+          $or: [
+            {
+              $gt: ['$validFrom', '$$NOW']
+            },
+            {
+              $lt: ['$validTo', '$$NOW']
+            }
+          ]
+        }
+      }
+    }
+    const sortByCounter: PipelineStage = {
+      $sort: {
+        subsCounter: -1
+      }
+    }
+
+    // TODO: refactor these four queries into a single one
     const unexpiredMostFollowedPromotions =
       await this._subscriptionModel.aggregate([
-        // subs filtered by company and in progress
-        {
-          $match: {
-            $expr: {
-              $and: [
-                { $eq: ['$company', { $toObjectId: company }] },
-                { $eq: ['$status', 'inProgress'] }
-              ]
-            }
-          }
-        },
-        // grouped by promotion id
-        {
-          $group: {
-            _id: '$promotion',
-            subsCounter: { $count: {} }
-          }
-        },
-        // populate promotions
-        {
-          $lookup: {
-            from: 'promotions',
-            localField: '_id',
-            foreignField: '_id',
-            as: 'promotion_doc'
-          }
-        },
-        // replace root with promotions array
-        {
-          $replaceRoot: {
-            newRoot: {
-              $mergeObjects: [{ $arrayElemAt: ['$promotion_doc', 0] }, '$$ROOT']
-            }
-          }
-        },
-        // clear unneccessary fields
-        {
-          $project: {
-            promotion_doc: 0,
-            __v: 0
-          }
-        },
-        // filter by unexpired promotions
-        {
-          $match: {
-            $expr: {
-              $and: [
-                {
-                  $lt: ['$validFrom', '$$NOW']
-                },
-                {
-                  $gt: ['$validTo', '$$NOW']
-                }
-              ]
-            }
-          }
-        },
-        // Sort by counter
-        {
-          $sort: {
-            subsCounter: -1
-          }
-        }
+        { ...filterByCompanyAndInProgress },
+        { ...groupedByPromotionId },
+        { ...populatePromotions },
+        { ...replaceRootWithPromotions },
+        { ...clearDocuments },
+        { ...filterByUnexpired },
+        { ...sortByCounter }
       ])
 
     const unexpiredMostCompletedPromotions =
       await this._subscriptionModel.aggregate([
-        // subs filtered by company and completed
-        {
-          $match: {
-            $expr: {
-              $and: [
-                { $eq: ['$company', { $toObjectId: company }] },
-                { $eq: ['$status', 'completed'] }
-              ]
-            }
-          }
-        },
-        // grouped by promotion id
-        {
-          $group: {
-            _id: '$promotion',
-            subsCounter: { $count: {} }
-          }
-        },
-        // populate promotions
-        {
-          $lookup: {
-            from: 'promotions',
-            localField: '_id',
-            foreignField: '_id',
-            as: 'promotion_doc'
-          }
-        },
-        // replace root with promotions array
-        {
-          $replaceRoot: {
-            newRoot: {
-              $mergeObjects: [{ $arrayElemAt: ['$promotion_doc', 0] }, '$$ROOT']
-            }
-          }
-        },
-        // clear unneccessary fields
-        {
-          $project: {
-            promotion_doc: 0,
-            __v: 0
-          }
-        },
-        // filter by unexpired promotions
-        {
-          $match: {
-            $expr: {
-              $and: [
-                {
-                  $lt: ['$validFrom', '$$NOW']
-                },
-                {
-                  $gt: ['$validTo', '$$NOW']
-                }
-              ]
-            }
-          }
-        },
-        // Sort by counter
-        {
-          $sort: {
-            subsCounter: -1
-          }
-        }
+        filterByCompanyAndCompleted,
+        groupedByPromotionId,
+        populatePromotions,
+        replaceRootWithPromotions,
+        clearDocuments,
+        filterByUnexpired,
+        sortByCounter
       ])
 
     const expiredMostFollowedPromotions =
       await this._subscriptionModel.aggregate([
-        // subs filtered by company and in progress
-        {
-          $match: {
-            $expr: {
-              $and: [
-                { $eq: ['$company', { $toObjectId: company }] },
-                { $eq: ['$status', 'inProgress'] }
-              ]
-            }
-          }
-        },
-        // grouped by promotion id
-        {
-          $group: {
-            _id: '$promotion',
-            subsCounter: { $count: {} }
-          }
-        },
-        // populate promotions
-        {
-          $lookup: {
-            from: 'promotions',
-            localField: '_id',
-            foreignField: '_id',
-            as: 'promotion_doc'
-          }
-        },
-        // replace root with promotions array
-        {
-          $replaceRoot: {
-            newRoot: {
-              $mergeObjects: [{ $arrayElemAt: ['$promotion_doc', 0] }, '$$ROOT']
-            }
-          }
-        },
-        // clear unneccessary fields
-        {
-          $project: {
-            promotion_doc: 0,
-            __v: 0
-          }
-        },
-        // filter by unexpired promotions
-        {
-          $match: {
-            $expr: {
-              $or: [
-                {
-                  $gt: ['$validFrom', '$$NOW']
-                },
-                {
-                  $lt: ['$validTo', '$$NOW']
-                }
-              ]
-            }
-          }
-        },
-        // Sort by counter
-        {
-          $sort: {
-            subsCounter: -1
-          }
-        }
+        filterByCompanyAndInProgress,
+        groupedByPromotionId,
+        populatePromotions,
+        replaceRootWithPromotions,
+        clearDocuments,
+        filterByExpired,
+        sortByCounter
       ])
 
     const expiredMostCompletedPromotions =
       await this._subscriptionModel.aggregate([
-        // subs filtered by company and in progress
-        {
-          $match: {
-            $expr: {
-              $and: [
-                { $eq: ['$company', { $toObjectId: company }] },
-                { $eq: ['$status', 'completed'] }
-              ]
-            }
-          }
-        },
-        // grouped by promotion id
-        {
-          $group: {
-            _id: '$promotion',
-            subsCounter: { $count: {} }
-          }
-        },
-        // populate promotions
-        {
-          $lookup: {
-            from: 'promotions',
-            localField: '_id',
-            foreignField: '_id',
-            as: 'promotion_doc'
-          }
-        },
-        // replace root with promotions array
-        {
-          $replaceRoot: {
-            newRoot: {
-              $mergeObjects: [{ $arrayElemAt: ['$promotion_doc', 0] }, '$$ROOT']
-            }
-          }
-        },
-        // clear unneccessary fields
-        {
-          $project: {
-            promotion_doc: 0,
-            __v: 0
-          }
-        },
-        // filter by unexpired promotions
-        {
-          $match: {
-            $expr: {
-              $or: [
-                {
-                  $gt: ['$validFrom', '$$NOW']
-                },
-                {
-                  $lt: ['$validTo', '$$NOW']
-                }
-              ]
-            }
-          }
-        },
-        // Sort by counter
-        {
-          $sort: {
-            subsCounter: -1
-          }
-        }
+        filterByCompanyAndCompleted,
+        groupedByPromotionId,
+        populatePromotions,
+        replaceRootWithPromotions,
+        clearDocuments,
+        filterByExpired,
+        sortByCounter
       ])
 
     const promotionMetrics = {
