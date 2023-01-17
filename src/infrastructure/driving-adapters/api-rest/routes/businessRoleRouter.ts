@@ -1,6 +1,7 @@
 import express, { Router } from 'express'
 import cardRouter from './cardRouter'
 import companyRouter from './companyRouter'
+import metricsRouter from './metricsRouter'
 import preferencesRouter from './preferencesRouter'
 import promotionRouter from './promotionRouter'
 import subscriptionsRouter from './subscriptionsRouter'
@@ -14,6 +15,7 @@ router.use('/promotions', promotionRouter)
 router.use('/users', userRouter)
 router.use('/preferences', preferencesRouter)
 router.use('/subscriptions', subscriptionsRouter)
+router.use('/metrics', metricsRouter)
 
 
 export default router

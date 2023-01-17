@@ -8,7 +8,10 @@ export default class MongoSubscriptionRepository
   private readonly _model = SubscriptionModel
 
   private toDto(subscriptionToMap: any): Subscription {
-    const subscriptionDTO = Object.assign({ id: subscriptionToMap._id?.toString() }, subscriptionToMap)
+    const subscriptionDTO = Object.assign(
+      { id: subscriptionToMap._id?.toString() },
+      subscriptionToMap
+    )
     delete subscriptionDTO._id
     delete subscriptionDTO.__v
 
@@ -21,9 +24,7 @@ export default class MongoSubscriptionRepository
     return subscriptionDTO
   }
 
-  async getAllByCompany(
-    company: Company['id']
-  ): Promise<Subscription[]> {
+  async getAllByCompany(company: Company['id']): Promise<Subscription[]> {
     const subscriptionsByCompany = await this._model.find({ company }).lean()
     if (subscriptionsByCompany.length === 0) return subscriptionsByCompany
     const subscriptionsByCompanyMapped = subscriptionsByCompany.map(
@@ -36,10 +37,12 @@ export default class MongoSubscriptionRepository
     subscriptor: Subscription['subscriptor'],
     promotion: Subscription['promotion']
   ): Promise<Subscription | null> {
-    const subscriptionsBySubscriptorAndPromotion = await this._model.findOne({
-      subscriptor,
-      promotion
-    }).lean()
+    const subscriptionsBySubscriptorAndPromotion = await this._model
+      .findOne({
+        subscriptor,
+        promotion
+      })
+      .lean()
     if (subscriptionsBySubscriptorAndPromotion === null) return null
     const subscriptionsBySubscriptorAndPromotionMapped = this.toDto(
       subscriptionsBySubscriptorAndPromotion
@@ -62,11 +65,9 @@ export default class MongoSubscriptionRepository
   }
 
   async update(inputData: Subscription): Promise<Subscription | null> {
-    const subscriptionUpdated = await this._model.findByIdAndUpdate(
-      inputData.id,
-      inputData,
-      { returnDocument: 'after' }
-    ).lean()
+    const subscriptionUpdated = await this._model
+      .findByIdAndUpdate(inputData.id, inputData, { returnDocument: 'after' })
+      .lean()
     if (subscriptionUpdated === null) return null
     const subscriptionMapped = this.toDto(subscriptionUpdated)
     return subscriptionMapped

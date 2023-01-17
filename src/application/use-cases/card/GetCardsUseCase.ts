@@ -10,7 +10,7 @@ export default class GetCardsUseCase {
   }
 
   async run(tenantId: User['id']): Promise<Card[]> {
-    const companies = await this._cardRepository.getAllByOwner(tenantId)
-    return companies
+    const cards = await this._cardRepository.getAllByOwner(tenantId)
+    return cards
   }
 }
