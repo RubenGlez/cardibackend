@@ -88,17 +88,21 @@ export default class MongoMetricsRepository implements MetricsRepository {
         subsCounter: -1
       }
     }
+    const limitResults: PipelineStage = {
+      $limit: 5
+    }
 
     // TODO: refactor these four queries into a single one
     const unexpiredMostFollowedPromotions =
       await this._subscriptionModel.aggregate([
-        { ...filterByCompanyAndInProgress },
-        { ...groupedByPromotionId },
-        { ...populatePromotions },
-        { ...replaceRootWithPromotions },
-        { ...clearDocuments },
-        { ...filterByUnexpired },
-        { ...sortByCounter }
+        filterByCompanyAndInProgress,
+        groupedByPromotionId,
+        populatePromotions,
+        replaceRootWithPromotions,
+        clearDocuments,
+        filterByUnexpired,
+        sortByCounter,
+        limitResults
       ])
 
     const unexpiredMostCompletedPromotions =
