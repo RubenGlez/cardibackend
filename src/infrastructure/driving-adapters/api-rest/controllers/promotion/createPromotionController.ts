@@ -8,13 +8,16 @@ export default async function createPromotionController(
   next: NextFunction
 ): Promise<void> {
   const mongoPromotionRepository = new MongoPromotionRepository()
-  const createPromotionUseCase = new CreatePromotionUseCase(
-    mongoPromotionRepository,
-  )
+  const createPromotionUseCase = new CreatePromotionUseCase({
+    promotionRepository: mongoPromotionRepository
+  })
 
   try {
-    const { tenantId } = req
-    const promotion = await createPromotionUseCase.run(req.body, tenantId)
+    const { tenantId = '', body } = req
+    const promotion = await createPromotionUseCase.run({
+      tenantId,
+      ...body
+    })
     res.json(promotion)
   } catch (e) {
     next(e)

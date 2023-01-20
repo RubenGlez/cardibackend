@@ -1,9 +1,8 @@
-import { Auth } from "../../../domain/entities/Auth"
-import { User } from "../../../domain/entities/User"
-import { AuthRepository } from "../../../domain/repositories/AuthRepository"
-import { BCryptAdapter } from "../../driven-adapters/bcrypt"
-import { JwtAdapter } from "../../driven-adapters/jwt"
-
+import { Auth } from '../../../domain/entities/Auth'
+import { User } from '../../../domain/entities/User'
+import { AuthRepository } from '../../../domain/repositories/AuthRepository'
+import { BCryptAdapter } from '../../driven-adapters/bcrypt'
+import { JwtAdapter } from '../../driven-adapters/jwt'
 
 export default class MongoAuthRepository implements AuthRepository {
   private readonly _bcryptAdapter: BCryptAdapter
@@ -23,7 +22,10 @@ export default class MongoAuthRepository implements AuthRepository {
     password1: User['password'],
     password2: User['password']
   ): Promise<boolean> {
-    const areSamePasswords = await this._bcryptAdapter.compare(password1, password2)
+    const areSamePasswords = await this._bcryptAdapter.compare(
+      password1,
+      password2
+    )
     return areSamePasswords
   }
 

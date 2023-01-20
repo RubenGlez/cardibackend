@@ -1,16 +1,20 @@
-import { Preferences } from "../../../domain/entities/Preferences"
-import { User } from "../../../domain/entities/User"
-import { PreferencesRepository } from "../../../domain/repositories/PreferencesRepository"
-import GetPreferencesByUserService from "../../../domain/services/preferences/GetPreferencesByUserService"
+import { Preferences } from '../../../domain/entities/Preferences'
+import GetPreferencesByUserService from '../../../domain/services/preferences/GetPreferencesByUserService'
+import {
+  GetPreferencesUseCaseDependencies,
+  GetPreferencesUseCaseProps
+} from './types'
 
 export default class GetPreferencesUseCase {
   private readonly _getPreferencesByUserService: GetPreferencesByUserService
 
-  constructor(companyRepository: PreferencesRepository) {
-    this._getPreferencesByUserService = new GetPreferencesByUserService(companyRepository)
+  constructor({ preferencesRepository }: GetPreferencesUseCaseDependencies) {
+    this._getPreferencesByUserService = new GetPreferencesByUserService({
+      preferencesRepository
+    })
   }
 
-  async run(tenantId: User['id']): Promise<Preferences> {
-    return await this._getPreferencesByUserService.run(tenantId)
+  async run({ tenantId }: GetPreferencesUseCaseProps): Promise<Preferences> {
+    return await this._getPreferencesByUserService.run({ userId: tenantId })
   }
 }

@@ -1,33 +1,35 @@
-import { User } from "../../../domain/entities/User"
-import { OutputError } from "../../../domain/exceptions/OutputError"
-import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
-import { UserRepository } from "../../../domain/repositories/UserRepository"
-import GetUserByIdService from "../../../domain/services/user/GetUserByIdService"
-
-
-type InputData = Pick<User, 'id' | 'password' | 'username'>
+import { User } from '../../../domain/entities/User'
+import { OutputError } from '../../../domain/exceptions/OutputError'
+import { OutputErrorTypes } from '../../../domain/exceptions/OutputErrorTypes'
+import { UserRepository } from '../../../domain/repositories/UserRepository'
+import GetUserByIdService from '../../../domain/services/user/GetUserByIdService'
+import { UpdateUserUseCaseDependencies, UpdateUserUseCaseProps } from './types'
 
 export default class UpdateUserUseCase {
   private readonly _userRepository: UserRepository
   private readonly _getUserByIdService: GetUserByIdService
 
-  constructor(userRepository: UserRepository) {
+  constructor({ userRepository }: UpdateUserUseCaseDependencies) {
     this._userRepository = userRepository
-    this._getUserByIdService = new GetUserByIdService(userRepository)
+    this._getUserByIdService = new GetUserByIdService({ userRepository })
   }
 
-  async run(
-    inputData: InputData,
-    tenantId: User['id']
-  ): Promise<User> {
-    if (inputData.id !== tenantId) throw new OutputError(OutputErrorTypes.NotOwned)
+  async run({
+    tenantId,
+    id,
+    password,
+    username
+  }: UpdateUserUseCaseProps): Promise<User> {
+    if (id !== tenantId) {
+      throw new OutputError(OutputErrorTypes.NotOwned)
+    }
 
-    const currentUser = await this._getUserByIdService.run(inputData.id)
+    const currentUser = await this._getUserByIdService.run({ id })
 
     const dataToUpdate: User = {
       ...currentUser,
-      password: inputData.password ?? currentUser.password,
-      username: inputData.username ?? currentUser.username,
+      password: password ?? currentUser.password,
+      username: username ?? currentUser.username,
       updatedAt: new Date()
     }
 

@@ -8,13 +8,13 @@ export default async function createCardController(
   next: NextFunction
 ): Promise<void> {
   const mongoCardRepository = new MongoCardRepository()
-  const createCardUseCase = new CreateCardUseCase(
-    mongoCardRepository,
-  )
+  const createCardUseCase = new CreateCardUseCase({
+    cardRepository: mongoCardRepository
+  })
 
   try {
-    const { tenantId } = req
-    const card = await createCardUseCase.run(req.body, tenantId)
+    const { tenantId = '' } = req
+    const card = await createCardUseCase.run({ tenantId, ...req.body })
     res.json(card)
   } catch (e) {
     next(e)

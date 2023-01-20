@@ -1,7 +1,6 @@
 import { Promotion } from '../../../domain/entities/Promotion'
-import { PromotionRepository } from '../../../domain/repositories/PromotionRepository'
+import { PromotionRepository, PromotionRepositorySaveProps } from '../../../domain/repositories/PromotionRepository'
 import PromotionModel from '../../driven-adapters/mongoose/models/PromotionModel'
-
 
 export default class MongoPromotionRepository implements PromotionRepository {
   private readonly _model = PromotionModel
@@ -20,13 +19,11 @@ export default class MongoPromotionRepository implements PromotionRepository {
     return promotionDTO
   }
 
-  async getAllByCompany(
-    company: Promotion['id']
-  ): Promise<Promotion[]> {
+  async getAllByCompany(company: Promotion['id']): Promise<Promotion[]> {
     const promotionsByCompany = await this._model.find({ company }).lean()
     if (promotionsByCompany.length === 0) return promotionsByCompany
-    const promotionsByCompanyMapped = promotionsByCompany.map(
-      promotion => this.toDTO(promotion)
+    const promotionsByCompanyMapped = promotionsByCompany.map(promotion =>
+      this.toDTO(promotion)
     )
     return promotionsByCompanyMapped
   }
@@ -38,7 +35,7 @@ export default class MongoPromotionRepository implements PromotionRepository {
     return promotionMapped
   }
 
-  async save(inputData: Promotion): Promise<Promotion> {
+  async save(inputData: PromotionRepositorySaveProps): Promise<Promotion> {
     const promotionToCreate = new this._model(inputData)
     const promotionCreated = await promotionToCreate.save()
     const promotionMapped = this.toDTO(promotionCreated.toObject())
@@ -56,5 +53,4 @@ export default class MongoPromotionRepository implements PromotionRepository {
   async delete(id: Promotion['id']): Promise<void> {
     await this._model.findByIdAndDelete(id)
   }
-
 }

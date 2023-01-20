@@ -8,12 +8,18 @@ export default async function updatePreferencesController(
   next: NextFunction
 ): Promise<void> {
   const mongoPreferencesRepository = new MongoPreferencesRepository()
-  const updatePreferencesUseCase = new UpdatePreferencesUseCase(mongoPreferencesRepository)
+  const updatePreferencesUseCase = new UpdatePreferencesUseCase({
+    preferencesRepository: mongoPreferencesRepository
+  })
 
   try {
-    const { params, tenantId } = req
+    const { params, tenantId = '' } = req
     const { preferencesId } = params
-    const preferences = await updatePreferencesUseCase.run({ ...req.body, id: preferencesId }, tenantId)
+    const preferences = await updatePreferencesUseCase.run({
+      tenantId,
+      ...req.body,
+      id: preferencesId
+    })
     res.json(preferences)
   } catch (e) {
     next(e)

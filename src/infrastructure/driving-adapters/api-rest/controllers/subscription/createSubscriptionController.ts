@@ -12,15 +12,18 @@ export default async function createSubscriptionController(
   const mongoSubscriptionRepository = new MongoSubscriptionRepository()
   const mongoPromotionRepository = new MongoPromotionRepository()
   const mongoUserRepository = new MongoUserRepository()
-  const createSubscriptionUseCase = new CreateSubscriptionUseCase(
-    mongoSubscriptionRepository,
-    mongoPromotionRepository,
-    mongoUserRepository
-  )
+  const createSubscriptionUseCase = new CreateSubscriptionUseCase({
+    promotionRepository: mongoPromotionRepository,
+    subscriptionRepository: mongoSubscriptionRepository,
+    userRepository: mongoUserRepository
+  })
 
   try {
-    const { tenantId } = req
-    const subscription = await createSubscriptionUseCase.run(req.body, tenantId)
+    const { tenantId = '', body } = req
+    const subscription = await createSubscriptionUseCase.run({
+      tenantId,
+      ...body
+    })
     res.json(subscription)
   } catch (e) {
     next(e)

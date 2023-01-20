@@ -3,7 +3,6 @@ import SignInUseCase from '../../../../../application/use-cases/auth/SignInUseCa
 import MongoAuthRepository from '../../../../implementations/mongo/MongoAuthRepository'
 import MongoUserRepository from '../../../../implementations/mongo/MongoUserRepository'
 
-
 export default async function signInController(
   req: Request,
   res: Response,
@@ -11,7 +10,11 @@ export default async function signInController(
 ): Promise<void> {
   const mongoUserRepository = new MongoUserRepository()
   const mongoAuthRepository = new MongoAuthRepository()
-  const signInUseCase = new SignInUseCase(mongoAuthRepository, mongoUserRepository)
+  
+  const signInUseCase = new SignInUseCase({
+    authRepository: mongoAuthRepository,
+    userRepository: mongoUserRepository
+  })
 
   try {
     const authData = await signInUseCase.run(req.body)

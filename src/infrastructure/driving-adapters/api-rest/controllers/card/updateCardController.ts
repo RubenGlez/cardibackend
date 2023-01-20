@@ -8,12 +8,18 @@ export default async function updateCardController(
   next: NextFunction
 ): Promise<void> {
   const mongoCardRepository = new MongoCardRepository()
-  const updateCardUseCase = new UpdateCardUseCase(mongoCardRepository)
+  const updateCardUseCase = new UpdateCardUseCase({
+    cardRepository: mongoCardRepository
+  })
 
   try {
-    const { params, tenantId } = req
+    const { params, tenantId = '' } = req
     const { cardId } = params
-    const card = await updateCardUseCase.run({ ...req.body, id: cardId }, tenantId)
+    const card = await updateCardUseCase.run({
+      tenantId,
+      ...req.body,
+      id: cardId
+    })
     res.json(card)
   } catch (e) {
     next(e)

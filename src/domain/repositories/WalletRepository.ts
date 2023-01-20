@@ -1,10 +1,11 @@
-import { User } from "../entities/User"
-import { Wallet } from "../entities/Wallet"
+import { Wallet } from '../entities/Wallet'
+
+export type WalletRepositorySaveProps = Pick<Wallet, 'owner' | 'cards'>
 
 export interface WalletRepository {
-  getByOwner: (owner: User['id']) => Promise<Wallet | null>
+  getByOwner: (owner: Wallet['owner']) => Promise<Wallet | null>
   getById: (id: Wallet['id']) => Promise<Wallet | null>
-  save: (inputData: Wallet) => Promise<Wallet>
+  save: (props: WalletRepositorySaveProps) => Promise<Wallet>
   update: (inputData: Wallet) => Promise<Wallet>
   delete: (id: Wallet['id']) => Promise<void>
 }

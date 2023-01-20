@@ -1,7 +1,6 @@
 import { Schema, model } from 'mongoose'
 import { Promotion, PromotionType } from '../../../../domain/entities/Promotion'
 
-
 const { ObjectId } = Schema.Types
 
 const PromotionSchema = new Schema<Promotion>(

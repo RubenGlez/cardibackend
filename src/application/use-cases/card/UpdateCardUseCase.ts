@@ -1,32 +1,38 @@
-import { Card } from "../../../domain/entities/Card"
-import { User } from "../../../domain/entities/User"
-import { OutputError } from "../../../domain/exceptions/OutputError"
-import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
-import { CardRepository } from "../../../domain/repositories/CardRepository"
-import GetCardByIdService from "../../../domain/services/card/GetCardByIdService"
-
-type InputData = Omit<Card, 'owner' | 'company'>
+import { Card } from '../../../domain/entities/Card'
+import { OutputError } from '../../../domain/exceptions/OutputError'
+import { OutputErrorTypes } from '../../../domain/exceptions/OutputErrorTypes'
+import { CardRepository } from '../../../domain/repositories/CardRepository'
+import GetCardByIdService from '../../../domain/services/card/GetCardByIdService'
+import { UpdateCardUseCaseDependencies, UpdateCardUseCaseProps } from './types'
 
 export default class UpdateCardUseCase {
   private readonly _cardRepository: CardRepository
   private readonly _getCardByIdService: GetCardByIdService
 
-
-  constructor(cardRepository: CardRepository) {
+  constructor({ cardRepository }: UpdateCardUseCaseDependencies) {
     this._cardRepository = cardRepository
-    this._getCardByIdService = new GetCardByIdService(cardRepository)
+    this._getCardByIdService = new GetCardByIdService({cardRepository})
   }
 
-  async run(inputData: InputData, tenantId: User['id']): Promise<Card> {
-    const currentCard = await this._getCardByIdService.run(inputData.id)
-    if (currentCard?.owner !== tenantId) throw new OutputError(OutputErrorTypes.NotOwned)
+  async run({
+    tenantId,
+    id,
+    name,
+    color,
+    logo,
+    description
+  }: UpdateCardUseCaseProps): Promise<Card> {
+    const currentCard = await this._getCardByIdService.run({id})
+    if (currentCard?.owner !== tenantId) {
+      throw new OutputError(OutputErrorTypes.NotOwned)
+    }
 
     const cardToUpdate: Card = {
       ...currentCard,
-      name: inputData.name ?? currentCard.name,
-      color: inputData.color ?? currentCard.color,
-      logo: inputData.logo ?? currentCard.logo,
-      description: inputData.description ?? currentCard.description,
+      name: name ?? currentCard.name,
+      color: color ?? currentCard.color,
+      logo: logo ?? currentCard.logo,
+      description: description ?? currentCard.description
     }
 
     const cardUpdated = await this._cardRepository.update(cardToUpdate)

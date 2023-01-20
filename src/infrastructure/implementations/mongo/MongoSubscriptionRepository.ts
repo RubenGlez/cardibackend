@@ -1,10 +1,15 @@
 import { Company } from '../../../domain/entities/Company'
 import { Subscription } from '../../../domain/entities/Subscription'
-import { SubscriptionRepository } from '../../../domain/repositories/SubscriptionRepository'
+import {
+  SubscriptionRepository,
+  SubscriptionRepositorySaveProps,
+  SubscriptionRepositoryUpdateProps
+} from '../../../domain/repositories/SubscriptionRepository'
 import SubscriptionModel from '../../driven-adapters/mongoose/models/SubscriptionModel'
 
 export default class MongoSubscriptionRepository
-  implements SubscriptionRepository {
+  implements SubscriptionRepository
+{
   private readonly _model = SubscriptionModel
 
   private toDto(subscriptionToMap: any): Subscription {
@@ -57,14 +62,18 @@ export default class MongoSubscriptionRepository
     return subscriptionMapped
   }
 
-  async save(inputData: Subscription): Promise<Subscription> {
+  async save(
+    inputData: SubscriptionRepositorySaveProps
+  ): Promise<Subscription> {
     const subscriptionToCreate = new this._model(inputData)
     const subscriptionCreated = await subscriptionToCreate.save()
     const subscriptionMapped = this.toDto(subscriptionCreated.toObject())
     return subscriptionMapped
   }
 
-  async update(inputData: Subscription): Promise<Subscription | null> {
+  async update(
+    inputData: SubscriptionRepositoryUpdateProps
+  ): Promise<Subscription | null> {
     const subscriptionUpdated = await this._model
       .findByIdAndUpdate(inputData.id, inputData, { returnDocument: 'after' })
       .lean()

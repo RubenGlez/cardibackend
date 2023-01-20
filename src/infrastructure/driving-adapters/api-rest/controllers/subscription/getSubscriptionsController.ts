@@ -10,17 +10,19 @@ export default async function getSubscriptionsController(
 ): Promise<void> {
   const mongoSubscriptionRepository = new MongoSubscriptionRepository()
   const mongoCompanyRepository = new MongoCompanyRepository()
-  const getSubscriptionsUseCase = new GetSubscriptionsUseCase(
-    mongoSubscriptionRepository,
-    mongoCompanyRepository
-  )
+  const getSubscriptionsUseCase = new GetSubscriptionsUseCase({
+    companyRepository: mongoCompanyRepository,
+    subscriptionRepository: mongoSubscriptionRepository
+  })
 
   try {
-    const { tenantId, query } = req
+    const { tenantId = '', query } = req
     const { companyId } = query
-    const companies = await getSubscriptionsUseCase.run(tenantId, companyId?.toString())
+    const companies = await getSubscriptionsUseCase.run({
+      tenantId,
+      companyId: companyId?.toString() ?? ''
+    })
     res.json(companies)
-
   } catch (e) {
     next(e)
   }

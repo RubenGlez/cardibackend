@@ -11,7 +11,7 @@ export default function errorController(
   if (err instanceof OutputError) {
     res.status(err.status).send(err)
   } else {
-    console.error('--aqui error no controlado', err)
+    console.error('🚨 Error not handled: ', err)
 
     const outputError = new OutputError(OutputErrorTypes.Unknown)
     res.status(outputError.status).send(outputError)

@@ -10,16 +10,19 @@ export default async function getMetricsController(
 ): Promise<void> {
   const mongoCompanyRepository = new MongoCompanyRepository()
   const mongoMetricsRepository = new MongoMetricsRepository()
-  const getMetricsUseCase = new GetMetricsUseCase(
-    mongoCompanyRepository,
-    mongoMetricsRepository
-  )
+  const getMetricsUseCase = new GetMetricsUseCase({
+    companyRepository: mongoCompanyRepository,
+    metricsRepository: mongoMetricsRepository
+  })
 
   try {
-    const { tenantId, query } = req
+    const { tenantId = '', query } = req
     const { companyId } = query
 
-    const metrics = await getMetricsUseCase.run(tenantId, companyId?.toString())
+    const metrics = await getMetricsUseCase.run({
+      tenantId,
+      companyId: companyId?.toString() ?? ''
+    })
     res.json(metrics)
   } catch (e) {
     next(e)

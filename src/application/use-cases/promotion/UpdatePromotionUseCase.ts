@@ -1,40 +1,43 @@
-import { Promotion } from "../../../domain/entities/Promotion"
-import { User } from "../../../domain/entities/User"
-import { OutputError } from "../../../domain/exceptions/OutputError"
-import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
-import { PromotionRepository } from "../../../domain/repositories/PromotionRepository"
-import GetPromotionByIdService from "../../../domain/services/promotion/GetPromotionByIdService"
-
-type InputData = Pick<
-  Promotion,
-  'id' | 'name' | 'description' | 'validFrom' | 'validTo'
->
+import { Promotion } from '../../../domain/entities/Promotion'
+import { OutputError } from '../../../domain/exceptions/OutputError'
+import { OutputErrorTypes } from '../../../domain/exceptions/OutputErrorTypes'
+import { PromotionRepository } from '../../../domain/repositories/PromotionRepository'
+import GetPromotionByIdService from '../../../domain/services/promotion/GetPromotionByIdService'
+import {
+  UpdatePromotionUseCaseDependencies,
+  UpdatePromotionUseCaseProps
+} from './types'
 
 export default class UpdatePromotionUseCase {
   private readonly _promotionRepository: PromotionRepository
   private readonly _getPromotionByIdService: GetPromotionByIdService
 
-  constructor(promotionRepository: PromotionRepository) {
+  constructor({ promotionRepository }: UpdatePromotionUseCaseDependencies) {
     this._promotionRepository = promotionRepository
-    this._getPromotionByIdService = new GetPromotionByIdService(
+    this._getPromotionByIdService = new GetPromotionByIdService({
       promotionRepository
-    )
+    })
   }
 
-  async run(inputData: InputData, tenantId: User['id']): Promise<Promotion> {
-    const currentPromotion = await this._getPromotionByIdService.run(
-      inputData.id
-    )
+  async run({
+    tenantId,
+    id,
+    name,
+    description,
+    validFrom,
+    validTo
+  }: UpdatePromotionUseCaseProps): Promise<Promotion> {
+    const currentPromotion = await this._getPromotionByIdService.run({ id })
     if (currentPromotion?.owner !== tenantId) {
       throw new OutputError(OutputErrorTypes.NotOwned)
     }
 
     const promotionToUpdate: Promotion = {
       ...currentPromotion,
-      name: inputData.name ?? currentPromotion.name,
-      description: inputData.description ?? currentPromotion.description,
-      validFrom: inputData.validFrom ?? currentPromotion.validFrom,
-      validTo: inputData.validTo ?? currentPromotion.validTo
+      name: name ?? currentPromotion.name,
+      description: description ?? currentPromotion.description,
+      validFrom: validFrom ?? currentPromotion.validFrom,
+      validTo: validTo ?? currentPromotion.validTo
     }
 
     const promotionUpdated = await this._promotionRepository.update(

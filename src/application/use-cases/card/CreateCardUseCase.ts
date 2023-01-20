@@ -1,24 +1,32 @@
-import { Card } from "../../../domain/entities/Card"
-import { User } from "../../../domain/entities/User"
-import { CardRepository } from "../../../domain/repositories/CardRepository"
-
-type InputData = Omit<Card, 'id'>
+import { Card } from '../../../domain/entities/Card'
+import {
+  CardRepository,
+  CardRepositorySaveProps
+} from '../../../domain/repositories/CardRepository'
+import { CreateCardUseCaseDependencies, CreateCardUseCaseProps } from './types'
 
 export default class CreateCardUseCase {
   private readonly _cardRepository: CardRepository
 
-  constructor(cardRepository: CardRepository) {
+  constructor({ cardRepository }: CreateCardUseCaseDependencies) {
     this._cardRepository = cardRepository
   }
 
-  async run(inputData: InputData, tenantId: User['id']): Promise<Card> {
-    const cardToCreate: Card = {
+  async run({
+    tenantId,
+    company,
+    name,
+    color,
+    logo,
+    description
+  }: CreateCardUseCaseProps): Promise<Card> {
+    const cardToCreate: CardRepositorySaveProps = {
       owner: tenantId,
-      company: inputData.company,
-      name: inputData.name,
-      color: inputData.color,
-      logo: inputData.logo,
-      description: inputData.description
+      company,
+      name,
+      color,
+      logo,
+      description
     }
 
     const cardCreated = await this._cardRepository.save(cardToCreate)

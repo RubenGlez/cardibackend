@@ -32,7 +32,7 @@ export default class Server {
   async listen(): Promise<void> {
     return await new Promise((resolve) => {
       this._httpServer = this._app.listen(this._port, () => {
-        console.log('Server listening on port', this._port)
+        console.log('🔋 Server listening on port', this._port)
         resolve()
       })
     })

@@ -2,8 +2,8 @@ import { Company } from "./Company"
 import { User } from "./User"
 
 export interface Preferences {
-  id?: string
-  user: User['id']
+  id: string
+  owner: User['id']
 
   companySelected?: Company['id']
   themeSelected?: string

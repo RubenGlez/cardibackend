@@ -4,7 +4,7 @@ import { Promotion } from './Promotion'
 import { User } from './User'
 
 export interface SubscriptionStep {
-  id?: string
+  id: string
   date: Date
 }
 
@@ -14,7 +14,7 @@ export enum SubscriptionStatus {
 }
 
 export interface Subscription {
-  id?: string
+  id: string
   // datos del  user basic
   subscriptor: User['id']
   // datos del user business

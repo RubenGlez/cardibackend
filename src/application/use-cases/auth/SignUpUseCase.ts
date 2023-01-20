@@ -1,12 +1,17 @@
-import { Auth } from "../../../domain/entities/Auth"
-import { Preferences } from "../../../domain/entities/Preferences"
-import { User } from "../../../domain/entities/User"
-import { OutputError } from "../../../domain/exceptions/OutputError"
-import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
-import { AuthRepository, SignUpInputData } from "../../../domain/repositories/AuthRepository"
-import { PreferencesRepository } from "../../../domain/repositories/PreferencesRepository"
-import { UserRepository } from "../../../domain/repositories/UserRepository"
-import ExistUserByEmailService from "../../../domain/services/user/ExistUserByEmailService"
+import { Auth } from '../../../domain/entities/Auth'
+import { OutputError } from '../../../domain/exceptions/OutputError'
+import { OutputErrorTypes } from '../../../domain/exceptions/OutputErrorTypes'
+import { AuthRepository } from '../../../domain/repositories/AuthRepository'
+import {
+  PreferencesRepository,
+  PreferencesRepositorySaveProps
+} from '../../../domain/repositories/PreferencesRepository'
+import {
+  UserRepository,
+  UserRepositorySaveProps
+} from '../../../domain/repositories/UserRepository'
+import ExistUserByEmailService from '../../../domain/services/user/ExistUserByEmailService'
+import { SignUpUseCaseDependencies, SignUpUseCaseProps } from './types'
 
 export default class SignUpUseCase {
   private readonly _authRepository: AuthRepository
@@ -14,31 +19,42 @@ export default class SignUpUseCase {
   private readonly _preferencesRepository: PreferencesRepository
   private readonly _existUserByEmailService: ExistUserByEmailService
 
-  constructor(authRepository: AuthRepository, userRepository: UserRepository, preferencesRepository: PreferencesRepository) {
+  constructor({
+    authRepository,
+    userRepository,
+    preferencesRepository
+  }: SignUpUseCaseDependencies) {
     this._authRepository = authRepository
     this._userRepository = userRepository
     this._preferencesRepository = preferencesRepository
-    this._existUserByEmailService = new ExistUserByEmailService(userRepository)
+    this._existUserByEmailService = new ExistUserByEmailService({
+      userRepository
+    })
   }
 
-  async run(inputData: SignUpInputData): Promise<Auth> {
-    const existUser = await this._existUserByEmailService.run(inputData.email)
+  async run({
+    email,
+    password,
+    username,
+    role
+  }: SignUpUseCaseProps): Promise<Auth> {
+    const existUser = await this._existUserByEmailService.run({ email })
     if (existUser) throw new OutputError(OutputErrorTypes.UserAlreadyExist)
 
-    const encryptedPass = await this._authRepository.encryptPassword(inputData.password)
+    const encryptedPass = await this._authRepository.encryptPassword(password)
 
-    const userToCreate: User = {
-      email: inputData.email,
+    const userToCreate: UserRepositorySaveProps = {
+      email,
       password: encryptedPass,
-      username: inputData.username ?? '',
-      role: inputData.role
+      username: username ?? '',
+      role
     }
 
     const userCreated = await this._userRepository.save(userToCreate)
-    const accessToken = await this._authRepository.generateToken(userCreated.id)
+    const accessToken = this._authRepository.generateToken(userCreated.id)
 
-    const preferencesToCreate: Preferences = {
-      user: userCreated.id
+    const preferencesToCreate: PreferencesRepositorySaveProps = {
+      owner: userCreated.id
     }
     await this._preferencesRepository.save(preferencesToCreate)
 

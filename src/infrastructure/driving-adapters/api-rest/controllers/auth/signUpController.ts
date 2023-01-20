@@ -4,7 +4,6 @@ import MongoAuthRepository from '../../../../implementations/mongo/MongoAuthRepo
 import MongoPreferencesRepository from '../../../../implementations/mongo/MongoPreferencesRepository'
 import MongoUserRepository from '../../../../implementations/mongo/MongoUserRepository'
 
-
 export default async function signUpController(
   req: Request,
   res: Response,
@@ -13,7 +12,12 @@ export default async function signUpController(
   const mongoUserRepository = new MongoUserRepository()
   const mongoAuthRepository = new MongoAuthRepository()
   const mongoPreferencesRepository = new MongoPreferencesRepository()
-  const signUpUseCase = new SignUpUseCase(mongoAuthRepository, mongoUserRepository, mongoPreferencesRepository)
+  
+  const signUpUseCase = new SignUpUseCase({
+    authRepository: mongoAuthRepository,
+    userRepository: mongoUserRepository,
+    preferencesRepository: mongoPreferencesRepository
+  })
 
   try {
     const authData = await signUpUseCase.run(req.body)

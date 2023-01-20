@@ -1,14 +1,19 @@
-import { User } from "../../entities/User"
-import { PreferencesRepository } from "../../repositories/PreferencesRepository"
+import { PreferencesRepository } from '../../repositories/PreferencesRepository'
+import {
+  ExistPreferencesByUserServiceDependencies,
+  ExistPreferencesByUserServiceProps
+} from './types'
 
-export default class ExistPreferencesByUser {
+export default class ExistPreferencesByUserService {
   private readonly _preferencesRepository: PreferencesRepository
 
-  constructor(preferencesRepository: PreferencesRepository) {
+  constructor({
+    preferencesRepository
+  }: ExistPreferencesByUserServiceDependencies) {
     this._preferencesRepository = preferencesRepository
   }
 
-  async run(userId: User['id']): Promise<boolean> {
+  async run({ userId }: ExistPreferencesByUserServiceProps): Promise<boolean> {
     const preferences = await this._preferencesRepository.getByUserId(userId)
     if (preferences !== null) return true
     return false

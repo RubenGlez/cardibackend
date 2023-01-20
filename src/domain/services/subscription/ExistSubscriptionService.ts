@@ -1,15 +1,27 @@
-import { Subscription } from "../../entities/Subscription"
-import { SubscriptionRepository } from "../../repositories/SubscriptionRepository"
+import { SubscriptionRepository } from '../../repositories/SubscriptionRepository'
+import {
+  ExistSubscriptionServiceDependencies,
+  ExistSubscriptionServiceProps
+} from './types'
 
 export default class ExistSubscriptionService {
   private readonly _subscriptionRepository: SubscriptionRepository
 
-  constructor(subscriptionRepository: SubscriptionRepository) {
+  constructor({
+    subscriptionRepository
+  }: ExistSubscriptionServiceDependencies) {
     this._subscriptionRepository = subscriptionRepository
   }
 
-  async run(subscriptor: Subscription['subscriptor'], promotion: Subscription['promotion']): Promise<boolean> {
-    const subscription = await this._subscriptionRepository.getBySubscriptorAndPromotion(subscriptor, promotion)
+  async run({
+    subscriptor,
+    promotion
+  }: ExistSubscriptionServiceProps): Promise<boolean> {
+    const subscription =
+      await this._subscriptionRepository.getBySubscriptorAndPromotion(
+        subscriptor,
+        promotion
+      )
     if (subscription !== null) return true
     return false
   }

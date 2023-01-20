@@ -1,15 +1,15 @@
-import { Card } from "../../../domain/entities/Card"
-import { User } from "../../../domain/entities/User"
-import { CardRepository } from "../../../domain/repositories/CardRepository"
+import { Card } from '../../../domain/entities/Card'
+import { CardRepository } from '../../../domain/repositories/CardRepository'
+import { GetCardsUseCaseDependencies, GetCardsUseCaseProps } from './types'
 
 export default class GetCardsUseCase {
   private readonly _cardRepository: CardRepository
 
-  constructor(cardRepository: CardRepository) {
+  constructor({ cardRepository }: GetCardsUseCaseDependencies) {
     this._cardRepository = cardRepository
   }
 
-  async run(tenantId: User['id']): Promise<Card[]> {
+  async run({ tenantId }: GetCardsUseCaseProps): Promise<Card[]> {
     const cards = await this._cardRepository.getAllByOwner(tenantId)
     return cards
   }

@@ -3,7 +3,6 @@ import UpdateSubscriptionUseCase from '../../../../../application/use-cases/subs
 import MongoPromotionRepository from '../../../../implementations/mongo/MongoPromotionRepository'
 import MongoSubscriptionRepository from '../../../../implementations/mongo/MongoSubscriptionRepository'
 
-
 export default async function updateSubscriptionController(
   req: Request,
   res: Response,
@@ -11,12 +10,19 @@ export default async function updateSubscriptionController(
 ): Promise<void> {
   const mongoSubscriptionRepository = new MongoSubscriptionRepository()
   const mongoPromotionRepository = new MongoPromotionRepository()
-  const updateSubscriptionUseCase = new UpdateSubscriptionUseCase(mongoSubscriptionRepository, mongoPromotionRepository)
+  const updateSubscriptionUseCase = new UpdateSubscriptionUseCase({
+    promotionRepository: mongoPromotionRepository,
+    subscriptionRepository: mongoSubscriptionRepository
+  })
 
   try {
-    const { params, tenantId } = req
+    const { params, tenantId = '' } = req
     const { subscriptionId } = params
-    const subscription = await updateSubscriptionUseCase.run({ ...req.body, id: subscriptionId }, tenantId)
+    const subscription = await updateSubscriptionUseCase.run({
+      tenantId,
+      ...req.body,
+      id: subscriptionId
+    })
     res.json(subscription)
   } catch (e) {
     next(e)

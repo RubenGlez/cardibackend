@@ -1,16 +1,20 @@
-import { PromotionType } from "../../../domain/entities/Promotion"
-import { Subscription, SubscriptionStatus } from "../../../domain/entities/Subscription"
-import { User } from "../../../domain/entities/User"
-import { OutputError } from "../../../domain/exceptions/OutputError"
-import { OutputErrorTypes } from "../../../domain/exceptions/OutputErrorTypes"
-import { PromotionRepository } from "../../../domain/repositories/PromotionRepository"
-import { SubscriptionRepository } from "../../../domain/repositories/SubscriptionRepository"
-import GetPromotionByIdService from "../../../domain/services/promotion/GetPromotionByIdService"
-import GetSubscriptionByIdService from "../../../domain/services/subscription/GetSubscriptionByIdService"
-
-
-
-type InputData = Pick<Subscription, 'id'>
+import { PromotionType } from '../../../domain/entities/Promotion'
+import {
+  Subscription,
+  SubscriptionStatus
+} from '../../../domain/entities/Subscription'
+import { OutputError } from '../../../domain/exceptions/OutputError'
+import { OutputErrorTypes } from '../../../domain/exceptions/OutputErrorTypes'
+import {
+  SubscriptionRepository,
+  SubscriptionRepositoryUpdateProps
+} from '../../../domain/repositories/SubscriptionRepository'
+import GetPromotionByIdService from '../../../domain/services/promotion/GetPromotionByIdService'
+import GetSubscriptionByIdService from '../../../domain/services/subscription/GetSubscriptionByIdService'
+import {
+  UpdateSubscriptionUseCaseDependencies,
+  UpdateSubscriptionUseCaseProps
+} from './types'
 
 export default class UpdateSubscriptionUseCase {
   private readonly _subscriptionRepository: SubscriptionRepository
@@ -18,37 +22,38 @@ export default class UpdateSubscriptionUseCase {
   private readonly _getPromotionByIdService: GetPromotionByIdService
   private readonly _subscriptionSteps: number = 3
 
-  constructor(
-    subscriptionRepository: SubscriptionRepository,
-    promotionRepository: PromotionRepository
-  ) {
+  constructor({
+    subscriptionRepository,
+    promotionRepository
+  }: UpdateSubscriptionUseCaseDependencies) {
     this._subscriptionRepository = subscriptionRepository
-    this._getSubscriptionByIdService = new GetSubscriptionByIdService(
+    this._getSubscriptionByIdService = new GetSubscriptionByIdService({
       subscriptionRepository
-    )
-    this._getPromotionByIdService = new GetPromotionByIdService(
+    })
+    this._getPromotionByIdService = new GetPromotionByIdService({
       promotionRepository
-    )
+    })
   }
 
-  async run(
-    inputData: InputData,
-    tenantId: User['id']
-  ): Promise<Subscription | null> {
-    const currentSubscription = await this._getSubscriptionByIdService.run(
-      inputData.id
-    )
+  async run({
+    tenantId,
+    subscriptionId
+  }: UpdateSubscriptionUseCaseProps): Promise<Subscription | null> {
+    const currentSubscription = await this._getSubscriptionByIdService.run({
+      id: subscriptionId
+    })
     if (currentSubscription?.owner !== tenantId)
       throw new OutputError(OutputErrorTypes.NotOwned)
 
-    const promotion = await this._getPromotionByIdService.run(
-      currentSubscription.promotion
-    )
+    const promotion = await this._getPromotionByIdService.run({
+      id: currentSubscription.promotion
+    })
 
     const today = new Date()
     const isPromoOutdated =
       promotion.validFrom > today || promotion.validTo < today
-    if (isPromoOutdated) throw new OutputError(OutputErrorTypes.PromotionOutdated)
+    if (isPromoOutdated)
+      throw new OutputError(OutputErrorTypes.PromotionOutdated)
 
     const isStandardPromotion = promotion.type === PromotionType.Standard
     if (!isStandardPromotion)
@@ -66,7 +71,7 @@ export default class UpdateSubscriptionUseCase {
       ? SubscriptionStatus.completed
       : SubscriptionStatus.inProgress
 
-    const subscriptionToUpdate: Subscription = {
+    const subscriptionToUpdate: SubscriptionRepositoryUpdateProps = {
       ...currentSubscription,
       steps: [...currentSubscription.steps, { date: today }],
       status

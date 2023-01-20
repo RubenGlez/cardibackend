@@ -1,8 +1,7 @@
-import { Card } from "../../../domain/entities/Card"
-import { User } from "../../../domain/entities/User"
-import { CardRepository } from "../../../domain/repositories/CardRepository"
-import CardModel from "../../driven-adapters/mongoose/models/CardModel"
-
+import { Card } from '../../../domain/entities/Card'
+import { User } from '../../../domain/entities/User'
+import { CardRepository, CardRepositorySaveProps } from '../../../domain/repositories/CardRepository'
+import CardModel from '../../driven-adapters/mongoose/models/CardModel'
 
 export default class MongoCardRepository implements CardRepository {
   private readonly _model = CardModel
@@ -19,7 +18,7 @@ export default class MongoCardRepository implements CardRepository {
   async getAllByOwner(owner: User['id']): Promise<Card[]> {
     const allCards = await this._model.find({ owner }).lean()
     if (allCards.length === 0) return allCards
-    const allCardsMapped = allCards.map((card) => this.toDto(card))
+    const allCardsMapped = allCards.map(card => this.toDto(card))
     return allCardsMapped
   }
 
@@ -30,7 +29,7 @@ export default class MongoCardRepository implements CardRepository {
     return cardMapped
   }
 
-  async save(inputData: Card): Promise<Card> {
+  async save(inputData: CardRepositorySaveProps): Promise<Card> {
     const cardToCreate = new this._model(inputData)
     const cardCreated = await cardToCreate.save()
     const cardMapped = this.toDto(cardCreated.toObject())
@@ -38,11 +37,9 @@ export default class MongoCardRepository implements CardRepository {
   }
 
   async update(inputData: Card): Promise<Card> {
-    const cardUpdated = await this._model.findByIdAndUpdate(
-      inputData.id,
-      inputData,
-      { returnDocument: 'after' }
-    ).lean()
+    const cardUpdated = await this._model
+      .findByIdAndUpdate(inputData.id, inputData, { returnDocument: 'after' })
+      .lean()
     const cardMapped = this.toDto(cardUpdated)
     return cardMapped
   }

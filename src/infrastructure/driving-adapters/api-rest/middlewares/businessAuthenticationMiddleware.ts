@@ -3,7 +3,6 @@ import CheckBusinessAuthenticationUseCase from '../../../../application/use-case
 import MongoAuthRepository from '../../../implementations/mongo/MongoAuthRepository'
 import MongoUserRepository from '../../../implementations/mongo/MongoUserRepository'
 
-
 export default async function businessAuthenticationMiddleware(
   req: Request,
   res: Response,
@@ -11,16 +10,19 @@ export default async function businessAuthenticationMiddleware(
 ): Promise<void> {
   const mongoUserRepository = new MongoUserRepository()
   const mongoAuthRepository = new MongoAuthRepository()
-  const checkBusinessAuthenticationUseCase = new CheckBusinessAuthenticationUseCase(
-    mongoAuthRepository,
-    mongoUserRepository
-  )
+  const checkBusinessAuthenticationUseCase =
+    new CheckBusinessAuthenticationUseCase({
+      authRepository: mongoAuthRepository,
+      userRepository: mongoUserRepository
+    })
 
   try {
     const authHeader = req.header('Authorization')
     const accessToken = authHeader?.replace('Bearer ', '')
 
-    const userIdFromAccessToken = await checkBusinessAuthenticationUseCase.run(accessToken)
+    const userIdFromAccessToken = await checkBusinessAuthenticationUseCase.run({
+      accessToken
+    })
 
     req.tenantId = userIdFromAccessToken
 

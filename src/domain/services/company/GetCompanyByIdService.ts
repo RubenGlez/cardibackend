@@ -1,18 +1,23 @@
-import { Company } from "../../entities/Company"
-import { OutputError } from "../../exceptions/OutputError"
-import { OutputErrorTypes } from "../../exceptions/OutputErrorTypes"
-import { CompanyRepository } from "../../repositories/CompanyRepository"
+import { Company } from '../../entities/Company'
+import { OutputError } from '../../exceptions/OutputError'
+import { OutputErrorTypes } from '../../exceptions/OutputErrorTypes'
+import { CompanyRepository } from '../../repositories/CompanyRepository'
+import {
+  GetCompanyByIdServiceDependencies,
+  GetCompanyByIdServiceProps
+} from './types'
 
 export default class GetCompanyByIdService {
   private readonly _companyRepository: CompanyRepository
 
-  constructor(companyRepository: CompanyRepository) {
+  constructor({ companyRepository }: GetCompanyByIdServiceDependencies) {
     this._companyRepository = companyRepository
   }
 
-  async run(id: Company['id']): Promise<Company> {
+  async run({ id }: GetCompanyByIdServiceProps): Promise<Company> {
     const company = await this._companyRepository.getById(id)
-    if (company === null) throw new OutputError(OutputErrorTypes.CompanyNotFound)
+    if (company === null)
+      throw new OutputError(OutputErrorTypes.CompanyNotFound)
     return company
   }
 }

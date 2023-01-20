@@ -1,7 +1,9 @@
-import { User } from "../../../domain/entities/User"
-import { UserRepository } from "../../../domain/repositories/UserRepository"
-import UserModel from "../../driven-adapters/mongoose/models/UserModel"
-
+import { User } from '../../../domain/entities/User'
+import {
+  UserRepository,
+  UserRepositorySaveProps
+} from '../../../domain/repositories/UserRepository'
+import UserModel from '../../driven-adapters/mongoose/models/UserModel'
 
 export default class MongoUserRepository implements UserRepository {
   private readonly _model = UserModel
@@ -27,7 +29,7 @@ export default class MongoUserRepository implements UserRepository {
     return userMapped
   }
 
-  async save(inputData: User): Promise<User> {
+  async save(inputData: UserRepositorySaveProps): Promise<User> {
     const userToCreate = new this._model(inputData)
     const userCreated = await userToCreate.save()
     const userMapped = this.toDto(userCreated.toObject())
@@ -35,11 +37,9 @@ export default class MongoUserRepository implements UserRepository {
   }
 
   async update(inputData: User): Promise<User> {
-    const userUpdated = await this._model.findByIdAndUpdate(
-      inputData.id,
-      inputData,
-      { new: true }
-    ).lean()
+    const userUpdated = await this._model
+      .findByIdAndUpdate(inputData.id, inputData, { new: true })
+      .lean()
     const userMapped = this.toDto(userUpdated)
     return userMapped
   }

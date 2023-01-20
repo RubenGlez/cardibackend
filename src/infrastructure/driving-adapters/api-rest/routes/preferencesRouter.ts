@@ -6,6 +6,6 @@ import updatePreferencesController from '../controllers/preferences/updatePrefer
 const router: Router = express.Router()
 
 router.put('/:preferencesId', updatePreferencesController)
-router.get('/', getPreferencesController)
+router.get('/:preferencesId', getPreferencesController)
 
 export default router

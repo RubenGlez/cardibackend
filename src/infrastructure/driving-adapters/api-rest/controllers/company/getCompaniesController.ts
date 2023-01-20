@@ -8,13 +8,14 @@ export default async function getCompaniesController(
   next: NextFunction
 ): Promise<void> {
   const mongoCompanyRepository = new MongoCompanyRepository()
-  const getCompaniesUseCase = new GetCompaniesUseCase(mongoCompanyRepository)
+  const getCompaniesUseCase = new GetCompaniesUseCase({
+    companyRepository: mongoCompanyRepository
+  })
 
   try {
-    const { tenantId } = req
-    const companies = await getCompaniesUseCase.run(tenantId)
+    const { tenantId = '' } = req
+    const companies = await getCompaniesUseCase.run({ tenantId })
     res.json(companies)
-
   } catch (e) {
     next(e)
   }

@@ -1,14 +1,19 @@
-import { Company } from "../../../domain/entities/Company"
-import { User } from "../../../domain/entities/User"
-import { CompanyRepository } from "../../../domain/repositories/CompanyRepository"
-import CompanyModel from "../../driven-adapters/mongoose/models/CompanyModel"
-
+import { Company } from '../../../domain/entities/Company'
+import { User } from '../../../domain/entities/User'
+import {
+  CompanyRepository,
+  CompanyRepositorySaveProps
+} from '../../../domain/repositories/CompanyRepository'
+import CompanyModel from '../../driven-adapters/mongoose/models/CompanyModel'
 
 export default class MongoCompanyRepository implements CompanyRepository {
   private readonly _model = CompanyModel
 
   private toDto(companyToMap: any): Company {
-    const companyDTO = Object.assign({ id: companyToMap._id?.toString() }, companyToMap)
+    const companyDTO = Object.assign(
+      { id: companyToMap._id?.toString() },
+      companyToMap
+    )
     delete companyDTO._id
     delete companyDTO.__v
     companyDTO.owner = companyDTO.owner?.toString()
@@ -18,7 +23,7 @@ export default class MongoCompanyRepository implements CompanyRepository {
   async getAllByOwner(owner: User['id']): Promise<Company[]> {
     const allCompanys = await this._model.find({ owner }).lean({})
     if (allCompanys.length === 0) return allCompanys
-    const allCompanysMapped = allCompanys.map((company) => this.toDto(company))
+    const allCompanysMapped = allCompanys.map(company => this.toDto(company))
     return allCompanysMapped
   }
 
@@ -36,7 +41,7 @@ export default class MongoCompanyRepository implements CompanyRepository {
     return companyMapped
   }
 
-  async save(inputData: Company): Promise<Company> {
+  async save(inputData: CompanyRepositorySaveProps): Promise<Company> {
     const companyToCreate = new this._model(inputData)
     const companyCreated = await companyToCreate.save()
     const companyMapped = this.toDto(companyCreated.toObject())
@@ -44,11 +49,9 @@ export default class MongoCompanyRepository implements CompanyRepository {
   }
 
   async update(inputData: Company): Promise<Company> {
-    const companyUpdated = await this._model.findByIdAndUpdate(
-      inputData.id,
-      inputData,
-      { returnDocument: 'after' }
-    ).lean()
+    const companyUpdated = await this._model
+      .findByIdAndUpdate(inputData.id, inputData, { returnDocument: 'after' })
+      .lean()
     const companyMapped = this.toDto(companyUpdated)
     return companyMapped
   }
