@@ -1,20 +1,22 @@
 import { Schema, model } from 'mongoose'
-import { User, UserRole } from '../../../../domain'
+import { User, UserRole } from '../../../../domain/entities/User'
 
-const UserSchema = new Schema<User>(
+const UserSchema = new Schema(
   {
     email: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
-      match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Invalid email format']
+      match: [
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+        'Invalid email format'
+      ]
     },
     password: {
       type: String,
       required: true,
-      minLength: 4,
-      maxLength: 32
+      minLength: 4
     },
     username: {
       type: String,

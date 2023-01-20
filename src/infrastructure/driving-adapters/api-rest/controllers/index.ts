@@ -1,5 +1,0 @@
-export * from './auth'
-export * from './company'
-export * from './user'
-export { default as errorController } from './errorController'
-export { default as notFoundController } from './notFoundController'

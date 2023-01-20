@@ -1,8 +1,5 @@
-import { Auth } from 'domain/entities/Auth'
-import { User } from '../../domain'
-
-export type SignUpInputData = Pick<User, 'email' | 'password' | 'username' | 'role'>
-export type SignInInputData = Pick<User, 'email' | 'password'>
+import { Auth } from '../entities/Auth'
+import { User } from '../entities/User'
 
 export interface AuthRepository {
   encryptPassword: (password: User['password']) => Promise<string>

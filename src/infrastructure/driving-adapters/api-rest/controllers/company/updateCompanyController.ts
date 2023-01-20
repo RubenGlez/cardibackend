@@ -1,19 +1,25 @@
 import { NextFunction, Request, Response } from 'express'
-import { MongoCompanyRepository } from '../../../../../infrastructure'
-import { UpdateCompanyUseCase } from '../../../../../application'
+import UpdateCompanyUseCase from '../../../../../application/use-cases/company/UpdateCompanyUseCase'
+import MongoCompanyRepository from '../../../../implementations/mongo/MongoCompanyRepository'
 
-export default async function updateCompanyController (
+export default async function updateCompanyController(
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   const mongoCompanyRepository = new MongoCompanyRepository()
-  const updateCompanyUseCase = new UpdateCompanyUseCase(mongoCompanyRepository)
+  const updateCompanyUseCase = new UpdateCompanyUseCase({
+    companyRepository: mongoCompanyRepository
+  })
 
   try {
-    const { params, tenantId } = req
+    const { params, tenantId = '' } = req
     const { companyId } = params
-    const company = await updateCompanyUseCase.run({ ...req.body, id: companyId }, tenantId)
+    const company = await updateCompanyUseCase.run({
+      tenantId,
+      ...req.body,
+      id: companyId
+    })
     res.json(company)
   } catch (e) {
     next(e)

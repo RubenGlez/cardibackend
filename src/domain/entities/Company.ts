@@ -7,7 +7,7 @@ export interface Contact {
 }
 
 export interface Company {
-  id?: string
+  id: string
   owner: User['id']
   name: string
   description?: string

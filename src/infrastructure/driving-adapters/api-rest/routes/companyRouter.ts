@@ -1,11 +1,10 @@
 import express, { Router } from 'express'
-import {
-  createCompanyController,
-  deleteCompanyController,
-  getCompaniesController,
-  getCompanyController,
-  updateCompanyController,
-} from '../controllers'
+import createCompanyController from '../controllers/company/createCompanyController'
+import deleteCompanyController from '../controllers/company/deleteCompanyController'
+import getCompaniesController from '../controllers/company/getCompaniesController'
+import getCompanyController from '../controllers/company/getCompanyController'
+import updateCompanyController from '../controllers/company/updateCompanyController'
+
 
 const router: Router = express.Router()
 

@@ -1,18 +1,20 @@
 import { NextFunction, Request, Response } from 'express'
-import { MongoUserRepository } from '../../../../../infrastructure'
-import { GetUserUseCase } from '../../../../../application'
+import GetUserUseCase from '../../../../../application/use-cases/user/GetUserUseCase'
+import MongoUserRepository from '../../../../implementations/mongo/MongoUserRepository'
 
-export default async function getUserController (
+export default async function getUserController(
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   const mongoUserRepository = new MongoUserRepository()
-  const getUserUseCase = new GetUserUseCase(mongoUserRepository)
+  const getUserUseCase = new GetUserUseCase({
+    userRepository: mongoUserRepository
+  })
 
   try {
     const { userId } = req.params
-    const users = await getUserUseCase.run(userId)
+    const users = await getUserUseCase.run({ id: userId })
     res.json(users)
   } catch (e) {
     next(e)

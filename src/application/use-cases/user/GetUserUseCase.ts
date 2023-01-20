@@ -1,13 +1,15 @@
-import { GetUserByIdService, User, UserRepository } from '../../../domain'
+import { User } from '../../../domain/entities/User'
+import GetUserByIdService from '../../../domain/services/user/GetUserByIdService'
+import { GetUserUseCaseDependencies, GetUserUseCaseProps } from './types'
 
 export default class GetUserUseCase {
   private readonly _getUserByIdService: GetUserByIdService
 
-  constructor (userRepository: UserRepository) {
-    this._getUserByIdService = new GetUserByIdService(userRepository)
+  constructor({ userRepository }: GetUserUseCaseDependencies) {
+    this._getUserByIdService = new GetUserByIdService({ userRepository })
   }
 
-  async run (id: User['id']): Promise<User> {
-    return await this._getUserByIdService.run(id)
+  async run({ id }: GetUserUseCaseProps): Promise<User> {
+    return await this._getUserByIdService.run({ id })
   }
 }

@@ -1,5 +1,0 @@
-export { default as createCompanyController } from './createCompanyController'
-export { default as deleteCompanyController } from './deleteCompanyController'
-export { default as getCompaniesController } from './getCompaniesController'
-export { default as getCompanyController } from './getCompanyController'
-export { default as updateCompanyController } from './updateCompanyController'

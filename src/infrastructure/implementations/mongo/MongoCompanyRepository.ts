@@ -1,58 +1,62 @@
+import { Company } from '../../../domain/entities/Company'
+import { User } from '../../../domain/entities/User'
 import {
-  Company,
-  CompanyRepository
-} from '../../../domain'
-import { CompanyModel } from '../..'
+  CompanyRepository,
+  CompanyRepositorySaveProps
+} from '../../../domain/repositories/CompanyRepository'
+import CompanyModel from '../../driven-adapters/mongoose/models/CompanyModel'
 
 export default class MongoCompanyRepository implements CompanyRepository {
   private readonly _model = CompanyModel
 
-  private map (CompanyToMap: any): Company {
-    const Company = CompanyToMap.toObject({ versionKey: false })
-    Company.id = Company._id
-    delete Company._id
-    return Company as Company
+  private toDto(companyToMap: any): Company {
+    const companyDTO = Object.assign(
+      { id: companyToMap._id?.toString() },
+      companyToMap
+    )
+    delete companyDTO._id
+    delete companyDTO.__v
+    companyDTO.owner = companyDTO.owner?.toString()
+    return companyDTO
   }
 
-  async getAll (): Promise<Company[]> {
-    const allCompanys = await this._model.find()
-    if (allCompanys.length === 0) return [] as Company[]
-    const allCompanysMapped = allCompanys.map((company) => this.map(company))
+  async getAllByOwner(owner: User['id']): Promise<Company[]> {
+    const allCompanys = await this._model.find({ owner }).lean()
+    if (allCompanys.length === 0) return []
+    const allCompanysMapped = allCompanys.map(company => this.toDto(company))
     return allCompanysMapped
   }
 
-  async getByName (name: Company['name']): Promise<Company | null> {
-    const companyFound = await this._model.findOne({ name })
+  async getByName(name: Company['name']): Promise<Company | null> {
+    const companyFound = await this._model.findOne({ name }).lean()
     if (companyFound === null) return null
-    const companyMapped = this.map(companyFound)
+    const companyMapped = this.toDto(companyFound)
     return companyMapped
   }
 
-  async getById (id: Company['id']): Promise<Company | null> {
-    const companyFound = await this._model.findById(id)
+  async getById(id: Company['id']): Promise<Company | null> {
+    const companyFound = await this._model.findById(id).lean()
     if (companyFound === null) return null
-    const companyMapped = this.map(companyFound)
+    const companyMapped = this.toDto(companyFound)
     return companyMapped
   }
 
-  async save (inputData: Company): Promise<Company> {
+  async save(inputData: CompanyRepositorySaveProps): Promise<Company> {
     const companyToCreate = new this._model(inputData)
     const companyCreated = await companyToCreate.save()
-    const companyMapped = this.map(companyCreated)
+    const companyMapped = this.toDto(companyCreated.toObject())
     return companyMapped
   }
 
-  async update (inputData: Company): Promise<Company> {
-    const companyUpdated = await this._model.findByIdAndUpdate(
-      inputData.id,
-      inputData,
-      { new: true }
-    )
-    const companyMapped = this.map(companyUpdated)
+  async update(inputData: Company): Promise<Company> {
+    const companyUpdated = await this._model
+      .findByIdAndUpdate(inputData.id, inputData, { returnDocument: 'after' })
+      .lean()
+    const companyMapped = this.toDto(companyUpdated)
     return companyMapped
   }
 
-  async delete (id: Company['id']): Promise<void> {
+  async delete(id: Company['id']): Promise<void> {
     await this._model.findByIdAndDelete(id)
   }
 }

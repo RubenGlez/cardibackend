@@ -1,58 +1,46 @@
+import { User } from '../../../domain/entities/User'
 import {
-  User,
-  UserRepository
-} from '../../../domain'
-import { UserModel } from '../..'
+  UserRepository,
+  UserRepositorySaveProps
+} from '../../../domain/repositories/UserRepository'
+import UserModel from '../../driven-adapters/mongoose/models/UserModel'
 
 export default class MongoUserRepository implements UserRepository {
   private readonly _model = UserModel
 
-  private map (userToMap: any): User {
-    const user = userToMap.toObject({ versionKey: false })
-    user.id = user._id
-    delete user._id
-    return user as User
+  private toDto(userToMap: any): User {
+    const userDTO = Object.assign({ id: userToMap._id?.toString() }, userToMap)
+    delete userDTO._id
+    delete userDTO.__v
+    return userDTO
   }
 
-  async getAll (): Promise<User[]> {
-    const allUsers = await this._model.find()
-    if (allUsers.length === 0) return [] as User[]
-    const allUsersMapped = allUsers.map((user) => this.map(user))
-    return allUsersMapped
-  }
-
-  async getByEmail (email: User['email']): Promise<User | null> {
-    const userFound = await this._model.findOne({ email })
+  async getByEmail(email: User['email']): Promise<User | null> {
+    const userFound = await this._model.findOne({ email }).lean()
     if (userFound === null) return null
-    const userMapped = this.map(userFound)
+    const userMapped = this.toDto(userFound)
     return userMapped
   }
 
-  async getById (id: User['id']): Promise<User | null> {
-    const userFound = await this._model.findById(id)
+  async getById(id: User['id']): Promise<User | null> {
+    const userFound = await this._model.findById(id).lean()
     if (userFound === null) return null
-    const userMapped = this.map(userFound)
+    const userMapped = this.toDto(userFound)
     return userMapped
   }
 
-  async save (inputData: User): Promise<User> {
+  async save(inputData: UserRepositorySaveProps): Promise<User> {
     const userToCreate = new this._model(inputData)
     const userCreated = await userToCreate.save()
-    const userMapped = this.map(userCreated)
+    const userMapped = this.toDto(userCreated.toObject())
     return userMapped
   }
 
-  async update (inputData: User): Promise<User> {
-    const userUpdated = await this._model.findByIdAndUpdate(
-      inputData.id,
-      inputData,
-      { new: true }
-    )
-    const userMapped = this.map(userUpdated)
+  async update(inputData: User): Promise<User> {
+    const userUpdated = await this._model
+      .findByIdAndUpdate(inputData.id, inputData, { new: true })
+      .lean()
+    const userMapped = this.toDto(userUpdated)
     return userMapped
-  }
-
-  async delete (id: User['id']): Promise<void> {
-    await this._model.findByIdAndDelete(id)
   }
 }

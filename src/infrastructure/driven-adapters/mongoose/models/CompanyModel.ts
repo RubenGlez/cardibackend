@@ -1,9 +1,8 @@
 import { Schema, model } from 'mongoose'
-import { Company } from '../../../../domain'
 
 const { ObjectId } = Schema.Types
 
-const CompanySchema = new Schema<Company>(
+const CompanySchema = new Schema(
   {
     owner: {
       type: ObjectId,
@@ -31,7 +30,10 @@ const CompanySchema = new Schema<Company>(
       email: {
         type: String,
         lowercase: true,
-        match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Invalid email format']
+        match: [
+          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+          'Invalid email format'
+        ]
       },
       web: {
         type: String,
@@ -43,6 +45,6 @@ const CompanySchema = new Schema<Company>(
   { timestamps: true }
 )
 
-const CompanyModel = model<Company>('Company', CompanySchema)
+const CompanyModel = model('Company', CompanySchema)
 
 export default CompanyModel
