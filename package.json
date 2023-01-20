@@ -7,7 +7,8 @@
     "dev": "nodemon ./src/index.ts",
     "debug": "ndb nodemon ./src/index.ts",
     "db": "mongod --dbpath ./data",
-    "typecheck": "npx tsc --project ./tsconfig.json"
+    "typecheck": "npx tsc --project ./tsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
