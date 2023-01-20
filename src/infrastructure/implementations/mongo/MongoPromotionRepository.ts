@@ -21,7 +21,7 @@ export default class MongoPromotionRepository implements PromotionRepository {
 
   async getAllByCompany(company: Promotion['id']): Promise<Promotion[]> {
     const promotionsByCompany = await this._model.find({ company }).lean()
-    if (promotionsByCompany.length === 0) return promotionsByCompany
+    if (promotionsByCompany.length === 0) return []
     const promotionsByCompanyMapped = promotionsByCompany.map(promotion =>
       this.toDTO(promotion)
     )

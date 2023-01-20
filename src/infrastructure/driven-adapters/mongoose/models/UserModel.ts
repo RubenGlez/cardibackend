@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose'
 import { User, UserRole } from '../../../../domain/entities/User'
 
-const UserSchema = new Schema<User>(
+const UserSchema = new Schema(
   {
     email: {
       type: String,

@@ -31,7 +31,7 @@ export default class MongoSubscriptionRepository
 
   async getAllByCompany(company: Company['id']): Promise<Subscription[]> {
     const subscriptionsByCompany = await this._model.find({ company }).lean()
-    if (subscriptionsByCompany.length === 0) return subscriptionsByCompany
+    if (subscriptionsByCompany.length === 0) return []
     const subscriptionsByCompanyMapped = subscriptionsByCompany.map(
       subscription => this.toDto(subscription)
     )

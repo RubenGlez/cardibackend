@@ -1,12 +1,9 @@
 import { Schema, model } from 'mongoose'
-import {
-  Subscription,
-  SubscriptionStatus
-} from '../../../../domain/entities/Subscription'
+import { Subscription, SubscriptionStatus } from '../../../../domain/entities/Subscription'
 
 const { ObjectId } = Schema.Types
 
-const SubscriptionSchema = new Schema<Subscription>(
+const SubscriptionSchema = new Schema(
   {
     subscriptor: {
       type: ObjectId,
@@ -51,9 +48,6 @@ const SubscriptionSchema = new Schema<Subscription>(
   { timestamps: true }
 )
 
-const SubscriptionModel = model<Subscription>(
-  'Subscription',
-  SubscriptionSchema
-)
+const SubscriptionModel = model<Subscription>('Subscription', SubscriptionSchema)
 
 export default SubscriptionModel

@@ -3,7 +3,7 @@ import { Card } from '../../../../domain/entities/Card'
 
 const { ObjectId } = Schema.Types
 
-const CardSchema = new Schema<Card>(
+const CardSchema = new Schema(
   {
     owner: {
       type: ObjectId,

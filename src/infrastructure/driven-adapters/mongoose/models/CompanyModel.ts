@@ -1,9 +1,8 @@
 import { Schema, model } from 'mongoose'
-import { Company } from '../../../../domain/entities/Company'
 
 const { ObjectId } = Schema.Types
 
-const CompanySchema = new Schema<Company>(
+const CompanySchema = new Schema(
   {
     owner: {
       type: ObjectId,
@@ -46,6 +45,6 @@ const CompanySchema = new Schema<Company>(
   { timestamps: true }
 )
 
-const CompanyModel = model<Company>('Company', CompanySchema)
+const CompanyModel = model('Company', CompanySchema)
 
 export default CompanyModel

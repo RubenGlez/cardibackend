@@ -3,7 +3,7 @@ import { Promotion, PromotionType } from '../../../../domain/entities/Promotion'
 
 const { ObjectId } = Schema.Types
 
-const PromotionSchema = new Schema<Promotion>(
+const PromotionSchema = new Schema(
   {
     owner: {
       type: ObjectId,

@@ -3,7 +3,7 @@ import { Preferences } from '../../../../domain/entities/Preferences'
 
 const { ObjectId, String } = Schema.Types
 
-const PreferencesSchema = new Schema<Preferences>(
+const PreferencesSchema = new Schema(
   {
     user: {
       type: ObjectId,

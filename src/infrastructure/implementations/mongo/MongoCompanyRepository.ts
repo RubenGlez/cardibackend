@@ -21,8 +21,8 @@ export default class MongoCompanyRepository implements CompanyRepository {
   }
 
   async getAllByOwner(owner: User['id']): Promise<Company[]> {
-    const allCompanys = await this._model.find({ owner }).lean({})
-    if (allCompanys.length === 0) return allCompanys
+    const allCompanys = await this._model.find({ owner }).lean()
+    if (allCompanys.length === 0) return []
     const allCompanysMapped = allCompanys.map(company => this.toDto(company))
     return allCompanysMapped
   }
