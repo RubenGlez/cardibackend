@@ -1,7 +1,7 @@
 {
-  "name": "cardiclean",
+  "name": "cardi-back",
   "version": "1.0.0",
-  "description": "",
+  "description": "RESTful API for cardi",
   "main": "index.js",
   "scripts": {
     "build": "tsc --project ./tsconfig.json",

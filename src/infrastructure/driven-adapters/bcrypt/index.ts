@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt'
-
-const BCRYPT_SALT = 12
+import { BCRYPT_SALT } from '../../../config'
 
 export class BCryptAdapter {
   private readonly _salt = BCRYPT_SALT
