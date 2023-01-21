@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --project ./tsconfig.json --clean",
+    "build": "tsc --project ./tsconfig.json --build --clean",
     "dev": "nodemon ./src/index.ts",
     "db": "mongod --dbpath ./data",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
