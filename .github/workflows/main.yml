@@ -29,6 +29,23 @@ jobs:
         run: npm ci
       - name: Lint
         run: npm run lint
+
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          cache: 'npm'
+          node-version: '19'
+      - name: Prettify code
+        uses: creyD/prettier_action@v4.2
+        with:
+          prettier_options: --write ./src
+          same_commit: true
   
   build:
     needs: [lint]
