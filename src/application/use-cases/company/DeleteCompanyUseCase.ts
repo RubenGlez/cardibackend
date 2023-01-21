@@ -23,7 +23,7 @@ export default class DeleteCompanyUseCase {
     if (companyToDelete.owner !== tenantId) {
       throw new OutputError(OutputErrorTypes.NotOwned)
     }
-    
+
     // TODO: improve this flow
     // has cards?
     // -> no : delete

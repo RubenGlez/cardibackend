@@ -9,5 +9,4 @@ const router: Router = express.Router()
 // router.use('/preferences', preferencesRouter)
 // router.use('/subscriptions', subscriptionsRouter)
 
-
 export default router

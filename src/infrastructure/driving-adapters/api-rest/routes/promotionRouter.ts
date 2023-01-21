@@ -5,7 +5,6 @@ import getPromotionController from '../controllers/promotion/getPromotionControl
 import getPromotionsController from '../controllers/promotion/getPromotionsController'
 import updatePromotionController from '../controllers/promotion/updatePromotionController'
 
-
 const router: Router = express.Router()
 
 router.get('/', getPromotionsController)

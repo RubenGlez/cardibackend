@@ -5,7 +5,6 @@ import getCardController from '../controllers/card/getCardController'
 import getCardsController from '../controllers/card/getCardsController'
 import updateCardController from '../controllers/card/updateCardController'
 
-
 const router: Router = express.Router()
 
 router.get('/', getCardsController)

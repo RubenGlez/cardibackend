@@ -16,8 +16,12 @@ export default class GetSubscriptionByIdService {
     this._subscriptionRepository = subscriptionRepository
   }
 
-  async run({ subscriptionId }: GetSubscriptionByIdServiceProps): Promise<Subscription> {
-    const subscription = await this._subscriptionRepository.getById(subscriptionId)
+  async run({
+    subscriptionId
+  }: GetSubscriptionByIdServiceProps): Promise<Subscription> {
+    const subscription = await this._subscriptionRepository.getById(
+      subscriptionId
+    )
     if (subscription === null) {
       throw new OutputError(OutputErrorTypes.SubscriptionNotFound)
     }

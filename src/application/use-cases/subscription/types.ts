@@ -27,7 +27,7 @@ export interface GetSubscriptionsUseCaseProps {
 }
 
 export interface UpdateSubscriptionUseCaseDependencies {
-  subscriptionRepository: SubscriptionRepository,
+  subscriptionRepository: SubscriptionRepository
   promotionRepository: PromotionRepository
 }
 

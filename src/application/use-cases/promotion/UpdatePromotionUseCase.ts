@@ -27,7 +27,9 @@ export default class UpdatePromotionUseCase {
     validFrom,
     validTo
   }: UpdatePromotionUseCaseProps): Promise<Promotion> {
-    const currentPromotion = await this._getPromotionByIdService.run({ promotionId })
+    const currentPromotion = await this._getPromotionByIdService.run({
+      promotionId
+    })
     if (currentPromotion?.owner !== tenantId) {
       throw new OutputError(OutputErrorTypes.NotOwned)
     }

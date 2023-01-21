@@ -10,7 +10,7 @@ export default async function signInController(
 ): Promise<void> {
   const mongoUserRepository = new MongoUserRepository()
   const mongoAuthRepository = new MongoAuthRepository()
-  
+
   const signInUseCase = new SignInUseCase({
     authRepository: mongoAuthRepository,
     userRepository: mongoUserRepository

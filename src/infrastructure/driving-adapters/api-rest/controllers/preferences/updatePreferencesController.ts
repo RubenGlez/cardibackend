@@ -18,7 +18,7 @@ export default async function updatePreferencesController(
     const preferences = await updatePreferencesUseCase.run({
       tenantId,
       preferencesId,
-      ...body,
+      ...body
     })
     res.json(preferences)
   } catch (e) {

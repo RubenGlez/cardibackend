@@ -30,7 +30,7 @@ export default class Server {
   }
 
   async listen(): Promise<void> {
-    return await new Promise((resolve) => {
+    return await new Promise(resolve => {
       this._httpServer = this._app.listen(this._port, () => {
         console.log('📡 Server listening on port', this._port)
         resolve()
@@ -41,7 +41,7 @@ export default class Server {
   async stop(): Promise<void> {
     return await new Promise((resolve, reject) => {
       if (this._httpServer !== undefined) {
-        this._httpServer.close((error) => {
+        this._httpServer.close(error => {
           if (error !== null) {
             return reject(error)
           }

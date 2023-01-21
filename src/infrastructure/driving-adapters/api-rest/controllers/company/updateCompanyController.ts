@@ -18,7 +18,7 @@ export default async function updateCompanyController(
     const company = await updateCompanyUseCase.run({
       tenantId,
       companyId,
-      ...body,
+      ...body
     })
     res.json(company)
   } catch (e) {

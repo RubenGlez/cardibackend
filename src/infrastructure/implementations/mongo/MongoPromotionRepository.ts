@@ -1,5 +1,8 @@
 import { Promotion } from '../../../domain/entities/Promotion'
-import { PromotionRepository, PromotionRepositorySaveProps } from '../../../domain/repositories/PromotionRepository'
+import {
+  PromotionRepository,
+  PromotionRepositorySaveProps
+} from '../../../domain/repositories/PromotionRepository'
 import PromotionModel from '../../driven-adapters/mongoose/models/PromotionModel'
 
 export default class MongoPromotionRepository implements PromotionRepository {

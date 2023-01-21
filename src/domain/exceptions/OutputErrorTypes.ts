@@ -21,5 +21,5 @@ export enum OutputErrorTypes {
   WalletNotFound = 'WalletNotFound',
   NotOwned = 'NotOwned',
   Unknown = 'Unknown',
-  NotFound = 'NotFound',
+  NotFound = 'NotFound'
 }

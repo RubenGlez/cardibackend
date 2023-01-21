@@ -1,6 +1,9 @@
 import { Card } from '../../../domain/entities/Card'
 import { User } from '../../../domain/entities/User'
-import { CardRepository, CardRepositorySaveProps } from '../../../domain/repositories/CardRepository'
+import {
+  CardRepository,
+  CardRepositorySaveProps
+} from '../../../domain/repositories/CardRepository'
 import CardModel from '../../driven-adapters/mongoose/models/CardModel'
 
 export default class MongoCardRepository implements CardRepository {
