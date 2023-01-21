@@ -2,9 +2,9 @@ name: Deployment Pipeline
 
 on:
   push:
-    branches: [main, development]
+    branches: [main]
   pull_request:
-    branches: [main, development]
+    branches: [main]
     types: [opened, synchronize]
   workflow_dispatch:
 
@@ -70,19 +70,21 @@ jobs:
       - name: Test
         run: npm test
 
-  # deploy:
-  #   needs: [lint, build, test]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #       with:
-  #         fetch-depth: 0
-  #     - name: Deploy to Heroku
-  #       if: ${{ github.event_name == 'push' }}
-  #       uses: akhileshns/heroku-deploy@v3.12.12
-  #       with:
-  #         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-  #         heroku_app_name: ${{secrets.HEROKU_APP}}
-  #         heroku_email: ${{secrets.HEROKU_API_EMAIL}}
-  #         healthcheck: "https://${{secrets.HEROKU_APP}}.herokuapp.com/health"
-  #         rollbackonhealthcheckfailed: true
+  deploy:
+    needs: [lint, build, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Fake deploy
+        run: echo 'fake deployment done!'
+      # - name: Deploy to Heroku
+      #   if: ${{ github.event_name == 'push' }}
+      #   uses: akhileshns/heroku-deploy@v3.12.12
+      #   with:
+      #     heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+      #     heroku_app_name: ${{secrets.HEROKU_APP}}
+      #     heroku_email: ${{secrets.HEROKU_API_EMAIL}}
+      #     healthcheck: "https://${{secrets.HEROKU_APP}}.herokuapp.com/health"
+      #     rollbackonhealthcheckfailed: true
