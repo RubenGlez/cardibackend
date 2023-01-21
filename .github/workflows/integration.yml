@@ -35,7 +35,7 @@ jobs:
       run: npm run typecheck
 
   deploy:
-    needs: [check-quality]
+    needs: [build]
     runs-on: ubuntu-latest
     strategy:
       matrix:
