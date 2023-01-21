@@ -2,11 +2,9 @@ name: Integration Pipeline
 
 on:
   push:
-    branches:
-      - '!main'
+    branches-ignore: [main]
   pull_request:
-    branches:
-      - '!main'
+    branches-ignore: [main]
     types: [opened, synchronize]
   workflow_dispatch:
 
