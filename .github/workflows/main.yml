@@ -30,7 +30,25 @@ jobs:
       - name: Lint
         run: npm run lint
 
+  prettify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          cache: 'npm'
+          node-version: '19'
+      - name: Run Prettier
+        run: npm run prettier:fix
+      - uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: ./dist
+
   build:
+    needs: [lint, prettify]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -50,7 +68,7 @@ jobs:
           path: ./dist
 
   test:
-    needs: [lint, build]
+    needs: [lint, prettify, build]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -65,7 +83,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: dist
-          path: dist
+          path: ./dist
       - name: Test
         run: npm test
 
