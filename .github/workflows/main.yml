@@ -8,19 +8,12 @@ on:
     types: [opened, synchronize]
   workflow_dispatch:
 
+# Cancel Previous Redundant Builds
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-
-  # avoid_reduncy:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Cancel Previous Redundant Builds
-  #       uses: styfle/cancel-workflow-action@0.11.0
-  #       with:
-  #         access_token: ${{ github.token }}
 
   lint:
     runs-on: ubuntu-latest
@@ -54,7 +47,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: dist
-          path: ./dist
+          path: ../../dist
 
   test:
     needs: [lint, build]
