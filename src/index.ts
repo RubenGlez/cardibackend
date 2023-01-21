@@ -13,3 +13,5 @@ const runApiRest = async (): Promise<void> => {
 }
 
 void runApiRest()
+
+// testing CI
