@@ -51,7 +51,7 @@ export interface GetPromotionUseCaseDependencies {
 }
 
 export interface GetPromotionUseCaseProps {
-  id: Promotion['id']
+  promotionId: Promotion['id']
 }
 
 export interface UpdatePromotionUseCaseDependencies {
@@ -60,4 +60,5 @@ export interface UpdatePromotionUseCaseDependencies {
 
 export interface UpdatePromotionUseCaseProps extends PromotionToUpdate {
   tenantId: Promotion['owner']
+  promotionId: Promotion['id']
 }

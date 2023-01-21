@@ -1,5 +1,5 @@
-import { Company } from "./Company"
-import { User } from "./User"
+import { Company } from './Company'
+import { User } from './User'
 
 export interface Card {
   id: string

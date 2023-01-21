@@ -8,7 +8,7 @@ export interface GetUserUseCaseDependencies {
 }
 
 export interface GetUserUseCaseProps {
-  id: User['id']
+  userId: User['id']
 }
 
 export interface UpdateUserUseCaseDependencies {
@@ -17,4 +17,5 @@ export interface UpdateUserUseCaseDependencies {
 
 export interface UpdateUserUseCaseProps extends UserToUpdate {
   tenantId: User['id']
+  userId: User['id']
 }

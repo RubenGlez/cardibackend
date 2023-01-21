@@ -1,8 +1,6 @@
-# ARRANCAR EL ENTORNO
+# Setup local environment
+1. Run MongoDB: ```npm run db```
+2. Run Node: ```npm run dev```
 
-1. Arrancar MongoDB: mongod --dbpath /Users/rubenglez/Documents/mongo
-2. Arrancar Node: npm run dev
-
-# TODO
-
-mejorar el tipado del método toDto()
+# Todo
+- [ ] Improve get metrics query

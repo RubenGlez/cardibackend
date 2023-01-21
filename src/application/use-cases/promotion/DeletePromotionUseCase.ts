@@ -23,7 +23,7 @@ export default class DeletePromotionUseCase {
     tenantId
   }: DeletePromotionUseCaseProps): Promise<void> {
     const promotionToDelete = await this._getPromotionByIdService.run({
-      id: promotionId
+      promotionId
     })
     if (promotionToDelete.owner !== tenantId) {
       throw new OutputError(OutputErrorTypes.NotOwned)

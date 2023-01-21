@@ -6,5 +6,5 @@ export interface GetCardByIdServiceDependencies {
 }
 
 export interface GetCardByIdServiceProps {
-  id: Card['id']
+  cardId: Card['id']
 }

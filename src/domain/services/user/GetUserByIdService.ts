@@ -14,8 +14,8 @@ export default class GetUserByIdService {
     this._userRepository = userRepository
   }
 
-  async run({ id }: GetUserByIdServiceProps): Promise<User> {
-    const user = await this._userRepository.getById(id)
+  async run({ userId }: GetUserByIdServiceProps): Promise<User> {
+    const user = await this._userRepository.getById(userId)
     if (user === null) throw new OutputError(OutputErrorTypes.UserNotFound)
     return user
   }

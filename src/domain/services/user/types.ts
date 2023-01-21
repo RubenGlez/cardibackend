@@ -22,7 +22,7 @@ export interface GetUserByIdServiceDependencies {
 }
 
 export interface GetUserByIdServiceProps {
-  id: User['id']
+  userId: User['id']
 }
 
 export interface UserHasBusinessRoleServiceDependencies {

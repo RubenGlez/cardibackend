@@ -17,5 +17,4 @@ router.use('/preferences', preferencesRouter)
 router.use('/subscriptions', subscriptionsRouter)
 router.use('/metrics', metricsRouter)
 
-
 export default router

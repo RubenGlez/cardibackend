@@ -1,8 +1,7 @@
 import jwt from 'jsonwebtoken'
+import { JWT_KEY } from '../../../config'
 import { Auth } from '../../../domain/entities/Auth'
 import { User } from '../../../domain/entities/User'
-
-export const JWT_KEY = 'unaclavecualquiera'
 
 export class JwtAdapter {
   generateToken(userId: User['id']): string {

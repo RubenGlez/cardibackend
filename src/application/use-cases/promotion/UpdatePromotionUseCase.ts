@@ -21,13 +21,15 @@ export default class UpdatePromotionUseCase {
 
   async run({
     tenantId,
-    id,
+    promotionId,
     name,
     description,
     validFrom,
     validTo
   }: UpdatePromotionUseCaseProps): Promise<Promotion> {
-    const currentPromotion = await this._getPromotionByIdService.run({ id })
+    const currentPromotion = await this._getPromotionByIdService.run({
+      promotionId
+    })
     if (currentPromotion?.owner !== tenantId) {
       throw new OutputError(OutputErrorTypes.NotOwned)
     }

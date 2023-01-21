@@ -12,15 +12,17 @@ export default async function signUpController(
   const mongoUserRepository = new MongoUserRepository()
   const mongoAuthRepository = new MongoAuthRepository()
   const mongoPreferencesRepository = new MongoPreferencesRepository()
-  
+
   const signUpUseCase = new SignUpUseCase({
     authRepository: mongoAuthRepository,
     userRepository: mongoUserRepository,
     preferencesRepository: mongoPreferencesRepository
   })
 
+  const { body } = req
+
   try {
-    const authData = await signUpUseCase.run(req.body)
+    const authData = await signUpUseCase.run(body)
     res.json(authData)
   } catch (e) {
     next(e)

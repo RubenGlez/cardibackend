@@ -26,7 +26,7 @@ export default class GetPromotionsUseCase {
     tenantId,
     companyId
   }: GetPromotionsUseCaseProps): Promise<Promotion[]> {
-    const company = await this._getCompanyByIdService.run({ id: companyId })
+    const company = await this._getCompanyByIdService.run({ companyId })
 
     const isCompanyOwnedByTenant = company.owner === tenantId
     if (!isCompanyOwnedByTenant) {

@@ -10,14 +10,16 @@ export default async function signInController(
 ): Promise<void> {
   const mongoUserRepository = new MongoUserRepository()
   const mongoAuthRepository = new MongoAuthRepository()
-  
+
   const signInUseCase = new SignInUseCase({
     authRepository: mongoAuthRepository,
     userRepository: mongoUserRepository
   })
 
+  const { body } = req
+
   try {
-    const authData = await signInUseCase.run(req.body)
+    const authData = await signInUseCase.run(body)
     res.json(authData)
   } catch (e) {
     next(e)

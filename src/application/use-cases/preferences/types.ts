@@ -20,4 +20,5 @@ export interface UpdatePreferencesUseCaseDependencies {
 
 export interface UpdatePreferencesUseCaseProps extends PreferencesToUpdate {
   tenantId: Preferences['owner']
+  preferencesId: Preferences['id']
 }

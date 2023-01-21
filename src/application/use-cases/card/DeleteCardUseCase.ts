@@ -14,7 +14,7 @@ export default class DeleteCardUseCase {
   }
 
   async run({ cardId, tenantId }: DeleteCardUseCaseProps): Promise<void> {
-    const cardToDelete = await this._getCardByIdService.run({ id: cardId })
+    const cardToDelete = await this._getCardByIdService.run({ cardId })
     if (cardToDelete.owner !== tenantId) {
       throw new OutputError(OutputErrorTypes.NotOwned)
     }

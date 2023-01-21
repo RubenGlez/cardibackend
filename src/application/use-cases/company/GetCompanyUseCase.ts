@@ -11,7 +11,7 @@ export default class GetCompanyUseCase {
     })
   }
 
-  async run({ id }: GetCompanyUseCaseProps): Promise<Company> {
-    return await this._getCompanyByIdService.run({ id })
+  async run({ companyId }: GetCompanyUseCaseProps): Promise<Company> {
+    return await this._getCompanyByIdService.run({ companyId })
   }
 }

@@ -5,7 +5,6 @@ import getCompaniesController from '../controllers/company/getCompaniesControlle
 import getCompanyController from '../controllers/company/getCompanyController'
 import updateCompanyController from '../controllers/company/updateCompanyController'
 
-
 const router: Router = express.Router()
 
 router.get('/', getCompaniesController)

@@ -13,8 +13,8 @@ export default async function createCompanyController(
   })
 
   try {
-    const { tenantId = '' } = req
-    const company = await createCompanyUseCase.run({ tenantId, ...req.body })
+    const { tenantId = '', body } = req
+    const company = await createCompanyUseCase.run({ tenantId, ...body })
     res.json(company)
   } catch (e) {
     next(e)

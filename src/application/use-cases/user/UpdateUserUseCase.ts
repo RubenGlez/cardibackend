@@ -16,15 +16,15 @@ export default class UpdateUserUseCase {
 
   async run({
     tenantId,
-    id,
+    userId,
     password,
     username
   }: UpdateUserUseCaseProps): Promise<User> {
-    if (id !== tenantId) {
+    if (userId !== tenantId) {
       throw new OutputError(OutputErrorTypes.NotOwned)
     }
 
-    const currentUser = await this._getUserByIdService.run({ id })
+    const currentUser = await this._getUserByIdService.run({ userId })
 
     const dataToUpdate: User = {
       ...currentUser,

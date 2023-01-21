@@ -13,8 +13,8 @@ export default async function createCardController(
   })
 
   try {
-    const { tenantId = '' } = req
-    const card = await createCardUseCase.run({ tenantId, ...req.body })
+    const { tenantId = '', body } = req
+    const card = await createCardUseCase.run({ tenantId, ...body })
     res.json(card)
   } catch (e) {
     next(e)

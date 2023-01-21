@@ -9,7 +9,7 @@ export default class GetUserUseCase {
     this._getUserByIdService = new GetUserByIdService({ userRepository })
   }
 
-  async run({ id }: GetUserUseCaseProps): Promise<User> {
-    return await this._getUserByIdService.run({ id })
+  async run({ userId }: GetUserUseCaseProps): Promise<User> {
+    return await this._getUserByIdService.run({ userId })
   }
 }

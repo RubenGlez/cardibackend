@@ -26,7 +26,7 @@ export default class GetSubscriptionsUseCase {
     tenantId,
     companyId
   }: GetSubscriptionsUseCaseProps): Promise<Subscription[]> {
-    const company = await this._getCompanyByIdService.run({ id: companyId })
+    const company = await this._getCompanyByIdService.run({ companyId })
 
     const isCompanyOwnedByTenant = company.owner === tenantId
     if (!isCompanyOwnedByTenant) {

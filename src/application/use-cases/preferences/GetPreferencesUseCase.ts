@@ -15,6 +15,6 @@ export default class GetPreferencesUseCase {
   }
 
   async run({ tenantId }: GetPreferencesUseCaseProps): Promise<Preferences> {
-    return await this._getPreferencesByUserService.run({ userId: tenantId })
+    return await this._getPreferencesByUserService.run({ tenantId })
   }
 }

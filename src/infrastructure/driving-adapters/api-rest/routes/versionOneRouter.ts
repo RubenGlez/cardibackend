@@ -11,5 +11,4 @@ router.use('/auth', authRouter)
 router.use('/basic', basicAuthenticationMiddleware, basicRoleRouter)
 router.use('/business', businessAuthenticationMiddleware, businessRoleRouter)
 
-
 export default router

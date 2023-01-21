@@ -12,5 +12,5 @@ export interface User {
 export enum UserRole {
   Basic = 'Basic',
   Business = 'Business',
-  Admin = 'Admin',
+  Admin = 'Admin'
 }

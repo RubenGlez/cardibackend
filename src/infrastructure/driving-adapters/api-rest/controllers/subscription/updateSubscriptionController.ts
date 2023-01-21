@@ -16,12 +16,12 @@ export default async function updateSubscriptionController(
   })
 
   try {
-    const { params, tenantId = '' } = req
+    const { params, tenantId = '', body } = req
     const { subscriptionId } = params
     const subscription = await updateSubscriptionUseCase.run({
       tenantId,
-      ...req.body,
-      id: subscriptionId
+      subscriptionId,
+      ...body
     })
     res.json(subscription)
   } catch (e) {

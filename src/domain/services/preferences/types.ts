@@ -14,7 +14,7 @@ export interface GetPreferencesByUserServiceDependencies {
 }
 
 export interface GetPreferencesByUserServiceProps {
-  userId: Preferences['owner']
+  tenantId: Preferences['owner']
 }
 
 export interface GetPreferencesByIdServiceDependencies {

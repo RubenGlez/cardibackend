@@ -14,8 +14,8 @@ export default class GetCardByIdService {
     this._cardRepository = cardRepository
   }
 
-  async run({ id }: GetCardByIdServiceProps): Promise<Card> {
-    const card = await this._cardRepository.getById(id)
+  async run({ cardId }: GetCardByIdServiceProps): Promise<Card> {
+    const card = await this._cardRepository.getById(cardId)
     if (card === null) throw new OutputError(OutputErrorTypes.CardNotFound)
     return card
   }

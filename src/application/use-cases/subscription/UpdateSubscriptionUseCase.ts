@@ -40,13 +40,13 @@ export default class UpdateSubscriptionUseCase {
     subscriptionId
   }: UpdateSubscriptionUseCaseProps): Promise<Subscription | null> {
     const currentSubscription = await this._getSubscriptionByIdService.run({
-      id: subscriptionId
+      subscriptionId
     })
     if (currentSubscription?.owner !== tenantId)
       throw new OutputError(OutputErrorTypes.NotOwned)
 
     const promotion = await this._getPromotionByIdService.run({
-      id: currentSubscription.promotion
+      promotionId: currentSubscription.promotion
     })
 
     const today = new Date()

@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MongoUserRepository = exports.MongoSubscriptionRepository = exports.MongoPromotionRepository = exports.MongoPreferencesRepository = exports.MongoCompanyRepository = exports.MongoCardRepository = exports.MongoAuthRepository = void 0;
+var MongoAuthRepository_1 = require("./MongoAuthRepository");
+Object.defineProperty(exports, "MongoAuthRepository", { enumerable: true, get: function () { return __importDefault(MongoAuthRepository_1).default; } });
+var MongoCardRepository_1 = require("./MongoCardRepository");
+Object.defineProperty(exports, "MongoCardRepository", { enumerable: true, get: function () { return __importDefault(MongoCardRepository_1).default; } });
+var MongoCompanyRepository_1 = require("./MongoCompanyRepository");
+Object.defineProperty(exports, "MongoCompanyRepository", { enumerable: true, get: function () { return __importDefault(MongoCompanyRepository_1).default; } });
+var MongoPreferencesRepository_1 = require("./MongoPreferencesRepository");
+Object.defineProperty(exports, "MongoPreferencesRepository", { enumerable: true, get: function () { return __importDefault(MongoPreferencesRepository_1).default; } });
+var MongoPromotionRepository_1 = require("./MongoPromotionRepository");
+Object.defineProperty(exports, "MongoPromotionRepository", { enumerable: true, get: function () { return __importDefault(MongoPromotionRepository_1).default; } });
+var MongoSubscriptionRepository_1 = require("./MongoSubscriptionRepository");
+Object.defineProperty(exports, "MongoSubscriptionRepository", { enumerable: true, get: function () { return __importDefault(MongoSubscriptionRepository_1).default; } });
+var MongoUserRepository_1 = require("./MongoUserRepository");
+Object.defineProperty(exports, "MongoUserRepository", { enumerable: true, get: function () { return __importDefault(MongoUserRepository_1).default; } });
