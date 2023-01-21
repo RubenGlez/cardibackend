@@ -6,11 +6,11 @@ import * as http from 'http'
 import routes from '../routes'
 
 export default class Server {
-  private readonly _port: number
+  private readonly _port: string
   private readonly _app: express.Express
   private _httpServer?: http.Server
 
-  constructor(port: number) {
+  constructor(port: string) {
     this._port = port
     this._app = express()
     this._app.set('port', port)
@@ -32,7 +32,7 @@ export default class Server {
   async listen(): Promise<void> {
     return await new Promise((resolve) => {
       this._httpServer = this._app.listen(this._port, () => {
-        console.log('🔋 Server listening on port', this._port)
+        console.log('📡 Server listening on port', this._port)
         resolve()
       })
     })
