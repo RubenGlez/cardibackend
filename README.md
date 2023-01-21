@@ -1,6 +1,6 @@
-# SETUP LOCAL ENVIRONMENT   
+# Setup local environment
 1. Run MongoDB: ```npm run db```
 2. Run Node: ```npm run dev```
 
-# Todo list
-[ ] Improve get metrics query
+# Todo
+- [ ] Improve get metrics query
