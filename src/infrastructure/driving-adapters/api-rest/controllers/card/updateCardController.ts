@@ -13,12 +13,12 @@ export default async function updateCardController(
   })
 
   try {
-    const { params, tenantId = '' } = req
+    const { params, tenantId = '', body } = req
     const { cardId } = params
     const card = await updateCardUseCase.run({
       tenantId,
-      ...req.body,
-      id: cardId
+      ...body,
+      cardId
     })
     res.json(card)
   } catch (e) {

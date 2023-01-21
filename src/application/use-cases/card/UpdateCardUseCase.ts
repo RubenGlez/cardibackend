@@ -11,18 +11,18 @@ export default class UpdateCardUseCase {
 
   constructor({ cardRepository }: UpdateCardUseCaseDependencies) {
     this._cardRepository = cardRepository
-    this._getCardByIdService = new GetCardByIdService({cardRepository})
+    this._getCardByIdService = new GetCardByIdService({ cardRepository })
   }
 
   async run({
     tenantId,
-    id,
+    cardId,
     name,
     color,
     logo,
     description
   }: UpdateCardUseCaseProps): Promise<Card> {
-    const currentCard = await this._getCardByIdService.run({id})
+    const currentCard = await this._getCardByIdService.run({ cardId })
     if (currentCard?.owner !== tenantId) {
       throw new OutputError(OutputErrorTypes.NotOwned)
     }

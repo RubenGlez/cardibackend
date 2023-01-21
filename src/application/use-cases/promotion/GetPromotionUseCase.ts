@@ -14,7 +14,7 @@ export default class GetPromotionUseCase {
     })
   }
 
-  async run({ id }: GetPromotionUseCaseProps): Promise<Promotion> {
-    return await this._getPromotionByIdService.run({ id })
+  async run({ promotionId }: GetPromotionUseCaseProps): Promise<Promotion> {
+    return await this._getPromotionByIdService.run({ promotionId })
   }
 }

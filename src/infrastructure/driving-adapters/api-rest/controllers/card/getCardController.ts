@@ -14,7 +14,7 @@ export default async function getCardController(
 
   try {
     const { cardId } = req.params
-    const cards = await getCardUseCase.run({ id: cardId })
+    const cards = await getCardUseCase.run({ cardId })
     res.json(cards)
   } catch (e) {
     next(e)

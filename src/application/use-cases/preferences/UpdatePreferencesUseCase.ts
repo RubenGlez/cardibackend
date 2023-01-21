@@ -1,4 +1,6 @@
 import { Preferences } from '../../../domain/entities/Preferences'
+import { OutputError } from '../../../domain/exceptions/OutputError'
+import { OutputErrorTypes } from '../../../domain/exceptions/OutputErrorTypes'
 import { PreferencesRepository } from '../../../domain/repositories/PreferencesRepository'
 import GetPreferencesByUserService from '../../../domain/services/preferences/GetPreferencesByUserService'
 import {
@@ -19,13 +21,18 @@ export default class UpdatePreferencesUseCase {
 
   async run({
     tenantId,
+    preferencesId,
     themeSelected,
     companySelected,
     languageSelected
   }: UpdatePreferencesUseCaseProps): Promise<Preferences> {
     const currentPreferences = await this._getPreferencesByUserService.run({
-      userId: tenantId
+      tenantId
     })
+
+    if (currentPreferences.id !== preferencesId) {
+      throw new OutputError(OutputErrorTypes.NotOwned)
+    }
 
     const preferencesToUpdate: Preferences = {
       ...currentPreferences,

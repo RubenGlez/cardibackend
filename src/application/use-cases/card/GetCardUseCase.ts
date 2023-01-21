@@ -9,7 +9,7 @@ export default class GetCardUseCase {
     this._getCardByIdService = new GetCardByIdService({ cardRepository })
   }
 
-  async run({ id }: GetCardUseCaseProps): Promise<Card> {
-    return await this._getCardByIdService.run({ id })
+  async run({ cardId }: GetCardUseCaseProps): Promise<Card> {
+    return await this._getCardByIdService.run({ cardId })
   }
 }

@@ -39,14 +39,16 @@ export default class CreateSubscriptionUseCase {
     subscriptor
   }: CreateSubscriptionUseCaseProps): Promise<Subscription> {
     const _promotion = await this._getPromotionByIdService.run({
-      id: promotion
+      promotionId: promotion
     })
 
     if (_promotion.owner?.toString() !== tenantId) {
       throw new OutputError(OutputErrorTypes.NotOwned)
     }
 
-    const _subscriptor = await this._getUserByIdService.run({ id: subscriptor })
+    const _subscriptor = await this._getUserByIdService.run({
+      userId: subscriptor
+    })
     const subscriptorHasBasicRole = _subscriptor.role === UserRole.Basic
     if (!subscriptorHasBasicRole) {
       throw new OutputError(OutputErrorTypes.InvalidSusbcriptorRole)

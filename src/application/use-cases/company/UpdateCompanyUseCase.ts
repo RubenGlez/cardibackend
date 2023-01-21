@@ -21,15 +21,15 @@ export default class UpdateCompanyUseCase {
 
   async run({
     tenantId,
-    id,
+    companyId,
     name,
     description,
     contact
   }: UpdateCompanyUseCaseProps): Promise<Company> {
-    const currentCompany = await this._getCompanyByIdService.run({ id })
-    console.log('--aqui', currentCompany?.owner, tenantId)
-    if (currentCompany?.owner !== tenantId)
+    const currentCompany = await this._getCompanyByIdService.run({ companyId })
+    if (currentCompany?.owner !== tenantId) {
       throw new OutputError(OutputErrorTypes.NotOwned)
+    }
 
     const companyToUpdate: Company = {
       ...currentCompany,

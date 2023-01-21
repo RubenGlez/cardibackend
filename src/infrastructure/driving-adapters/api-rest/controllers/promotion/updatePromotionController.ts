@@ -13,12 +13,12 @@ export default async function updatePromotionController(
   })
 
   try {
-    const { params, tenantId = '' } = req
+    const { params, tenantId = '', body } = req
     const { promotionId } = params
     const promotion = await updatePromotionUseCase.run({
       tenantId,
-      ...req.body,
-      id: promotionId
+      promotionId,
+      ...body
     })
     res.json(promotion)
   } catch (e) {

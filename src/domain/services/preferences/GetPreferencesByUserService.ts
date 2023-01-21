@@ -17,9 +17,9 @@ export default class GetPreferencesByUserService {
   }
 
   async run({
-    userId
+    tenantId
   }: GetPreferencesByUserServiceProps): Promise<Preferences> {
-    const preferences = await this._preferencesRepository.getByUserId(userId)
+    const preferences = await this._preferencesRepository.getByUserId(tenantId)
     if (preferences === null)
       throw new OutputError(OutputErrorTypes.PreferencesNotFound)
     return preferences

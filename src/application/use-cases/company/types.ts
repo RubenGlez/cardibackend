@@ -34,7 +34,7 @@ export interface GetCompanyUseCaseDependencies {
 }
 
 export interface GetCompanyUseCaseProps {
-  id: Company['id']
+  companyId: Company['id']
 }
 
 export interface UpdateCompanyUseCaseDependencies {
@@ -43,4 +43,5 @@ export interface UpdateCompanyUseCaseDependencies {
 
 export interface UpdateCompanyUseCaseProps extends CompanyToUpdate {
   tenantId: Company['owner']
+  companyId: Company['id']
 }

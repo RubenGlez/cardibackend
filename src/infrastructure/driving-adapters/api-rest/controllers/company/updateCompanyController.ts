@@ -13,12 +13,12 @@ export default async function updateCompanyController(
   })
 
   try {
-    const { params, tenantId = '' } = req
+    const { params, tenantId = '', body } = req
     const { companyId } = params
     const company = await updateCompanyUseCase.run({
       tenantId,
-      ...req.body,
-      id: companyId
+      companyId,
+      ...body,
     })
     res.json(company)
   } catch (e) {

@@ -14,8 +14,8 @@ export default class GetCompanyByIdService {
     this._companyRepository = companyRepository
   }
 
-  async run({ id }: GetCompanyByIdServiceProps): Promise<Company> {
-    const company = await this._companyRepository.getById(id)
+  async run({ companyId }: GetCompanyByIdServiceProps): Promise<Company> {
+    const company = await this._companyRepository.getById(companyId)
     if (company === null)
       throw new OutputError(OutputErrorTypes.CompanyNotFound)
     return company

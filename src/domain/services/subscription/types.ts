@@ -15,5 +15,5 @@ export interface GetSubscriptionByIdServiceDependencies {
 }
 
 export interface GetSubscriptionByIdServiceProps {
-  id: Subscription['id']
+  subscriptionId: Subscription['id']
 }

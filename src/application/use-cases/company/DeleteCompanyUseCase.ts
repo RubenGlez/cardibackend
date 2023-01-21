@@ -19,10 +19,11 @@ export default class DeleteCompanyUseCase {
   }
 
   async run({ companyId, tenantId }: DeleteCompanyUseCaseProps): Promise<void> {
-    const companyToDelete = await this._getCompanyByIdService.run({ id: companyId })
+    const companyToDelete = await this._getCompanyByIdService.run({ companyId })
     if (companyToDelete.owner !== tenantId) {
       throw new OutputError(OutputErrorTypes.NotOwned)
     }
+    
     // TODO: improve this flow
     // has cards?
     // -> no : delete

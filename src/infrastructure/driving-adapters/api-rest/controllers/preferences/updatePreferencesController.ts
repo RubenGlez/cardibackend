@@ -13,12 +13,12 @@ export default async function updatePreferencesController(
   })
 
   try {
-    const { params, tenantId = '' } = req
+    const { params, tenantId = '', body } = req
     const { preferencesId } = params
     const preferences = await updatePreferencesUseCase.run({
       tenantId,
-      ...req.body,
-      id: preferencesId
+      preferencesId,
+      ...body,
     })
     res.json(preferences)
   } catch (e) {

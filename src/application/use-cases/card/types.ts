@@ -37,7 +37,7 @@ export interface GetCardUseCaseDependencies {
 }
 
 export interface GetCardUseCaseProps {
-  id: Card['id']
+  cardId: Card['id']
 }
 
 export interface UpdateCardUseCaseDependencies {
@@ -46,4 +46,5 @@ export interface UpdateCardUseCaseDependencies {
 
 export interface UpdateCardUseCaseProps extends CardToUpdate {
   tenantId: Card['owner']
+  cardId: Card['id']
 }

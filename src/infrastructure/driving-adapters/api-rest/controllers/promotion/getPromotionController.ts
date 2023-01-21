@@ -14,7 +14,7 @@ export default async function getPromotionController(
 
   try {
     const { promotionId } = req.params
-    const promotions = await getPromotionUseCase.run({ id: promotionId })
+    const promotions = await getPromotionUseCase.run({ promotionId })
     res.json(promotions)
   } catch (e) {
     next(e)

@@ -14,7 +14,7 @@ export default async function getCompanyController(
 
   try {
     const { companyId } = req.params
-    const companys = await getCompanyUseCase.run({ id: companyId })
+    const companys = await getCompanyUseCase.run({ companyId })
     res.json(companys)
   } catch (e) {
     next(e)

@@ -6,5 +6,5 @@ export interface GetPromotionByIdServiceDependencies {
 }
 
 export interface GetPromotionByIdServiceProps {
-  id: Promotion['id']
+  promotionId: Promotion['id']
 }

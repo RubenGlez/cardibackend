@@ -14,7 +14,7 @@ export default async function getUserController(
 
   try {
     const { userId } = req.params
-    const users = await getUserUseCase.run({ id: userId })
+    const users = await getUserUseCase.run({ userId })
     res.json(users)
   } catch (e) {
     next(e)

@@ -16,8 +16,10 @@ export default async function signInController(
     userRepository: mongoUserRepository
   })
 
+  const { body } = req
+
   try {
-    const authData = await signInUseCase.run(req.body)
+    const authData = await signInUseCase.run(body)
     res.json(authData)
   } catch (e) {
     next(e)

@@ -14,5 +14,5 @@ export interface GetCompanyByIdServiceDependencies {
 }
 
 export interface GetCompanyByIdServiceProps {
-  id: Company['id']
+  companyId: Company['id']
 }
