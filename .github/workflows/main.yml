@@ -30,25 +30,8 @@ jobs:
       - name: Lint
         run: npm run lint
   
-  prettify:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          ref: ${{ github.head_ref }}
-      - uses: actions/setup-node@v3
-        with:
-          cache: 'npm'
-          node-version: '19'
-      - name: Prettify code
-        run: npx run prettier --write ./src
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Apply formatting changes
-
   build:
+    needs: [lint]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -88,7 +71,7 @@ jobs:
         run: npm test
 
   # deploy:
-  #   needs: [test]
+  #   needs: [lint, build, test]
   #   runs-on: ubuntu-latest
   #   steps:
   #     - uses: actions/checkout@v3
