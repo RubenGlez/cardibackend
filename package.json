@@ -1,5 +1,5 @@
 {
-  "name": "cardi-back",
+  "name": "cardibackend",
   "version": "1.0.0",
   "description": "RESTful API for cardi",
   "main": "index.js",
