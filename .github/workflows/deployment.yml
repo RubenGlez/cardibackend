@@ -77,6 +77,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Fake deploy
+        if: ${{ github.event_name == 'push' }}
         run: echo 'fake deployment done!'
       # - name: Deploy to Heroku
       #   if: ${{ github.event_name == 'push' }}
