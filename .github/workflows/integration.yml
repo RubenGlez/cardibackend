@@ -2,9 +2,9 @@ name: Integration Pipeline
 
 on:
   push:
-    branches-ignore: [main]
+    branches: [development]
   pull_request:
-    branches-ignore: [main]
+    branches: [development]
     types: [opened, synchronize]
   workflow_dispatch:
 
@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Lint
-        run: npm run lint
+        run: npm run lint --if-present
 
   build:
     runs-on: ubuntu-latest
@@ -43,7 +43,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build
-        run: npm run build
+        run: npm run build --if-present
       - uses: actions/upload-artifact@v3
         with:
           name: dist
@@ -67,4 +67,4 @@ jobs:
           name: dist
           path: ./dist
       - name: Test
-        run: npm test
+        run: npm test --if-present

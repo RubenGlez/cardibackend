@@ -104,3 +104,7 @@ typings/
 
 # database
 data/
+
+# macOS
+.DS_Store
+
