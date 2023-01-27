@@ -72,15 +72,16 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Fake deploy
-        if: ${{ github.event_name == 'push' }}
-        run: echo 'fake deployment done!'
-      # - name: Deploy to Heroku
+      # - name: Fake deploy
       #   if: ${{ github.event_name == 'push' }}
-      #   uses: akhileshns/heroku-deploy@v3.12.12
-      #   with:
-      #     heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-      #     heroku_app_name: ${{secrets.HEROKU_APP}}
-      #     heroku_email: ${{secrets.HEROKU_API_EMAIL}}
-      #     healthcheck: "https://${{secrets.HEROKU_APP}}.herokuapp.com/health"
-      #     rollbackonhealthcheckfailed: true
+      #   run: echo 'fake deployment done!'
+      - name: Deploy to Vercel
+        if: ${{ github.event_name == 'push' }}
+        uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
+          github-token: ${{ secrets.GITHUB_TOKEN }} #Optional 
+          # vercel-args: '--prod' #Optional
+          vercel-org-id: ${{ secrets.ORG_ID }}  #Required
+          vercel-project-id: ${{ secrets.PROJECT_ID }} #Required 
+          working-directory: ./dist
