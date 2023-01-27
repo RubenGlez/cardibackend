@@ -6,11 +6,11 @@ import * as http from 'http'
 import routes from '../routes'
 
 export default class Server {
-  private readonly _port: string
+  private readonly _port: number
   private readonly _app: express.Express
   private _httpServer?: http.Server
 
-  constructor(port: string) {
+  constructor(port: number) {
     this._port = port
     this._app = express()
     this._app.set('port', port)

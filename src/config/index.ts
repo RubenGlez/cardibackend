@@ -1,7 +1,9 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-export const DATABASE = process.env.DATABASE ?? ''
-export const PORT = process.env.PORT ?? ''
-export const JWT_KEY = process.env.JWT_KEY ?? ''
-export const BCRYPT_SALT = process.env.BCRYPT_SALT ?? ''
+// Environment variables
+export const ENVIRONMENT = String(process.env.ENVIRONMENT)
+export const DATABASE = String(process.env.DATABASE)
+export const PORT = Number(process.env.PORT)
+export const JWT_KEY = String(process.env.JWT_KEY)
+export const BCRYPT_SALT = Number(process.env.BCRYPT_SALT)
