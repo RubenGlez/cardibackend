@@ -6,7 +6,7 @@
   },  
   "builds": [{
     "src": "dist",
-    "use": "@vercel/static"
+    "use": "@vercel/node"
   }],
   "rewrites": [{
     "source": "/api/(.*)",
