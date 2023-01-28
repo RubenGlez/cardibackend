@@ -15,6 +15,4 @@ const runApiRest = async (): Promise<express.Express> => {
 
 const apiInstance = runApiRest()
 
-// force push 1
-
 module.exports = apiInstance

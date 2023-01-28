@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import path from 'path'
 import morgan from 'morgan'
 import helmet from 'helmet'
 import * as http from 'http'
@@ -23,6 +24,7 @@ export default class Server {
     this._app.use(helmet())
     this._app.use(morgan('dev'))
     this._app.use(express.json())
+    this._app.use(express.static(path.join(__dirname, '../public')))
   }
 
   private setRoutes(): void {

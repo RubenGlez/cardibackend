@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
+const path_1 = __importDefault(require("path"));
 const morgan_1 = __importDefault(require("morgan"));
 const helmet_1 = __importDefault(require("helmet"));
 const routes_1 = __importDefault(require("../routes"));
@@ -30,6 +31,7 @@ class Server {
         this._app.use((0, helmet_1.default)());
         this._app.use((0, morgan_1.default)('dev'));
         this._app.use(express_1.default.json());
+        this._app.use(express_1.default.static(path_1.default.join(__dirname, '../public')));
     }
     setRoutes() {
         this._app.use('/api', routes_1.default);
