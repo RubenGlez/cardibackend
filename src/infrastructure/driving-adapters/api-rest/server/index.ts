@@ -29,6 +29,10 @@ export default class Server {
     this._app.use('/api', routes)
   }
 
+  getAppInstance(): express.Express {
+    return this._app
+  }
+
   async listen(): Promise<void> {
     return await new Promise(resolve => {
       this._httpServer = this._app.listen(this._port, () => {
