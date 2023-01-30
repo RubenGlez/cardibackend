@@ -39,8 +39,8 @@ export default class MongoPreferencesRepository
     return preferencesMapped
   }
 
-  async save(inputData: PreferencesRepositorySaveProps): Promise<Preferences> {
-    const preferencesToCreate = new this._model(inputData)
+  async save({ owner }: PreferencesRepositorySaveProps): Promise<Preferences> {
+    const preferencesToCreate = new this._model({ user: owner })
     const preferencesCreated = await preferencesToCreate.save()
     const preferencesMapped = this.toDto(preferencesCreated.toObject())
     return preferencesMapped
