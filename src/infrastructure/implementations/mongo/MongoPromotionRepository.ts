@@ -15,7 +15,7 @@ export default class MongoPromotionRepository implements PromotionRepository {
     )
     delete promotionDTO._id
     delete promotionDTO.__v
-    promotionDTO.user = promotionDTO.user?.toString()
+    promotionDTO.owner = promotionDTO.owner?.toString()
     promotionDTO.company = promotionDTO.company?.toString()
     promotionDTO.card = promotionDTO.card?.toString()
 

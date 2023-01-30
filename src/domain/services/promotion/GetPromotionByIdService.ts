@@ -16,8 +16,9 @@ export default class GetPromotionByIdService {
 
   async run({ promotionId }: GetPromotionByIdServiceProps): Promise<Promotion> {
     const promotion = await this._promotionRepository.getById(promotionId)
-    if (promotion === null)
+    if (promotion === null){
       throw new OutputError(OutputErrorTypes.PromotionNotFound)
+    }
     return promotion
   }
 }
