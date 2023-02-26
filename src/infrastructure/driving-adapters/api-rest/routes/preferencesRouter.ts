@@ -1,6 +1,6 @@
 import express, { Router } from 'express'
-import getPreferencesController from '../controllers/preferences/getPreferencesController'
-import updatePreferencesController from '../controllers/preferences/updatePreferencesController'
+import getPreferencesController from '../controllers/preferences/getPreferencesController.common'
+import updatePreferencesController from '../controllers/preferences/updatePreferencesController.common'
 
 const router: Router = express.Router()
 

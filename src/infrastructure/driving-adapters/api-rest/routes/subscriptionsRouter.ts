@@ -1,7 +1,7 @@
 import express, { Router } from 'express'
-import createSubscriptionController from '../controllers/subscription/createSubscriptionController'
-import getSubscriptionsController from '../controllers/subscription/getSubscriptionsController'
-import updateSubscriptionController from '../controllers/subscription/updateSubscriptionController'
+import createSubscriptionController from '../controllers/subscription/createSubscriptionController.business'
+import getSubscriptionsController from '../controllers/subscription/getSubscriptionsController.business'
+import updateSubscriptionController from '../controllers/subscription/updateSubscriptionController.business'
 
 const router: Router = express.Router()
 

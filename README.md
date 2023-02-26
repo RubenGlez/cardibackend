@@ -8,4 +8,6 @@
 2. Run Node: ```npm run dev```
 
 # Todo
+- [ ] Move preferences route to common path
+- [ ] Add common check auth middleware to preferences route
 - [ ] Improve get metrics query

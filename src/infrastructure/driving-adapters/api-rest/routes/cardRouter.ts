@@ -1,9 +1,9 @@
 import express, { Router } from 'express'
-import createCardController from '../controllers/card/createCardController'
-import deleteCardController from '../controllers/card/deleteCardController'
-import getCardController from '../controllers/card/getCardController'
-import getCardsController from '../controllers/card/getCardsController'
-import updateCardController from '../controllers/card/updateCardController'
+import createCardController from '../controllers/card/createCardController.business'
+import deleteCardController from '../controllers/card/deleteCardController.business'
+import getCardController from '../controllers/card/getCardController.business'
+import getCardsController from '../controllers/card/getCardsController.business'
+import updateCardController from '../controllers/card/updateCardController.business'
 
 const router: Router = express.Router()
 
