@@ -11,3 +11,4 @@
 - [ ] Move preferences route to common path
 - [ ] Add common check auth middleware to preferences route
 - [ ] Improve get metrics query
+- [ ] Move deployment hosting from Railway (free plan expired) to Render (already registered)
