@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    ".github",
+    ".vscode",
+    "coverage",
+    "custom_types",
+    "data",
+    "dist",
+    "node_modules",
+    "jest.config.ts"
+  ]
+}
+  

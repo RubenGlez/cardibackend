@@ -31,8 +31,8 @@ export default class Server {
     this._app.use('/api', routes)
   }
 
-  getAppInstance(): express.Express {
-    return this._app
+  getAppInstance(): http.Server | undefined {
+    return this._httpServer
   }
 
   async listen(): Promise<void> {
