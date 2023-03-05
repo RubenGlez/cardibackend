@@ -5,7 +5,6 @@ import Server from './infrastructure/driving-adapters/api-rest/server'
 
 const ServerInstance = new Server(PORT)
 const MongoInstance = new MongooseAdapter(DATABASE)
-let appInstance
 
 const runApiRest = async (): Promise<http.Server | undefined> => {
   await ServerInstance.listen()
@@ -13,13 +12,6 @@ const runApiRest = async (): Promise<http.Server | undefined> => {
   return ServerInstance.getAppInstance()
 }
 
-const app = (() => {
-  if (appInstance !== null) {
-    return appInstance
-  } else {
-    appInstance = runApiRest()
-    return appInstance
-  }
-})()
+const app = runApiRest()
 
 export default app
