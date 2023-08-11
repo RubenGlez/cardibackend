@@ -8,7 +8,6 @@
 2. Run Node: ```npm run dev```
 
 # Todo
-- [ ] Move preferences route to common path
-- [ ] Add common check auth middleware to preferences route
+- [ ] Set logger to replace console.log
 - [ ] Improve get metrics query
 - [ ] Move deployment hosting from Railway (free plan expired) to Render (already registered)

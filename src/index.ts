@@ -6,12 +6,12 @@ import Server from './infrastructure/driving-adapters/api-rest/server'
 const ServerInstance = new Server(PORT)
 const MongoInstance = new MongooseAdapter(DATABASE)
 
-const runApiRest = async (): Promise<http.Server | undefined> => {
+const runServer = async (): Promise<http.Server | undefined> => {
   await ServerInstance.listen()
   await MongoInstance.connect()
-  return ServerInstance.getAppInstance()
+  return ServerInstance.getServerInstance()
 }
 
-const app = runApiRest()
+const app = runServer()
 
 export default app

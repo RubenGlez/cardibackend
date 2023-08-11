@@ -31,7 +31,11 @@ export default class Server {
     this._app.use('/api', routes)
   }
 
-  getAppInstance(): http.Server | undefined {
+  getAppInstance(): express.Express {
+    return this._app
+  }
+
+  getServerInstance(): http.Server | undefined {
     return this._httpServer
   }
 
